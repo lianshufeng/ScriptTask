@@ -17,17 +17,32 @@ public class ScriptHelper {
 
 
     /**
+     *
+     * @param scriptContent
+     * @param injection ， 是否注入spring的依赖对象
+     * @return
+     */
+    public SuperScript parse(String scriptContent, boolean injection) {
+        Script script = new GroovyShell().parse(scriptContent);
+        if (!(script instanceof SuperScript)) {
+            throw new RuntimeException("脚本转换异常");
+        }
+        SuperScript superScript = (SuperScript) script;
+        if (injection) {
+            this.springBeanHelper.injection(superScript);
+        }
+        return superScript;
+    }
+
+
+    /**
      * 载入脚本
      *
      * @param scriptContent
      * @return
      */
     public SuperScript parse(String scriptContent) {
-        Script script = new GroovyShell().parse(scriptContent);
-        if (!(script instanceof SuperScript)) {
-            throw new RuntimeException("脚本转换异常");
-        }
-        return (SuperScript) script;
+        return parse(scriptContent, false);
     }
 
 
