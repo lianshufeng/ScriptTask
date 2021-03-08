@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+
+spring:
+  profiles:
+    active: dev
+
+
+
+logging:
+  file:
+    name: logs/TaskServer.log

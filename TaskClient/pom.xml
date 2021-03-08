@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>top.dzurl.task</groupId>
+        <artifactId>TaskParent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../TaskParent</relativePath>
+    </parent>
+
+
+    <groupId>top.dzurl.task</groupId>
+    <artifactId>TaskClient</artifactId>
+    <name>TaskClient</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>11</java.version>
+
+        <webdrivermanager.version>4.3.1</webdrivermanager.version>
+        <selenium.version>4.0.0-beta-1</selenium.version>
+        <appium.version>7.4.1</appium.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>top.dzurl.task</groupId>
+            <artifactId>TaskBridge</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--仅编译需要 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
