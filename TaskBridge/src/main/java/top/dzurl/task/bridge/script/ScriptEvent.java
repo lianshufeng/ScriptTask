@@ -18,20 +18,6 @@ public abstract class ScriptEvent {
 
 
     /**
-     * 在安装app
-     */
-    public void onInstallApp() {
-    }
-
-
-    /**
-     * 运行应用
-     */
-    public void onRunApp() {
-    }
-
-
-    /**
      * 关闭环境
      */
     public void onClose() {
@@ -51,8 +37,6 @@ public abstract class ScriptEvent {
      */
     public static enum EventType {
         Create(getMethod("onCreate", null)),
-        InstallApp(getMethod("onInstallApp", null)),
-        RunApp(getMethod("onRunApp", null)),
         Close(getMethod("onClose", null)),
         Exception(getMethod("onException", Exception.class)),
 

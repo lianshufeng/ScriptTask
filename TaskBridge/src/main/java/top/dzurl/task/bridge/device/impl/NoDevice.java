@@ -10,11 +10,11 @@ import top.dzurl.task.bridge.device.type.DeviceType;
 @Data
 @Builder
 @NoArgsConstructor
-public class WebChromeDevice extends Device {
+public class NoDevice extends Device {
 
 
     @Override
     public DeviceType getType() {
-        return DeviceType.Web;
+        return DeviceType.None;
     }
 }

@@ -6,7 +6,8 @@ public enum PlatformType {
 
     Android("Android"),
     Web("Web"),
-    Ios("Ios")
+    Ios("Ios"),
+    None("None"),
     ;
 
     @Getter

@@ -1,6 +1,9 @@
 package top.dzurl.task.bridge.device.impl;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import top.dzurl.task.bridge.device.Device;
 import top.dzurl.task.bridge.device.type.DeviceType;
 
@@ -8,6 +11,9 @@ import top.dzurl.task.bridge.device.type.DeviceType;
  * 非模拟器仅支持部分修改
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AndroidMachineDevice extends Device {
 
     //系统版本

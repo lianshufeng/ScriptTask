@@ -1,25 +1,26 @@
-import top.dzurl.task.bridge.device.impl.WebChromeDevice
+package script
+
+
 import top.dzurl.task.bridge.script.Environment
 import top.dzurl.task.bridge.script.Parameter
 import top.dzurl.task.bridge.script.SuperScript
 
-class TestScript1 extends SuperScript {
+class TestScript extends SuperScript {
 
 
     @Override
     Map<String, Parameter> parameters() {
         return [
-                'phone'    : [
+                'phone': [
                         'remark': '平台登录的手机号码',
                         'value' : '15123241353'
-                ] as Parameter,
-                'startTime': 0
+                ] as Parameter
         ]
     }
 
     @Override
     String name() {
-        return "测试脚本1"
+        return "TestScript"
     }
 
     @Override
@@ -30,16 +31,14 @@ class TestScript1 extends SuperScript {
     @Override
     Environment environment() {
         return [
-                'device': [
-                ] as WebChromeDevice
+
         ] as Environment
     }
 
     @Override
     Object run() {
-        long startTime = getRuntime().getParameters().get('startTime');
-
-
-        return null
+        return [
+                'time': System.currentTimeMillis()
+        ]
     }
 }

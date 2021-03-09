@@ -2,6 +2,7 @@ package top.dzurl.task.bridge.script;
 
 import groovy.lang.Script;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +16,12 @@ public abstract class SuperScript extends Script {
 
 
     @Getter
+    @Setter
     protected ScriptRuntime runtime;
 
     //异步方法
     @Getter
+    @Setter
     protected ScriptAsync async;
 
 
@@ -40,8 +43,9 @@ public abstract class SuperScript extends Script {
      *
      * @return
      */
-    public abstract Environment environment();
-
+    public Environment environment() {
+        return Environment.builder().build();
+    }
 
     /**
      * 参数

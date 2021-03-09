@@ -8,9 +8,11 @@ import lombok.Getter;
 public enum DeviceType {
     //Android 模拟器
     AndroidSimulator(PlatformType.Android),
+    //android 真机
     AndroidMachine(PlatformType.Android),
 
     Web(PlatformType.Android),
+    None(PlatformType.None),
 
     ;
 
