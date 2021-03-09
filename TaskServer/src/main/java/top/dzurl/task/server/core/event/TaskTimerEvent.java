@@ -11,6 +11,6 @@ public class TaskTimerEvent implements SimpleTaskTimerEvent<Task> {
 
     @Override
     public void execute(Task task) {
-        log.info("time : " + task.getId());
+        log.info("time -> {}", task.getId());
     }
 }
