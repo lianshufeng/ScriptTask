@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.ScriptRuntime;
-import top.dzurl.task.client.core.conf.AppTaskConf;
+import top.dzurl.task.client.core.conf.ScriptTaskConf;
 import top.dzurl.task.client.core.factory.AppiumFactory;
 import top.dzurl.task.client.core.runtime.SuperDeviceRunTime;
 
@@ -25,7 +25,7 @@ public class AndroidMachineDeviceRunTime extends SuperDeviceRunTime {
     private Map<String, String> deviceMacCache = new ConcurrentHashMap<>();
 
     @Autowired
-    private AppTaskConf appTaskConf;
+    private ScriptTaskConf appTaskConf;
 
     @Autowired
     private AppiumFactory appiumFactory;

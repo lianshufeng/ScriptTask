@@ -7,10 +7,10 @@ import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import top.dzurl.task.client.core.conf.AppTaskConf;
+import top.dzurl.task.client.core.conf.ScriptTaskConf;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
@@ -19,20 +19,15 @@ import java.util.concurrent.TimeUnit;
 public class AppiumFactory {
 
     @Autowired
-    private AppTaskConf appTaskConf;
+    private ScriptTaskConf appTaskConf;
 
 
     private File node_path;
     private File JS_Path;
 
 
-    @PostConstruct
-    private void init() {
-        initPath();
-    }
-
-    //初始化路径
-    private void initPath() {
+    @Autowired
+    private void initPath(ApplicationContext applicationContext) {
         node_path = new File(this.appTaskConf.getRunTime().getNodeHome().getAbsolutePath() + "/node.exe");
         JS_Path = new File(this.appTaskConf.getRunTime().getAppiumHome().getAbsolutePath() + "/node_modules/appium/build/lib/main.js");
     }
