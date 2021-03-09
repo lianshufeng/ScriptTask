@@ -9,10 +9,11 @@ class TestScript1 extends SuperScript {
     @Override
     Map<String, Parameter> parameters() {
         return [
-                'phone': [
+                'phone'    : [
                         'remark': '平台登录的手机号码',
                         'value' : '15123241353'
-                ] as Parameter
+                ] as Parameter,
+                'startTime': 0
         ]
     }
 
@@ -36,6 +37,9 @@ class TestScript1 extends SuperScript {
 
     @Override
     Object run() {
+        long startTime = getRuntime().getParameters().get('startTime');
+
+
         return null
     }
 }
