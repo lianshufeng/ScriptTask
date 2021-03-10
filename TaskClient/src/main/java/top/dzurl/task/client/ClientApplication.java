@@ -8,8 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({
         "top.dzurl.task.client.core",
-        "top.dzurl.task.bridge.helper",
-        "top.dzurl.task.bridge.service"
+        "top.dzurl.task.bridge",
 })
 @SpringBootApplication
 public class ClientApplication {

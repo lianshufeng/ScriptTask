@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
  * 用户交互
  */
 @Slf4j
-
 public class UserInterface {
 
     //阻塞线程
