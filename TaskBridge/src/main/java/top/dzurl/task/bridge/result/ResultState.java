@@ -12,6 +12,8 @@ public enum ResultState {
     Error("错误"),
     Exception("异常"),
     Robot("机器验证"),
+    ScriptNoneExists("脚本不存在"),
+    CronError("表达式错误"),
 
 
     ;

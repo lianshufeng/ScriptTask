@@ -61,6 +61,17 @@ public class ScriptController {
         return this.scriptService.list(word, pageable);
     }
 
+    /**
+     * 删除脚本
+     * @param scriptName
+     * @return
+     */
+    @RequestMapping("del")
+    public Object del(String scriptName){
+        Assert.hasText(scriptName, "脚本名不能为空");
+        return this.scriptService.del(scriptName);
+    }
+
 
     private void validate(final SuperScript script) {
         //数据校验
