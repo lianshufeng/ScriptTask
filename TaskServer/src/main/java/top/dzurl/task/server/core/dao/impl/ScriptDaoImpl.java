@@ -81,6 +81,11 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
         return this.dbHelper.pages(query, pageable, Script.class);
     }
 
+    @Override
+    public Boolean del(String scriptName) {
+        return this.mongoTemplate.remove(buildQueryFromName(scriptName), Script.class).getDeletedCount() > 0;
+    }
+
 
     Query buildQueryFromName(String name) {
         return Query.query(Criteria.where("name").is(name));

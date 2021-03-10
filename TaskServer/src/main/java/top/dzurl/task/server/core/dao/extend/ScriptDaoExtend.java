@@ -24,4 +24,12 @@ public interface ScriptDaoExtend {
     Page<Script> list(String word, Pageable pageable);
 
 
+    /**
+     * 删除脚本
+     * @param scriptName
+     * @return
+     */
+    Boolean del(String scriptName);
+
+
 }

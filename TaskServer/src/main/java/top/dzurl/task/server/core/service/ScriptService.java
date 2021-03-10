@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.dzurl.task.bridge.model.ScriptModel;
 import top.dzurl.task.server.core.dao.ScriptDao;
 import top.dzurl.task.server.core.domain.Script;
-import top.dzurl.task.server.core.util.PageEntityUtil;
+import top.dzurl.task.server.other.mongo.util.PageEntityUtil;
 
 @Service
 public class ScriptService {
@@ -38,6 +38,16 @@ public class ScriptService {
         return PageEntityUtil.concurrent2PageModel(this.scriptDao.list(word, pageable), (it) -> {
             return toModel(it);
         });
+    }
+
+
+    /**
+     * 删除
+     * @param scriptName
+     * @return
+     */
+    public Boolean del(String scriptName){
+        return scriptDao.del(scriptName);
     }
 
 
