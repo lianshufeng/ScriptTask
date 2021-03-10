@@ -10,6 +10,7 @@ import top.dzurl.task.bridge.script.ScriptAsync;
 import top.dzurl.task.bridge.script.ScriptRuntime;
 import top.dzurl.task.bridge.script.SuperScript;
 import top.dzurl.task.bridge.util.BeanUtil;
+import top.dzurl.task.client.core.runtime.DeviceRunTimeManager;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -25,6 +26,9 @@ public class ScriptFactory {
 
     @Autowired
     private SpringBeanHelper springBeanHelper;
+
+    @Autowired
+    private DeviceRunTimeManager deviceRunTimeManager;
 
 
     /**
@@ -52,7 +56,10 @@ public class ScriptFactory {
      * @param script
      */
     public <T> T run(SuperScript script) {
-        return (T) script.run();
+        this.deviceRunTimeManager.create(script);
+        Object ret = script.execute();
+        this.deviceRunTimeManager.close(script);
+        return (T) ret;
     }
 
 

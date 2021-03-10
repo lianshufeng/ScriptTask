@@ -3,6 +3,8 @@ package top.dzurl.task.bridge.script;
 import groovy.lang.Script;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import top.dzurl.task.bridge.helper.ScriptEventHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,10 @@ public abstract class SuperScript extends Script {
     @Getter
     @Setter
     protected ScriptAsync async;
+
+
+    @Autowired
+    private ScriptEventHelper scriptEventHelper;
 
 
     //创建脚本的时间
@@ -83,7 +89,15 @@ public abstract class SuperScript extends Script {
      * @return
      */
     public final Object execute() {
-        return this.run();
+        try {
+            this.scriptEventHelper.publish(this, ScriptEvent.EventType.Run);
+            return this.run();
+        } catch (Exception e) {
+            this.scriptEventHelper.publish(this, ScriptEvent.EventType.Exception, e);
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+        return null;
     }
 
 

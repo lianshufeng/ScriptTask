@@ -15,7 +15,7 @@ public class NoneDeviceRunTime extends SuperDeviceRunTime {
 
 
     @Override
-    public void open(ScriptRuntime runtime) {
+    public void create(ScriptRuntime runtime) {
 
     }
 

@@ -1,16 +1,24 @@
 package top.dzurl.task.client.core.runtime;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import top.dzurl.task.bridge.device.type.DeviceType;
+import top.dzurl.task.bridge.helper.ScriptEventHelper;
+import top.dzurl.task.bridge.script.ScriptEvent;
 import top.dzurl.task.bridge.script.ScriptRuntime;
+import top.dzurl.task.bridge.script.SuperScript;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Component
 public class DeviceRunTimeManager {
+
+    @Autowired
+    private ScriptEventHelper scriptEventHelper;
 
     private Map<DeviceType, SuperDeviceRunTime> _cache = new ConcurrentHashMap<>();
 
@@ -33,28 +41,40 @@ public class DeviceRunTimeManager {
      *
      * @return
      */
-    public void open(ScriptRuntime runtime) {
-        SuperDeviceRunTime runTime = getRunTime(runtime);
-        runTime.open(runtime);
+    public void create(SuperScript script) {
+        executeEvent(script, ScriptEvent.EventType.Create);
     }
 
 
     /**
      * 关闭环境
      */
-    public void close(ScriptRuntime runtime) {
-        SuperDeviceRunTime runTime = getRunTime(runtime);
-        runTime.close(runtime);
+    public void close(SuperScript script) {
+        executeEvent(script, ScriptEvent.EventType.Close);
     }
 
 
     /**
-     * 发布事件
+     * 执行事件对应的方法
      *
-     * @param runTime
+     * @param script
+     * @param eventType
      */
-    private void event(SuperDeviceRunTime runTime) {
-
+    private void executeEvent(SuperScript script, ScriptEvent.EventType eventType) {
+        try {
+            final ScriptRuntime scriptRunTime = script.getRuntime();
+            final SuperDeviceRunTime deviceRunTime = getRunTime(scriptRunTime);
+            this.scriptEventHelper.publish(script, eventType);
+            if (eventType == ScriptEvent.EventType.Create) {
+                deviceRunTime.create(scriptRunTime);
+            } else if (eventType == ScriptEvent.EventType.Close) {
+                deviceRunTime.close(scriptRunTime);
+            }
+        } catch (Exception e) {
+            this.scriptEventHelper.publish(script, ScriptEvent.EventType.Exception, e);
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
     }
 
 

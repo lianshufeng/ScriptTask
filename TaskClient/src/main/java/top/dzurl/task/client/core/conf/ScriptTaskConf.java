@@ -37,7 +37,7 @@ public class ScriptTaskConf {
         private ApplicationHome applicationHome = new ApplicationHome();
 
         //运行环境的跟目录
-        protected String home = "./runtime";
+        protected String home = "../runtime";
 
 
         /**
@@ -50,6 +50,14 @@ public class ScriptTaskConf {
             return new File(FilenameUtils.normalize(applicationHome.getDir().getAbsolutePath() + "/" + home + "/" + fileName));
         }
 
+
+        /**
+         * 取Chrome的路径
+         * @return
+         */
+        public File getChromeHome() {
+            return getHome("chrome");
+        }
 
         /**
          * 获取Appium的路径

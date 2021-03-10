@@ -49,7 +49,6 @@ public abstract class SuperRunScript {
     @SneakyThrows
     public <T> T runScript(File file, final Environment environment, final Map<String, Object> parameters) {
         String scriptBody = FileUtils.readFileToString(file, "UTF-8");
-
         //脚本工厂
         ScriptFactory scriptFactory = applicationContext.getBean(ScriptFactory.class);
         //转换脚本

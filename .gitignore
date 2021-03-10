@@ -19,11 +19,8 @@ rebel.xml
 
 
 # sdk
-/runtime/android-cmdline-tools
-/runtime/android-sdk
-/runtime/jdk
-/runtime/node
-/runtime/simulator
+/runtime/
+
 
 
 # build

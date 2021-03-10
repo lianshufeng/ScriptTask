@@ -1,17 +1,17 @@
-package script
+package script.demo
 
-
+import org.jsoup.Jsoup
+import top.dzurl.task.bridge.device.impl.NoDevice
 import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.Parameter
 import top.dzurl.task.bridge.script.ScriptEvent
 import top.dzurl.task.bridge.script.SuperScript
 
-class TestScript extends SuperScript {
+class NoneDeviceScript extends SuperScript {
 
 
     @Override
     String name() {
-        return "TestScript"
+        return "NoneDeviceScript"
     }
 
     @Override
@@ -22,7 +22,7 @@ class TestScript extends SuperScript {
     @Override
     Environment environment() {
         return [
-
+                'device': new NoDevice()
         ] as Environment
     }
 
@@ -47,8 +47,17 @@ class TestScript extends SuperScript {
 
     @Override
     Object run() {
+        def list = []
+
+        def ret = Jsoup.connect('http://top.baidu.com').get();
+        ret.getElementById('hot-list').getElementsByTag('li').forEach((it) -> {
+            def title = it.getElementsByTag('a').get(0).attr('title')
+            list.push(title);
+        })
+
         return [
-                'time': System.currentTimeMillis()
+                'time' : System.currentTimeMillis(),
+                'title': list
         ]
     }
 }

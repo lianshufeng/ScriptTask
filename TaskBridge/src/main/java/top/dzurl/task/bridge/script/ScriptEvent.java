@@ -16,6 +16,11 @@ public abstract class ScriptEvent {
     public void onCreate() {
     }
 
+    /**
+     * 执行
+     */
+    public void onRun() {
+    }
 
     /**
      * 关闭环境
@@ -37,6 +42,7 @@ public abstract class ScriptEvent {
      */
     public static enum EventType {
         Create(getMethod("onCreate", null)),
+        Run(getMethod("onRun", null)),
         Close(getMethod("onClose", null)),
         Exception(getMethod("onException", Exception.class)),
 

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.dzurl.task.bridge.driver.Driver;
 
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,7 +23,7 @@ public class ScriptRuntime {
     private Map<String, Object> parameters;
 
     //驱动
-    private Driver driver;
+    private Object driver;
 
     //线程池
     protected ScheduledExecutorService threadPool;

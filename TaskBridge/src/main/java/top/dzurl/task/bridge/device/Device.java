@@ -3,7 +3,7 @@ package top.dzurl.task.bridge.device;
 import com.fasterxml.jackson.annotation.*;
 import top.dzurl.task.bridge.device.impl.AndroidMachineDevice;
 import top.dzurl.task.bridge.device.impl.AndroidSimulatorDevice;
-import top.dzurl.task.bridge.device.impl.WebChromeDevice;
+import top.dzurl.task.bridge.device.impl.WebDevice;
 import top.dzurl.task.bridge.device.type.DeviceType;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AndroidSimulatorDevice.class, name = "AndroidSimulatorDevice"),
         @JsonSubTypes.Type(value = AndroidMachineDevice.class, name = "AndroidMachineDevice"),
-        @JsonSubTypes.Type(value = WebChromeDevice.class, name = "WebChromeDevice")
+        @JsonSubTypes.Type(value = WebDevice.class, name = "WebDevice")
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class Device {

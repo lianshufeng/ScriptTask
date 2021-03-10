@@ -21,7 +21,7 @@ public abstract class SuperDeviceRunTime {
      *
      * @return
      */
-    public abstract void open(ScriptRuntime runtime);
+    public abstract void create(ScriptRuntime runtime);
 
 
     /**
