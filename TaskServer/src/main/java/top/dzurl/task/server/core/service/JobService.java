@@ -63,16 +63,18 @@ public class JobService {
     public ResultContent<String> writeLog(JobParam param){
         JobRunLog jobRunLog = jobRunLogDao.findByJobId(param.getJobId());
         if (jobRunLog == null){
-            return ResultContent.build(ResultState.JobLogNoneExists);
+            //return ResultContent.build(ResultState.JobLogNoneExists);
+            jobRunLog = new JobRunLog();
         }
         List<String> logs = jobRunLog.getLogs();
+        jobRunLog.setJobId(param.getJobId());
         if (CollectionUtils.isEmpty(logs)){
             logs = new ArrayList<>();
         }
         logs.addAll(param.getLogs());
         jobRunLog.setLogs(logs);
-        jobRunLogDao.save(jobRunLog);
-        return ResultContent.build(ResultState.Success);
+
+        return jobRunLogDao.update(jobRunLog)? ResultContent.build(ResultState.Success): ResultContent.build(ResultState.Success);
     }
 
     /**

@@ -1,8 +1,10 @@
 package top.dzurl.task.server.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.dzurl.task.bridge.model.param.JobParam;
 import top.dzurl.task.server.core.service.JobService;
 
 @RestController
@@ -15,5 +17,10 @@ public class JobController {
     @RequestMapping("get")
     public Object get(String deviceId){
         return jobService.get(deviceId);
+    }
+
+    @RequestMapping("writeLog")
+    public Object writeLog(@RequestBody JobParam param){
+        return jobService.writeLog(param);
     }
 }
