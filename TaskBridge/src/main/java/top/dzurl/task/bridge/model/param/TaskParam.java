@@ -36,5 +36,5 @@ public class TaskParam {
     /**
      * 绑定的设备标识
      */
-    private String deviceFlag;
+    private String deviceId;
 }

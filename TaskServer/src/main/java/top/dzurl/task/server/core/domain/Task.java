@@ -31,7 +31,7 @@ public class Task extends SimpleTaskTimerTable {
 
     //绑定的设备标识
     @Indexed
-    private String deviceFlag;
+    private String deviceId;
 
 
 }

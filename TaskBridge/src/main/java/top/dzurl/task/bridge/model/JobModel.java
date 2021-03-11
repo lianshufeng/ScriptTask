@@ -12,9 +12,8 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TaskModel {
+public class JobModel {
 
-    //任务ID
     private String id;
 
     //脚本名
@@ -28,4 +27,5 @@ public class TaskModel {
 
     //绑定的设备标识
     private String deviceId;
+
 }

@@ -1,5 +1,6 @@
 package top.dzurl.task.server.core.dao.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +43,7 @@ public class TaskDaoImpl implements TaskDaoExtend {
     @Override
     public Boolean update(TaskParam param) {
         Task task = new Task();
+        BeanUtils.copyProperties(param,task);
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(param.getId()));
         Update update=new Update();

@@ -13,7 +13,9 @@ public enum ResultState {
     Exception("异常"),
     Robot("机器验证"),
     ScriptNoneExists("脚本不存在"),
+    ScriptNotSameVersion("脚本版本不一致"),
     CronError("表达式错误"),
+    JobLogNoneExists("日志不存在"),
 
 
     ;

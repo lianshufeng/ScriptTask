@@ -8,6 +8,7 @@ import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Service;
 import top.dzurl.task.bridge.model.TaskModel;
 import top.dzurl.task.bridge.model.param.TaskParam;
+import top.dzurl.task.bridge.result.ResultContent;
 import top.dzurl.task.bridge.result.ResultState;
 import top.dzurl.task.server.core.dao.ScriptDao;
 import top.dzurl.task.server.core.dao.TaskDao;
@@ -29,16 +30,16 @@ public class TaskService {
      * @param param
      * @return
      */
-    public ResultState create(TaskParam param){
+    public ResultContent<String> create(TaskParam param){
         //检验表达式
         try {
             CronExpression.parse(param.getCron());
         } catch (Exception e){
-            return ResultState.CronError;
+            return ResultContent.build(ResultState.CronError);
         }
         //查询脚本
         if (!this.scriptDao.existsByName(param.getScriptName())){
-            return ResultState.ScriptNoneExists;
+            return ResultContent.build(ResultState.ScriptNoneExists);
         }
         Script script = this.scriptDao.findByName(param.getScriptName());
         Task task = new Task();
@@ -47,7 +48,7 @@ public class TaskService {
         BeanUtils.copyProperties(script,task);
         //入库
         this.taskDao.save(task);
-        return ResultState.Success;
+        return ResultContent.buildContent(this.taskDao.save(task).getId());
     }
 
 
@@ -56,8 +57,8 @@ public class TaskService {
      * @param param
      * @return
      */
-    public ResultState update(TaskParam param){
-        return taskDao.update(param)?ResultState.Success:ResultState.Fail;
+    public ResultContent<ResultState> update(TaskParam param){
+        return taskDao.update(param)?ResultContent.buildContent(ResultState.Success):ResultContent.buildContent(ResultState.Fail);
     }
 
     /**
@@ -78,8 +79,8 @@ public class TaskService {
      * @param id
      * @return
      */
-    public Boolean del(String id){
-        return taskDao.del(id);
+    public ResultContent<ResultState> del(String id){
+        return taskDao.del(id)?ResultContent.buildContent(ResultState.Success):ResultContent.buildContent(ResultState.Fail);
     }
 
 
