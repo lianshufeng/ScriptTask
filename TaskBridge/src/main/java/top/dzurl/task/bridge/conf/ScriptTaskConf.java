@@ -82,6 +82,25 @@ public class ScriptTaskConf {
 
 
         /**
+         * 获取android的命令行工具
+         *
+         * @return
+         */
+        public File getAndroidCommandLineToolHome() {
+            return getHome("/android-cmdline-tools");
+        }
+
+        /**
+         * 取出AndroidSdk路径
+         * @return
+         */
+        public File getAndroidSdkHome() {
+            return getHome("/android-sdk");
+        }
+
+
+
+        /**
          * 取出adb所在的路径
          *
          * @return

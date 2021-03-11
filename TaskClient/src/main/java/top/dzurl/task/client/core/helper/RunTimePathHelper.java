@@ -27,6 +27,7 @@ public class RunTimePathHelper {
         mkdirs(runTime.getNodeHome(), "NodeJs", "http://nodejs.cn/download/");
         mkdirs(runTime.getSimulator(), "雷电模拟器", "https://www.ldmnq.com/");
         setupAppiumHome(runTime);
+        setupAndroidSdkHome(runTime);
 
 
     }
@@ -45,6 +46,12 @@ public class RunTimePathHelper {
     }
 
 
+    private void setupAndroidSdkHome(ScriptTaskConf.RunTime runTime) {
+        mkdirs(runTime.getAndroidCommandLineToolHome(), "Android命令行工具", "https://developer.android.com/studio#Command_line_tools_only");
+        mkdirs(runTime.getAndroidSdkHome(), "Android的SDK", "https://developer.android.com/studio#Command_line_tools_only");
+
+    }
+
     @SneakyThrows
     private void setupAppiumHome(ScriptTaskConf.RunTime runTime) {
         mkdirs(runTime.getAppiumHome(), "Appium", "https://appium.io/");
@@ -62,3 +69,4 @@ public class RunTimePathHelper {
 
 
 }
+
