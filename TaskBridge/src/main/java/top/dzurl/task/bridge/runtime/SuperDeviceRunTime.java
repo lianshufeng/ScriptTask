@@ -1,4 +1,4 @@
-package top.dzurl.task.client.core.runtime;
+package top.dzurl.task.bridge.runtime;
 
 import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.ScriptRuntime;

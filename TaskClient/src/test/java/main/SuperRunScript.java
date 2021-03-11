@@ -6,10 +6,10 @@ import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ConfigurableApplicationContext;
+import top.dzurl.task.bridge.model.ScriptRunTimeModel;
 import top.dzurl.task.bridge.script.Environment;
-import top.dzurl.task.bridge.script.SuperScript;
+import top.dzurl.task.bridge.service.ScriptService;
 import top.dzurl.task.client.ClientApplication;
-import top.dzurl.task.client.core.factory.ScriptFactory;
 
 import java.io.File;
 import java.util.Map;
@@ -50,11 +50,8 @@ public abstract class SuperRunScript {
     public <T> T runScript(File file, final Environment environment, final Map<String, Object> parameters) {
         String scriptBody = FileUtils.readFileToString(file, "UTF-8");
         //脚本工厂
-        ScriptFactory scriptFactory = applicationContext.getBean(ScriptFactory.class);
-        //转换脚本
-        SuperScript script = scriptFactory.parse(scriptBody, environment, parameters);
-        //执行脚本
-        return (T) scriptFactory.run(script);
+        return applicationContext.getBean(ScriptService.class).runScriptByCode(scriptBody, new ScriptRunTimeModel());
+
     }
 
 

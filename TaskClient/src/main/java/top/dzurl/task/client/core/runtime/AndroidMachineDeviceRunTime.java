@@ -1,4 +1,4 @@
-package top.dzurl.task.client.core.runtime.impl;
+package top.dzurl.task.client.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.ScriptRuntime;
 import top.dzurl.task.client.core.conf.ScriptTaskConf;
 import top.dzurl.task.client.core.factory.AppiumFactory;
-import top.dzurl.task.client.core.runtime.SuperDeviceRunTime;
+import top.dzurl.task.bridge.runtime.SuperDeviceRunTime;
 
 import java.io.File;
 import java.util.Map;

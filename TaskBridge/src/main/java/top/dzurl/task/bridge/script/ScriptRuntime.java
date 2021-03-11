@@ -4,31 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import top.dzurl.task.bridge.model.ScriptRunTimeModel;
 
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * 脚本运行环境
  */
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScriptRuntime {
-    //环境
-    private Environment environment;
-
-    //参数
-    private Map<String, Object> parameters;
+public class ScriptRuntime extends ScriptRunTimeModel {
 
     //驱动
     private Object driver;
 
-    //任务id
-    private String jobId;
-
     //线程池
     protected ScheduledExecutorService threadPool;
+
+    //当前脚本
+    protected SuperScript _script;
 
 }

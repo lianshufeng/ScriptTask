@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 public class ScriptAsync {
 
-    //脚本
-    protected SuperScript script;
+    //当前脚本
+    protected SuperScript _script;
 
     //调度器线程池
     private ScheduledExecutorService threadPool;
@@ -38,7 +38,7 @@ public class ScriptAsync {
      */
     @Autowired
     private void init(ApplicationContext applicationContext) {
-        threadPool = script.getRuntime().getThreadPool();
+        threadPool = _script.getRuntime().getThreadPool();
         countDownLatch = new CountDownLatch(1);
     }
 

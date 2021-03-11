@@ -1,16 +1,13 @@
-package top.dzurl.task.client.core.factory;
+package top.dzurl.task.bridge.script;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.dzurl.task.bridge.helper.ScriptHelper;
 import top.dzurl.task.bridge.helper.SpringBeanHelper;
-import top.dzurl.task.bridge.script.Environment;
-import top.dzurl.task.bridge.script.ScriptAsync;
-import top.dzurl.task.bridge.script.ScriptRuntime;
-import top.dzurl.task.bridge.script.SuperScript;
+import top.dzurl.task.bridge.model.ScriptRunTimeModel;
+import top.dzurl.task.bridge.runtime.DeviceRunTimeManager;
 import top.dzurl.task.bridge.util.BeanUtil;
-import top.dzurl.task.client.core.runtime.DeviceRunTimeManager;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -34,14 +31,17 @@ public class ScriptFactory {
     /**
      * 转换脚本文本为脚本对象，并注入各种环境
      */
-    public SuperScript parse(String scriptContent, final Environment environment, final Map<String, Object> parameters) {
+    public SuperScript parse(String scriptContent, final ScriptRunTimeModel runTimeModel) {
         SuperScript script = this.scriptHelper.parse(scriptContent);
 
         //运行环境
-        runTime(script, environment, parameters);
+        runTime(script, runTimeModel);
 
         //异步功能
         async(script);
+
+        //日志功能
+        log(script);
 
         //注入spring容器的依赖对象
         this.springBeanHelper.injection(script);
@@ -68,13 +68,15 @@ public class ScriptFactory {
      *
      * @param script
      */
-    private void runTime(SuperScript script, final Environment environment, final Map<String, Object> parameters) {
+    private void runTime(SuperScript script, final ScriptRunTimeModel runTimeModel) {
         //运行环境
-        final ScriptRuntime scriptRuntime = new ScriptRuntime();
-        script.setRuntime(scriptRuntime);
+        final ScriptRuntime scriptRuntime = ScriptRuntime.builder()._script(script).build();
+        script.runtime = scriptRuntime;
+        BeanUtils.copyProperties(runTimeModel, scriptRuntime, "parameters", "environment");
+
 
         //合并运行的脚本环境
-        final Environment runTimeEnvironment = mergeEnvironment(script.environment(), environment);
+        final Environment runTimeEnvironment = mergeEnvironment(script.environment(), runTimeModel.getEnvironment());
         scriptRuntime.setEnvironment(runTimeEnvironment);
 
         //合并运行的脚本参数
@@ -82,7 +84,7 @@ public class ScriptFactory {
         script.parameters().entrySet().forEach((it) -> {
             scriptParameters.put(it.getKey(), it.getValue().getValue());
         });
-        final Map<String, Object> runTimeParameters = mergeParameter(scriptParameters, parameters);
+        final Map<String, Object> runTimeParameters = mergeParameter(scriptParameters, runTimeModel.getParameters());
         scriptRuntime.setParameters(runTimeParameters);
 
         //线程池
@@ -93,13 +95,23 @@ public class ScriptFactory {
 
 
     /**
+     * 设置日志功能
+     *
+     * @param script
+     */
+    private void log(SuperScript script) {
+        script.log = ScriptLog.builder()._script(script).build();
+        springBeanHelper.injection(script.log);
+    }
+
+    /**
      * 设置异步功能
      *
      * @param script
      */
     private void async(SuperScript script) {
-        script.setAsync(ScriptAsync.builder().script(script).build());
-        this.springBeanHelper.injection(script.getAsync());
+        script.async = ScriptAsync.builder()._script(script).build();
+        this.springBeanHelper.injection(script.async);
     }
 
 

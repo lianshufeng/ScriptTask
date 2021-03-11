@@ -1,6 +1,8 @@
 package top.dzurl.task.bridge.script;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import top.dzurl.task.bridge.service.LogService;
@@ -9,20 +11,17 @@ import top.dzurl.task.bridge.util.JsonUtil;
 import java.util.HashMap;
 
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScriptLog {
     //log
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(SuperScript.class);
 
     //当前脚本
-    private SuperScript script;
+    protected SuperScript _script;
 
     @Autowired
     private LogService logService;
-
-
-    protected void setScript(SuperScript script) {
-        this.script = script;
-    }
 
 
     public void debug(String msg) {
@@ -70,7 +69,7 @@ public class ScriptLog {
      * @param msg
      */
     private void postLog(String level, String msg) {
-        String jobId = this.script.getRuntime().getJobId();
+        String jobId = this._script.getRuntime().getJobId();
         logService.info(jobId == null ? "" : jobId, JsonUtil.toJson(new HashMap<String, Object>() {{
             put("level", level);
             put("msg", msg);

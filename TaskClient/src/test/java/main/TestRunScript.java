@@ -1,4 +1,4 @@
-package main.test;
+package main;
 
 import main.SuperRunScript;
 import org.junit.Test;
@@ -24,4 +24,13 @@ public class TestRunScript extends SuperRunScript {
         Object ret = runScript("script/demo/WebDeviceScript.groovy");
         System.out.println("ret : " + ret);
     }
+
+
+    @Test
+    public void androidSimulatorDeviceScript() {
+        Object ret = runScript("script/demo/AndroidSimulatorDeviceScript.groovy");
+        System.out.println("ret : " + ret);
+    }
+
+
 }
