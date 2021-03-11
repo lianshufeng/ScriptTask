@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import top.dzurl.task.server.other.mongo.domain.SuperEntity;
 
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -20,6 +21,7 @@ public class JobRunLog extends SuperEntity {
     private String scriptName;
 
     //jobId
+    @Indexed
     private String jobId;
 
     //设备ID
@@ -30,4 +32,9 @@ public class JobRunLog extends SuperEntity {
 
     //执行日志
     private List<String> logs;
+
+
+    @Indexed(expireAfterSeconds = 0)
+    private Date ttl;
+
 }

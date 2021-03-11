@@ -16,7 +16,7 @@ public interface JobRunLogDaoExtend {
      * @param jobId
      * @param info
      */
-    boolean appendInfo(String jobId, List<String> info);
+    boolean appendLogs(String jobId, List<String> info);
 
 
 }

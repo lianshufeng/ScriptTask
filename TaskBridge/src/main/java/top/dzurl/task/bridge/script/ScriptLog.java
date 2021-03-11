@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import top.dzurl.task.bridge.service.LogService;
 import top.dzurl.task.bridge.util.JsonUtil;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 @Builder
@@ -72,7 +71,7 @@ public class ScriptLog {
      */
     private void postLog(String level, String msg) {
         String jobId = this.script.getRuntime().getJobId();
-        logService.info(jobId, JsonUtil.toJson(new HashMap<String, Object>() {{
+        logService.info(jobId == null ? "" : jobId, JsonUtil.toJson(new HashMap<String, Object>() {{
             put("level", level);
             put("msg", msg);
         }}));
