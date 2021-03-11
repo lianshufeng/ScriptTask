@@ -1,2 +1,8 @@
 server:
   port: 0
+
+
+
+logging:
+  file:
+    name: logs/TaskServer.log

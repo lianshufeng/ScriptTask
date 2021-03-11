@@ -25,6 +25,9 @@ public class ScriptRuntime {
     //驱动
     private Object driver;
 
+    //任务id
+    private String jobId;
+
     //线程池
     protected ScheduledExecutorService threadPool;
 

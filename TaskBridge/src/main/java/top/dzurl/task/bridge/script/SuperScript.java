@@ -4,7 +4,9 @@ import groovy.lang.Script;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import top.dzurl.task.bridge.helper.ScriptEventHelper;
+import top.dzurl.task.bridge.helper.SpringBeanHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 public abstract class SuperScript extends Script {
 
-    protected static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SuperScript.class);
+    protected ScriptLog log;
 
 
     @Getter
@@ -34,6 +36,13 @@ public abstract class SuperScript extends Script {
     //创建脚本的时间
     @Getter
     private long createTime = System.currentTimeMillis();
+
+
+    @Autowired
+    private void initLog(SpringBeanHelper springBeanHelper) {
+        this.log = ScriptLog.builder().script(this).build();
+        springBeanHelper.injection(this.log);
+    }
 
 
     /**
