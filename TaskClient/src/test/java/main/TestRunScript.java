@@ -1,6 +1,5 @@
 package main;
 
-import main.SuperRunScript;
 import org.junit.Test;
 
 public class TestRunScript extends SuperRunScript {

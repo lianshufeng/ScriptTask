@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.ScriptRuntime;
-import top.dzurl.task.client.core.conf.ScriptTaskConf;
+import top.dzurl.task.bridge.conf.ScriptTaskConf;
 import top.dzurl.task.client.core.factory.AppiumFactory;
 import top.dzurl.task.bridge.runtime.SuperDeviceRunTime;
 

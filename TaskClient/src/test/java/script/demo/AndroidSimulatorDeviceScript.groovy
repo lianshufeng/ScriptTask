@@ -32,17 +32,17 @@ class AndroidSimulatorDeviceScript extends SuperScript {
     ScriptEvent event() {
         return [
                 'onCreate'   : {
-                    log.info('event : {}', 'create')
+                    println ('event : '+ 'create')
                 },
                 'onClose'    : {
-                    log.info('event : {}', 'close')
+                    println ('event : '+ 'close')
                 },
                 'onRun'      : {
-                    log.info('event : {}', 'run')
+                    println ('event : '+ 'run')
                 },
                 'onException': {
                     it ->
-                        log.info('event : {} -> ', 'exception', it)
+                        System.err.println('event : {} -> '+ 'exception '+ it)
                 }
         ] as ScriptEvent
     }

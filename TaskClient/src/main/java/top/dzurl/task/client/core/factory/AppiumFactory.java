@@ -9,7 +9,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import top.dzurl.task.client.core.conf.ScriptTaskConf;
+import top.dzurl.task.bridge.conf.ScriptTaskConf;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;

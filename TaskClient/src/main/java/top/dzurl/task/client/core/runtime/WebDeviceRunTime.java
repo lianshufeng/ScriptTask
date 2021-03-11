@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import top.dzurl.task.bridge.device.impl.WebDevice;
 import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.ScriptRuntime;
-import top.dzurl.task.client.core.conf.ScriptTaskConf;
+import top.dzurl.task.bridge.conf.ScriptTaskConf;
 import top.dzurl.task.bridge.runtime.SuperDeviceRunTime;
 
 import java.io.File;

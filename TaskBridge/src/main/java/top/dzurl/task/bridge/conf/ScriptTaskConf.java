@@ -1,4 +1,4 @@
-package top.dzurl.task.client.core.conf;
+package top.dzurl.task.bridge.conf;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +17,9 @@ import java.io.File;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "script.task")
 public class ScriptTaskConf {
+
+    //主机地址
+    private String host = "http://localhost:8080/";
 
     //最大并发任务的数量
     private int maxRunTaskCount = 5;

@@ -1,6 +1,5 @@
 package top.dzurl.task.bridge.service;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import top.dzurl.task.bridge.conf.ScriptConf;
+import top.dzurl.task.bridge.conf.ScriptTaskConf;
 import top.dzurl.task.bridge.util.BeanUtil;
 import top.dzurl.task.bridge.util.JsonUtil;
 
@@ -18,7 +17,7 @@ public abstract class SuperService {
 
     //地址
     @Autowired
-    private ScriptConf scriptConf;
+    private ScriptTaskConf scriptTaskConf;
 
     //请求地址
     private RestTemplate restTemplate = new RestTemplate();
@@ -66,7 +65,7 @@ public abstract class SuperService {
     }
 
     private String url(String uri) {
-        return this.scriptConf.getHost() + "/" + uri;
+        return this.scriptTaskConf.getHost() + "/" + uri;
     }
 
 
