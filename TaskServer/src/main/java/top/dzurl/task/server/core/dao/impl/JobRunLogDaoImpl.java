@@ -1,7 +1,6 @@
 package top.dzurl.task.server.core.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -32,17 +31,14 @@ public class JobRunLogDaoImpl implements JobRunLogDaoExtend {
 
     @Override
     public boolean appendLogs(String jobId, List<String> info) {
-        BulkOperations bulkOperations = this.mongoTemplate.bulkOps(BulkOperations.BulkMode.ORDERED, JobRunLog.class);
-        info.forEach((i) -> {
-            Query query = Query.query(Criteria.where("jobId").is(jobId));
-            Update update = new Update();
-            update.setOnInsert("jobId", jobId);
-            update.setOnInsert("ttl", ttlDate());
-            update.addToSet("logs", i);
-            this.dbHelper.saveTime(update);
-            bulkOperations.upsert(query, update);
-        });
-        return bulkOperations.execute().getModifiedCount() > 0;
+        Query query = Query.query(Criteria.where("jobId").is(jobId));
+        Update update = new Update();
+        update.setOnInsert("jobId", jobId);
+        update.setOnInsert("ttl", ttlDate());
+        update.push("logs").each(info.toArray());
+        this.dbHelper.saveTime(update);
+        return this.mongoTemplate.upsert(query, update, JobRunLog.class).getModifiedCount() > 0;
+
     }
 
     /**
