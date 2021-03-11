@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.Environment;
 import top.dzurl.task.bridge.script.Parameter;
 import top.dzurl.task.server.other.mongo.domain.SuperEntity;
 import top.dzurl.task.server.other.timer.domain.SimpleTaskTimerTable;
 
+import java.util.List;
 import java.util.Map;
 
 @Document
@@ -32,6 +34,9 @@ public class Task extends SimpleTaskTimerTable {
     //绑定的设备标识
     @Indexed
     private String deviceId;
+
+    //执行设备
+    private DeviceType deviceType;
 
 
 }

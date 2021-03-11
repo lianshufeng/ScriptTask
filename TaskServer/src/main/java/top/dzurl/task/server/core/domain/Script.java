@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.Environment;
 import top.dzurl.task.bridge.script.Parameter;
 import top.dzurl.task.server.other.mongo.domain.SuperEntity;
 
+import java.util.List;
 import java.util.Map;
 
 @Document
@@ -36,6 +38,9 @@ public class Script extends SuperEntity {
 
     //脚本内容
     private byte[] body;
+
+    //执行设备
+    private DeviceType deviceType;
 
 
 }

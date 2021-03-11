@@ -51,6 +51,9 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
         //备注
         entity.setRemark(script.remark());
 
+        //设备
+        entity.setDeviceType(script.environment().getDevice().getType());
+
         //参数
         Optional.ofNullable(script.parameters()).ifPresent((it) -> {
             entity.setParameters(it);

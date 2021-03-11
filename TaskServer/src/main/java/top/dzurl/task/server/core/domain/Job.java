@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import top.dzurl.task.bridge.device.type.DeviceType;
 import top.dzurl.task.bridge.script.Environment;
 import top.dzurl.task.server.other.mongo.domain.SuperEntity;
 
@@ -37,7 +38,8 @@ public class Job extends SuperEntity {
     @DBRef(lazy = true)
     private Task task;
 
-
+    //执行设备
+    private DeviceType deviceType;
 
 
 }

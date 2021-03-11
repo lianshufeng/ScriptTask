@@ -3,6 +3,7 @@ package top.dzurl.task.bridge.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import top.dzurl.task.bridge.model.param.JobLogParam;
 import top.dzurl.task.bridge.model.param.JobParam;
 
 import java.util.*;
@@ -60,7 +61,7 @@ public class LogService extends SuperService {
         Map<String, List<String>> items = new HashMap<>(this.jobInfos);
         this.jobInfos.clear();
         items.entrySet().parallelStream().forEach((it) -> {
-            JobParam jobParam = new JobParam();
+            JobLogParam jobParam = new JobLogParam();
             jobParam.setJobId(it.getKey());
             jobParam.setLogs(it.getValue());
             postJson("job/writeLog", jobParam, Object.class);

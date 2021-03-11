@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.dzurl.task.bridge.model.param.JobLogParam;
 import top.dzurl.task.bridge.model.param.JobParam;
 import top.dzurl.task.server.core.service.JobService;
 
@@ -15,12 +16,12 @@ public class JobController {
     private JobService jobService;
 
     @RequestMapping("get")
-    public Object get(String deviceId){
-        return jobService.get(deviceId);
+    public Object get(@RequestBody JobParam param){
+        return jobService.get(param);
     }
 
     @RequestMapping("writeLog")
-    public Object writeLog(@RequestBody JobParam param){
+    public Object writeLog(@RequestBody JobLogParam param){
         return jobService.writeLog(param);
     }
 }
