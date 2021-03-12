@@ -31,4 +31,7 @@ public class ScriptRunTimeModel {
     //任务id
     private String taskId;
 
+    //设备id
+    private String deviceId;
+
 }

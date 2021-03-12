@@ -9,12 +9,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import top.dzurl.task.bridge.conf.ScriptTaskConf;
 import top.dzurl.task.bridge.util.JsonUtil;
+import top.dzurl.task.bridge.util.SystemUtil;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -48,6 +52,21 @@ public class RunTimePathHelper {
         //android-tools sdk
         setupAndroidSdkHome(runTime);
 
+
+        //设置到系统的环境变量
+        setSystemEnv(runTime);
+
+    }
+
+
+    /**
+     * 设置系统环境变量
+     */
+    private void setSystemEnv(ScriptTaskConf.RunTime runTime) {
+        //设置android_home的环境变量
+        SystemUtil.setEnv(new HashMap<String, String>() {{
+            put("ANDROID_HOME", runTime.getAndroidSdkHome().getAbsolutePath());
+        }});
     }
 
 

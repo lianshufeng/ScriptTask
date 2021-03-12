@@ -1,5 +1,6 @@
-package script.demo
+package script
 
+import io.appium.java_client.android.AndroidDriver
 import org.openqa.selenium.By
 import org.openqa.selenium.chrome.ChromeDriver
 import top.dzurl.task.bridge.device.impl.AndroidSimulatorDevice
@@ -49,7 +50,7 @@ class AndroidSimulatorDeviceScript extends SuperScript {
 
     @Override
     Object run() {
-
+        AndroidDriver driver = runtime.getDriver();
 
         return [
                 'time': System.currentTimeMillis(),

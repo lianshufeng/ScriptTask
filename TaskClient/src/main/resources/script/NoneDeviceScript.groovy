@@ -1,4 +1,4 @@
-package script.demo
+package script
 
 import org.jsoup.Jsoup
 import top.dzurl.task.bridge.device.impl.NoDevice

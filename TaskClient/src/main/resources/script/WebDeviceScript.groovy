@@ -1,4 +1,4 @@
-package script.demo
+package script
 
 
 import org.openqa.selenium.By
@@ -25,7 +25,7 @@ class WebDeviceScript extends SuperScript {
     Environment environment() {
         return [
                 'device': [
-                        'headless': true //无头模式
+                        'headless': false //无头模式
                 ] as WebDevice
         ] as Environment
     }
