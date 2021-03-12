@@ -3,7 +3,6 @@ package script.demo
 import org.jsoup.Jsoup
 import top.dzurl.task.bridge.device.impl.NoDevice
 import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.ScriptEvent
 import top.dzurl.task.bridge.script.SuperScript
 
 class NoneDeviceScript extends SuperScript {
@@ -26,24 +25,6 @@ class NoneDeviceScript extends SuperScript {
         ] as Environment
     }
 
-    @Override
-    ScriptEvent event() {
-        return [
-                'onCreate'   : {
-                    log.info('event : {}', 'create')
-                },
-                'onClose'    : {
-                    log.info('event : {}', 'close')
-                },
-                'onRun'      : {
-                    log.info('event : {}', 'run')
-                },
-                'onException': {
-                    it ->
-                        log.info('event : {} -> ', 'exception', it)
-                }
-        ] as ScriptEvent
-    }
 
     @Override
     Object run() {

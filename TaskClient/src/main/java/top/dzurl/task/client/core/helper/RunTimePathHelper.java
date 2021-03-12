@@ -11,6 +11,9 @@ import top.dzurl.task.bridge.conf.ScriptTaskConf;
 import top.dzurl.task.bridge.util.JsonUtil;
 
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 @Component
@@ -28,22 +31,23 @@ public class RunTimePathHelper {
         makeEnvCmd(runTime);
 
         //chrome
-        mkdirs(runTime.getChromeHome(), "Chrome浏览器", "https://www.google.cn/chrome/");
+        mkdirs(runTime.getChromeHome(), "chrome浏览器", "https://www.google.cn/chrome/");
 
         //node
-        mkdirs(runTime.getNodeHome(), "NodeJs", "http://nodejs.cn/download/");
+        mkdirs(runTime.getNodeHome(), "nodejs", "http://nodejs.cn/download/");
 
         //jdk
-        mkdirs(runTime.getJdkHome(), "Jdk", "https://www.oracle.com/java/technologies/javase-jdk11-downloads.html");
+        mkdirs(runTime.getJdkHome(), "JavaSdk", "https://www.oracle.com/java/technologies/javase-jdk11-downloads.html");
 
         //simulator
-        mkdirs(runTime.getSimulator(), "雷电模拟器", "https://www.ldmnq.com/");
+        mkdirs(runTime.getSimulator(), "雷电模拟器4", "https://www.ldmnq.com");
 
         //appium
         setupAppiumHome(runTime);
 
         //android-tools sdk
         setupAndroidSdkHome(runTime);
+
     }
 
 
@@ -54,7 +58,7 @@ public class RunTimePathHelper {
      * @param title
      */
     private static void mkdirs(File file, String title, String remark) {
-        log.info("[{}] -> {}", title, remark);
+        log.info("[{}] - [{}] -> {}", file.getName(), title, remark);
         if (!file.exists()) {
             file.mkdirs();
         }
@@ -93,13 +97,50 @@ public class RunTimePathHelper {
     }
 
 
+    /**
+     * 更改模拟器的adb为android-sdk的adb.exe
+     */
+    @SneakyThrows
+    private void updateSimulatorAdbFile(ScriptTaskConf.RunTime runTime) {
+        //取android_sdk的adb路径
+        File abdFile = new File(runTime.getADBHome().getAbsolutePath() + "/adb.exe");
+        Path adbPath = FileSystems.getDefault().getPath(abdFile.getAbsolutePath());
+        if (!abdFile.exists()) {
+            abdFile = new File(runTime.getADBHome().getAbsolutePath() + "/adb");
+        }
+        if (!abdFile.exists()) {
+            return;
+        }
+
+        //模拟器里的adb.exe
+        File simulatorAdbFile = new File(runTime.getSimulator().getAbsolutePath() + "/adb.exe");
+        Path simulatorAdbPath = FileSystems.getDefault().getPath(simulatorAdbFile.getAbsolutePath());
+
+        //创建软连接
+        if (!simulatorAdbFile.exists()) {
+            //软连接
+            Files.createSymbolicLink(simulatorAdbPath, adbPath);
+        } else if (simulatorAdbFile.exists() && !Files.isSymbolicLink(simulatorAdbPath)) {
+            simulatorAdbFile.delete();
+            //软连接
+            Files.createSymbolicLink(simulatorAdbPath, adbPath);
+        }
+
+    }
+
+
+    /**
+     * 安装android的SDK运行环境
+     *
+     * @param runTime
+     */
     private void setupAndroidSdkHome(ScriptTaskConf.RunTime runTime) {
+        //android_commandline_tool
         mkdirs(runTime.getAndroidCommandLineToolHome(), "Android命令行工具", "https://developer.android.com/studio#Command_line_tools_only");
 
-
         //android sdk
-        mkdirs(runTime.getAndroidSdkHome(), "Android的SDK", "updateAndroidSdk.cmd");
-        File android_sdk_install_bat = new File(runTime.getAndroidSdkHome().getAbsolutePath() + "/install.bat");
+        mkdirs(runTime.getAndroidSdkHome(), "Android的sdk", "install_android_sdk.bat");
+        File android_sdk_install_bat = new File(runTime.getAndroidSdkHome().getAbsolutePath() + "/install_android_sdk.bat");
         if (!android_sdk_install_bat.exists()) {
             String[] install_sdk_cmds = new String[]{
                     "@echo off",
@@ -111,6 +152,9 @@ public class RunTimePathHelper {
             };
             writeFile(android_sdk_install_bat, install_sdk_cmds);
         }
+
+        //更新模拟器的adb.exe
+        updateSimulatorAdbFile(runTime);
 
     }
 
