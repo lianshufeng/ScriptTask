@@ -1,5 +1,6 @@
 package top.dzurl.task.bridge.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import top.dzurl.task.bridge.model.param.JobParam;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 public class LogService extends SuperService {
 
@@ -61,10 +63,14 @@ public class LogService extends SuperService {
         Map<String, List<String>> items = new HashMap<>(this.jobInfos);
         this.jobInfos.clear();
         items.entrySet().parallelStream().forEach((it) -> {
-            JobLogParam jobParam = new JobLogParam();
-            jobParam.setJobId(it.getKey());
-            jobParam.setLogs(it.getValue());
-            postJson("job/writeLog", jobParam, Object.class);
+            try {
+                JobLogParam jobParam = new JobLogParam();
+                jobParam.setJobId(it.getKey());
+                jobParam.setLogs(it.getValue());
+                postJson("job/writeLog", jobParam, Object.class);
+            } catch (Exception e) {
+                log.error("exception : {}", e.getMessage());
+            }
         });
     }
 

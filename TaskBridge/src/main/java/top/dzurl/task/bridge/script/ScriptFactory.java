@@ -64,6 +64,32 @@ public class ScriptFactory {
 
 
     /**
+     * 释放脚本
+     *
+     * @param script
+     */
+    public void release(SuperScript script) {
+        shutdownThreadPool(script);
+    }
+
+    /**
+     * 关闭线程池
+     */
+    private void shutdownThreadPool(SuperScript script) {
+        try {
+            Optional.ofNullable(script.getRuntime()).ifPresent((it) -> {
+                //关闭线程池
+                if (it.getThreadPool() != null) {
+                    it.getThreadPool().shutdownNow();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * 设置脚本的运行环境
      *
      * @param script

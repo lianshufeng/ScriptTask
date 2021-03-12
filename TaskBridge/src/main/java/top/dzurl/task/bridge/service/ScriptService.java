@@ -13,11 +13,11 @@ public class ScriptService extends SuperService {
     private ScriptFactory scriptFactory;
 
     /**
-     * 将指定的脚本在本地执行
+     * 执行脚本
      *
      * @return
      */
-    public Object runScriptOnLocal(String scriptName) {
+    public Object runScript(String scriptName) {
         return null;
     }
 
@@ -26,11 +26,15 @@ public class ScriptService extends SuperService {
      *
      * @return
      */
-    public <T> T runScriptByCode(final String code, final ScriptRunTimeModel runTimeModel) {
+    public <T> T executeScript(final String code, final ScriptRunTimeModel runTimeModel) {
         //转换脚本
-        SuperScript script = scriptFactory.parse(code, runTimeModel);
+        SuperScript script = this.scriptFactory.parse(code, runTimeModel);
         //执行脚本
-        return (T) scriptFactory.run(script);
+        Object ret = this.scriptFactory.run(script);
+        //释放脚本
+        this.scriptFactory.release(script);
+
+        return ret == null ? null : (T) ret;
     }
 
 

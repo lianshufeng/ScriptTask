@@ -50,7 +50,7 @@ public abstract class SuperRunScript {
     public <T> T runScript(File file, final Environment environment, final Map<String, Object> parameters) {
         String scriptBody = FileUtils.readFileToString(file, "UTF-8");
         //脚本工厂
-        return applicationContext.getBean(ScriptService.class).runScriptByCode(scriptBody, new ScriptRunTimeModel());
+        return applicationContext.getBean(ScriptService.class).executeScript(scriptBody, new ScriptRunTimeModel());
 
     }
 
