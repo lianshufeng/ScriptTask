@@ -55,7 +55,17 @@ public class ScriptTaskConf {
 
 
         /**
+         * 获取JDK的路径
+         *
+         * @return
+         */
+        public File getJdkHome() {
+            return getHome("jdk");
+        }
+
+        /**
          * 取Chrome的路径
+         *
          * @return
          */
         public File getChromeHome() {
@@ -92,12 +102,12 @@ public class ScriptTaskConf {
 
         /**
          * 取出AndroidSdk路径
+         *
          * @return
          */
         public File getAndroidSdkHome() {
             return getHome("/android-sdk");
         }
-
 
 
         /**
