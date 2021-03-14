@@ -40,9 +40,6 @@ public class RunTimePathHelper {
         //node
         mkdirs(runTime.getNodeHome(), "nodejs", "http://nodejs.cn/download/");
 
-        //jdk
-        mkdirs(runTime.getJdkHome(), "JavaSdk", "https://www.oracle.com/java/technologies/javase-jdk11-downloads.html");
-
         //simulator
         mkdirs(runTime.getSimulator(), "雷电模拟器4", "https://www.ldmnq.com");
 
@@ -51,7 +48,6 @@ public class RunTimePathHelper {
 
         //android-tools sdk
         setupAndroidSdkHome(runTime);
-
 
         //设置到系统的环境变量
         setSystemEnv(runTime);
@@ -104,10 +100,10 @@ public class RunTimePathHelper {
         if (!file.exists()) {
             String[] cmds = new String[]{
                     "@echo off",
-                    "set JAVA_HOME=%~dp0jdk",
+//                    "set JAVA_HOME=%~dp0jdk",
                     "set ANDROID_HOME=%~dp0android-sdk",
                     "set NODE_HOME=%~dp0node",
-                    "set Path=%JAVA_HOME%\\bin;%Path%",
+//                    "set Path=%JAVA_HOME%\\bin;%Path%",
                     "set Path=%ANDROID_HOME%\\platform-tools;%Path%",
                     "set Path=%NODE_HOME%;%Path%"
             };
