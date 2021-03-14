@@ -56,13 +56,10 @@ public class AndroidSimulatorDeviceRunTime extends SuperDeviceRunTime {
     //雷电模拟器的目录
     private File leiDianHome = null;
 
+
     @Autowired
     private void init(ApplicationContext applicationContext) {
         leiDianHome = scriptTaskConf.getRunTime().getSimulator();
-    }
-
-    @Autowired
-    private void initAdb(ApplicationContext applicationContext) {
         ADBUtil.restartADB(this.scriptTaskConf.getRunTime().getADBHome());
     }
 
@@ -207,6 +204,7 @@ public class AndroidSimulatorDeviceRunTime extends SuperDeviceRunTime {
      *
      * @return
      */
+    //todo 需要调整，不管当前是否已经运行的模拟器，内存中的除外)
     private String findSimulatorFromDisk(final ScriptRuntime runtime) {
         final Environment environment = runtime.getEnvironment();
 
