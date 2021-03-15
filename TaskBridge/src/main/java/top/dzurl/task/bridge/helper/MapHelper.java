@@ -13,7 +13,7 @@ import top.dzurl.task.bridge.util.LngLonUtil;
 
 import java.util.Map;
 
-//@Component
+@Component
 public class MapHelper {
 
     @Autowired
@@ -101,7 +101,7 @@ public class MapHelper {
     @Component
     @NoArgsConstructor
     @AllArgsConstructor
-    @ConfigurationProperties(prefix = "app.map")
+    @ConfigurationProperties(prefix = "baidu.map")
     public static class MapConf {
 
         //应用key

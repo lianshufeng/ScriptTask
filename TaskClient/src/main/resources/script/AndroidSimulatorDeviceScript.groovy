@@ -7,6 +7,7 @@ import top.dzurl.task.bridge.device.impl.AndroidSimulatorDevice
 import top.dzurl.task.bridge.script.Environment
 import top.dzurl.task.bridge.script.ScriptEvent
 import top.dzurl.task.bridge.script.SuperScript
+import top.dzurl.task.bridge.script.action.AndroidAction
 
 class AndroidSimulatorDeviceScript extends SuperScript {
 
@@ -50,7 +51,7 @@ class AndroidSimulatorDeviceScript extends SuperScript {
 
     @Override
     Object run() {
-        AndroidDriver driver = runtime.getDriver();
+        AndroidDriver driver = runtime.getDriver()
 
         return [
                 'time': System.currentTimeMillis(),

@@ -5,3 +5,8 @@ script:
   task:
     runTime:
       home: ../runtime
+
+
+baidu:
+  map:
+    ak: fM8NAbY4zKML7dgMgWKDkOcmb0Dql6GU,x98fEy21xWYzsdA4FpDfMu81saHXe2O8
