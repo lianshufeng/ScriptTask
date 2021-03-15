@@ -18,9 +18,6 @@ public class JobModel extends ScriptRunTimeModel {
     //脚本名
     private String scriptName;
 
-    //绑定的设备标识
-    private String deviceId;
-
     //执行设备
     private DeviceType deviceType;
 
