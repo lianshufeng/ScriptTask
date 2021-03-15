@@ -93,18 +93,16 @@ public class LeiDianSimulatorUtil {
         if (macAddress == null) {
             return null;
         }
-        String deviceMac = String.valueOf(macAddress).trim().toLowerCase();
+        String deviceMac = String.valueOf(macAddress).trim().toUpperCase();
 
         for (String device : devices) {
             //取出当前运行设备的mac地址
-            String address = ADBUtil.getMac(home, device);
+            final String address = ADBUtil.getMac(home, device);
             if (!StringUtils.hasText(address)) {
                 continue;
             }
             //格式化mac地址
-            final String mac = address.replaceAll(":", "").toLowerCase();
-
-            if (mac.equals(deviceMac)) {
+            if (address.equals(deviceMac)) {
                 return device;
             }
 

@@ -88,6 +88,12 @@ public class ADBUtil {
         if (!StringUtils.hasText(info)) {
             info = runAdb(home, "-s", deviceName, "shell", "cat", "/sys/class/net/eth0/address");
         }
+
+        //格式化mac地址
+        if (StringUtils.hasText(info)) {
+            return info.replaceAll(":", "").trim().toUpperCase();
+        }
+
         return info;
     }
 

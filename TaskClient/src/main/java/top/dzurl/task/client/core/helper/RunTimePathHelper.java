@@ -38,7 +38,7 @@ public class RunTimePathHelper {
         mkdirs(runTime.getChromeHome(), "chrome浏览器", "https://www.google.cn/chrome/");
 
         //node
-        mkdirs(runTime.getNodeHome(), "nodejs", "http://nodejs.cn/download/");
+        mkdirs(runTime.getNodeHome(), "nodejs", "https://nodejs.org/en/download/");
 
         //simulator
         mkdirs(runTime.getSimulator(), "雷电模拟器4", "https://www.ldmnq.com");

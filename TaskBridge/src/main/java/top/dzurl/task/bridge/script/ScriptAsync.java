@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ScriptAsync {
 
     //当前脚本
-    protected SuperScript _script;
+    protected SuperScript script;
 
     //调度器线程池
     private ScheduledExecutorService threadPool;
@@ -38,7 +38,7 @@ public class ScriptAsync {
      */
     @Autowired
     private void init(ApplicationContext applicationContext) {
-        threadPool = _script.getRuntime().getThreadPool();
+        threadPool = this.script.getRuntime().getThreadPool();
         countDownLatch = new CountDownLatch(1);
     }
 

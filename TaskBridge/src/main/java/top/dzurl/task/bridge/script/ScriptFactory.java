@@ -3,11 +3,11 @@ package top.dzurl.task.bridge.script;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import top.dzurl.task.bridge.helper.ScriptHelper;
 import top.dzurl.task.bridge.helper.SpringBeanHelper;
 import top.dzurl.task.bridge.model.ScriptRunTimeModel;
 import top.dzurl.task.bridge.runtime.DeviceRunTimeManager;
 import top.dzurl.task.bridge.util.BeanUtil;
+import top.dzurl.task.bridge.util.ScriptUtil;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -18,8 +18,6 @@ import java.util.concurrent.Executors;
 @Component
 public class ScriptFactory {
 
-    @Autowired
-    private ScriptHelper scriptHelper;
 
     @Autowired
     private SpringBeanHelper springBeanHelper;
@@ -32,7 +30,7 @@ public class ScriptFactory {
      * 转换脚本文本为脚本对象，并注入各种环境
      */
     public SuperScript parse(String scriptContent, final ScriptRunTimeModel runTimeModel) {
-        SuperScript script = this.scriptHelper.parse(scriptContent);
+        SuperScript script = ScriptUtil.parse(scriptContent);
 
         //运行环境
         runTime(script, runTimeModel);
@@ -96,7 +94,7 @@ public class ScriptFactory {
      */
     private void runTime(SuperScript script, final ScriptRunTimeModel runTimeModel) {
         //运行环境
-        final ScriptRuntime scriptRuntime = ScriptRuntime.builder()._script(script).build();
+        final ScriptRuntime scriptRuntime = ScriptRuntime.builder().script(script).build();
         script.runtime = scriptRuntime;
         BeanUtils.copyProperties(runTimeModel, scriptRuntime, "parameters", "environment");
 
@@ -126,7 +124,7 @@ public class ScriptFactory {
      * @param script
      */
     private void log(SuperScript script) {
-        script.log = ScriptLog.builder()._script(script).build();
+        script.log = ScriptLog.builder().script(script).build();
         springBeanHelper.injection(script.log);
     }
 
@@ -136,7 +134,7 @@ public class ScriptFactory {
      * @param script
      */
     private void async(SuperScript script) {
-        script.async = ScriptAsync.builder()._script(script).build();
+        script.async = ScriptAsync.builder().script(script).build();
         this.springBeanHelper.injection(script.async);
     }
 

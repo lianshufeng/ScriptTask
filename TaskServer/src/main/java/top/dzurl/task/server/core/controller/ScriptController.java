@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import top.dzurl.task.bridge.helper.ScriptHelper;
 import top.dzurl.task.bridge.script.Environment;
 import top.dzurl.task.bridge.script.SuperScript;
+import top.dzurl.task.bridge.util.ScriptUtil;
 import top.dzurl.task.server.core.service.ScriptService;
 
 import java.io.InputStream;
@@ -23,9 +23,6 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("script")
 public class ScriptController {
-
-    @Autowired
-    private ScriptHelper scriptHelper;
 
     @Autowired
     private ScriptService scriptService;
@@ -40,7 +37,7 @@ public class ScriptController {
         final byte[] buffer = StreamUtils.copyToByteArray(inputStream);
 
         //转换为脚本对象
-        SuperScript script = this.scriptHelper.parse(new String(buffer, "UTF-8"));
+        SuperScript script = ScriptUtil.parse(new String(buffer, "UTF-8"));
 
         //数据校验
         validate(script);
@@ -63,26 +60,28 @@ public class ScriptController {
 
     /**
      * 删除脚本
+     *
      * @param scriptName
      * @return
      */
     @RequestMapping("del")
-    public Object del(String scriptName){
+    public Object del(String scriptName) {
         Assert.hasText(scriptName, "脚本名不能为空");
         return this.scriptService.del(scriptName);
     }
 
     /**
      * 检查脚本
+     *
      * @param scriptName
      * @param hash
      * @return
      */
     @RequestMapping("check")
-    public Object check(String scriptName,String hash){
+    public Object check(String scriptName, String hash) {
         Assert.hasText(scriptName, "脚本名不能为空");
         Assert.hasText(hash, "脚本hash不能为空");
-        return this.scriptService.check(scriptName,hash);
+        return this.scriptService.check(scriptName, hash);
     }
 
 

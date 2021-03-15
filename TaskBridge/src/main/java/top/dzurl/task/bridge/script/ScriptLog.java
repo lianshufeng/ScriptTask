@@ -18,7 +18,7 @@ public class ScriptLog {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(SuperScript.class);
 
     //当前脚本
-    protected SuperScript _script;
+    protected SuperScript script;
 
     @Autowired
     private LogService logService;
@@ -69,7 +69,7 @@ public class ScriptLog {
      * @param msg
      */
     private void postLog(String level, String msg) {
-        String jobId = this._script.getRuntime().getJobId();
+        String jobId = this.script.getRuntime().getJobId();
         logService.info(jobId == null ? "" : jobId, JsonUtil.toJson(new HashMap<String, Object>() {{
             put("level", level);
             put("msg", msg);

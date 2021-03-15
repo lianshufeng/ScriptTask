@@ -1,4 +1,4 @@
-package top.dzurl.task.client.core.runtime;
+package top.dzurl.task.bridge.runtime.impl;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.Config;

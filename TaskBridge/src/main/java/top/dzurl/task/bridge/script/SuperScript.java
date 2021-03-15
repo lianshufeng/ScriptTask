@@ -98,7 +98,7 @@ public abstract class SuperScript extends Script {
         Assert.notNull(actionClass, "Action不能为空");
         Constructor constructor = actionClass.getConstructor(null);
         SuperScriptAction superAction = (SuperScriptAction) constructor.newInstance(null);
-        superAction._script = this;
+        superAction.script = this;
         this.springBeanHelper.injection(superAction);
         superAction.after();
         return (T) superAction;

@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import top.dzurl.task.bridge.helper.ScriptHelper;
 import top.dzurl.task.bridge.script.SuperScript;
+import top.dzurl.task.bridge.util.ScriptUtil;
 import top.dzurl.task.server.core.dao.extend.ScriptDaoExtend;
 import top.dzurl.task.server.core.domain.Script;
 import top.dzurl.task.server.other.mongo.helper.DBHelper;
@@ -23,9 +23,6 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private ScriptHelper scriptHelper;
-
-    @Autowired
     private DBHelper dbHelper;
 
     @Override
@@ -34,7 +31,7 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
         String body = new String(buffer, "UTF-8");
         String md5 = DigestUtils.md5DigestAsHex(buffer);
 
-        SuperScript script = this.scriptHelper.parse(body);
+        SuperScript script = ScriptUtil.parse(body);
 
         //删除存在的脚本
         this.mongoTemplate.remove(buildQueryFromName(script.name()), Script.class);
@@ -60,7 +57,7 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
         });
 
         //环境
-        Optional.of(script.environment()).ifPresent((it)->{
+        Optional.of(script.environment()).ifPresent((it) -> {
             entity.setEnvironment(it);
         });
 

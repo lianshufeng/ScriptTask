@@ -1,13 +1,13 @@
 package script
 
 import io.appium.java_client.android.AndroidDriver
-import org.openqa.selenium.By
-import org.openqa.selenium.chrome.ChromeDriver
+import org.springframework.beans.factory.annotation.Autowired
 import top.dzurl.task.bridge.device.impl.AndroidSimulatorDevice
+import top.dzurl.task.bridge.helper.MapHelper
 import top.dzurl.task.bridge.script.Environment
 import top.dzurl.task.bridge.script.ScriptEvent
 import top.dzurl.task.bridge.script.SuperScript
-import top.dzurl.task.bridge.script.action.AndroidAction
+import top.dzurl.task.bridge.script.action.SimulatorAction
 
 class AndroidSimulatorDeviceScript extends SuperScript {
 
@@ -49,9 +49,16 @@ class AndroidSimulatorDeviceScript extends SuperScript {
         ] as ScriptEvent
     }
 
+
+    @Autowired
+    private MapHelper mapHelper;
+
     @Override
     Object run() {
         AndroidDriver driver = runtime.getDriver()
+
+        SimulatorAction simulatorAction = action(SimulatorAction.class);
+        println simulatorAction.getMacAddress()
 
         return [
                 'time': System.currentTimeMillis(),

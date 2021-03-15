@@ -25,6 +25,6 @@ public class ScriptRuntime extends ScriptRunTimeModel {
     protected ScheduledExecutorService threadPool;
 
     //当前脚本
-    protected SuperScript _script;
+    protected SuperScript script;
 
 }

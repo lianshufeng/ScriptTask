@@ -1,18 +1,21 @@
 package top.dzurl.task.bridge.script;
 
+import lombok.Getter;
+
 /**
- * 父类
+ * Action的父类
  */
 public abstract class SuperScriptAction {
 
     //当前的脚本
-    protected SuperScript _script;
+    @Getter
+    protected SuperScript script;
 
 
     /**
      * 初始化完后执行
      */
-    public void after() {
+    protected void after() {
 
     }
 

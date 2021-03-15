@@ -91,6 +91,17 @@ public class MapHelper {
         private String lng;
         //纬度
         private String lat;
+
+        /**
+         * 获取地图的URL
+         *
+         * @return
+         */
+        public String getMapUrl() {
+            return String.format("https://api.map.baidu.com/marker?location=%s,%s&output=html&coord_type=wgs84", lat, lng);
+        }
+
+
     }
 
 

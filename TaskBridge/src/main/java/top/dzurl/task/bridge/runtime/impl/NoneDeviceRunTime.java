@@ -1,4 +1,4 @@
-package top.dzurl.task.client.core.runtime;
+package top.dzurl.task.bridge.runtime.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ public class NoneDeviceRunTime extends SuperDeviceRunTime {
 
     @Override
     public void create(ScriptRuntime runtime) {
-
+        //nothing
     }
 
     @Override
     public void close(ScriptRuntime runtime) {
-
+        //nothing
     }
 
     @Override

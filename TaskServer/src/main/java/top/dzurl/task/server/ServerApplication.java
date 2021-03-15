@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({"top.dzurl.task.server.core", "top.dzurl.task.bridge.helper"})
+@ComponentScan({"top.dzurl.task.server.core"})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class ServerApplication {
 
