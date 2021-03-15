@@ -1,6 +1,7 @@
 package top.dzurl.task.server.core.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,8 @@ public class JobController {
 
     @RequestMapping("get")
     public Object get(@RequestBody JobParam param){
+        Assert.notNull(param.getCount(),"获取条数不能为空");
+        Assert.isTrue(param.getCount()  > 0,"获取条数不能小于0");
         return jobService.get(param);
     }
 
