@@ -117,36 +117,33 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
     /**
      * 载入磁盘上的虚拟机到内存
      */
-    private RunningSimulator loadDiskSimulator(final ScriptRuntime runtime) {
+    private synchronized RunningSimulator loadDiskSimulator(final ScriptRuntime runtime) {
         //匹配满足规则的模拟器
         String simulatorName = findAndBuildSimulator(runtime);
 
         final RunningSimulator runningSimulator = new RunningSimulator();
-
-        synchronized (simulatorName) {
-            runningSimulator.setWorking(true);
-            runningSimulator.setSimulatorName(simulatorName);
-            this.runningSimulators.add(runningSimulator);
+        runningSimulator.setWorking(true);
+        runningSimulator.setSimulatorName(simulatorName);
+        this.runningSimulators.add(runningSimulator);
 
 
-            //启动模拟器,返回驱动
-            String adbConnectionName = startSimulatorAndWaitAdbConnect(simulatorName);
-            runningSimulator.setAdbConnectionName(adbConnectionName);
+        //启动模拟器,返回驱动
+        String adbConnectionName = startSimulatorAndWaitAdbConnect(simulatorName);
+        runningSimulator.setAdbConnectionName(adbConnectionName);
 
-            //构建appuim的服务端
-            log.info("[启动] - Appium服务");
-            AppiumDriverLocalService appiumDriverLocalService = this.appiumHelper.buildService();
-            runningSimulator.setAppiumDriverLocalService(appiumDriverLocalService);
+        //构建appuim的服务端
+        log.info("[启动] - Appium服务");
+        AppiumDriverLocalService appiumDriverLocalService = this.appiumHelper.buildService();
+        runningSimulator.setAppiumDriverLocalService(appiumDriverLocalService);
 
 
-            //构建客户端,并连接
-            log.info("[连接] - {} -> {}", simulatorName, appiumDriverLocalService.getUrl().toString());
-            AndroidDriver driver = this.appiumHelper.buildAndroidDriver(appiumDriverLocalService, adbConnectionName);
-            runningSimulator.setDriver(driver);
+        //构建客户端,并连接
+        log.info("[连接] - {} -> {}", simulatorName, appiumDriverLocalService.getUrl().toString());
+        AndroidDriver driver = this.appiumHelper.buildAndroidDriver(appiumDriverLocalService, adbConnectionName);
+        runningSimulator.setDriver(driver);
 
-            //设置磁盘上数据
-            runningSimulator.setInfo(LeiDianSimulatorUtil.get(leiDianHome, simulatorName));
-        }
+        //设置磁盘上数据
+        runningSimulator.setInfo(LeiDianSimulatorUtil.get(leiDianHome, simulatorName));
 
 
         return runningSimulator;
