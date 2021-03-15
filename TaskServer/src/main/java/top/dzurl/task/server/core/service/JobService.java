@@ -12,7 +12,11 @@ import top.dzurl.task.server.core.dao.JobDao;
 import top.dzurl.task.server.core.dao.JobRunLogDao;
 import top.dzurl.task.server.core.domain.Job;
 import top.dzurl.task.server.core.domain.JobRunLog;
+import top.dzurl.task.server.core.domain.Task;
 import top.dzurl.task.server.other.mongo.helper.DBHelper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService {
@@ -26,16 +30,27 @@ public class JobService {
     @Autowired
     private DBHelper dbHelper;
 
+
+    public JobModel createByTask(Task task){
+        Job job = new Job();
+        BeanUtils.copyProperties(task,job,"id");
+        job.setTask(task);
+        jobDao.save(job);
+        return toModel(job);
+    }
+
     /**
      * 获取job
      *
      * @param param
      * @return
      */
-    public JobModel get(JobParam param) {
-        Job job = jobDao.get(param);
-        createLog(job);
-        return toModel(job);
+    public List<JobModel> get(JobParam param) {
+        List<Job> jobs = jobDao.get(param);
+        return jobs.stream().map((it) -> {
+            createLog(it);
+            return toModel(it);
+        }).collect(Collectors.toList());
     }
 
     /**
