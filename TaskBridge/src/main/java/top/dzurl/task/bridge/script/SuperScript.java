@@ -2,9 +2,13 @@ package top.dzurl.task.bridge.script;
 
 import groovy.lang.Script;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import top.dzurl.task.bridge.helper.ScriptEventHelper;
+import top.dzurl.task.bridge.helper.SpringBeanHelper;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +26,9 @@ public abstract class SuperScript extends Script {
     //异步方法
     @Getter
     protected ScriptAsync async;
+
+    @Autowired
+    private SpringBeanHelper springBeanHelper;
 
 
     @Autowired
@@ -77,6 +84,24 @@ public abstract class SuperScript extends Script {
      */
     public String remark() {
         return String.format("[%s] 脚本", this.name());
+    }
+
+
+    /**
+     * 构建Action
+     *
+     * @param <T>
+     * @return
+     */
+    @SneakyThrows
+    public <T> T action(Class<? extends SuperScriptAction> actionClass) {
+        Assert.notNull(actionClass, "Action不能为空");
+        Constructor constructor = actionClass.getConstructor(null);
+        SuperScriptAction superAction = (SuperScriptAction) constructor.newInstance(null);
+        superAction._script = this;
+        this.springBeanHelper.injection(superAction);
+        superAction.after();
+        return (T) superAction;
     }
 
 
