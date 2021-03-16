@@ -3,7 +3,6 @@ package top.dzurl.task.bridge.runtime.impl;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import lombok.SneakyThrows;
-import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -80,7 +79,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
      * @param runtime
      */
     @Override
-    public void create(ScriptRuntime runtime) {
+    public synchronized void create(ScriptRuntime runtime) {
         //重启adb服务
         restartADB();
 
@@ -117,11 +116,12 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
     /**
      * 载入磁盘上的虚拟机到内存
      */
-    private synchronized RunningSimulator loadDiskSimulator(final ScriptRuntime runtime) {
+    private RunningSimulator loadDiskSimulator(final ScriptRuntime runtime) {
         //匹配满足规则的模拟器
         String simulatorName = findAndBuildSimulator(runtime);
 
         final RunningSimulator runningSimulator = new RunningSimulator();
+
         runningSimulator.setWorking(true);
         runningSimulator.setSimulatorName(simulatorName);
         this.runningSimulators.add(runningSimulator);
@@ -204,7 +204,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
     /**
      * 查找或者创建新的模拟器
      */
-    private synchronized String findAndBuildSimulator(final ScriptRuntime runtime) {
+    private String findAndBuildSimulator(final ScriptRuntime runtime) {
 
         final Environment environment = runtime.getEnvironment();
 
@@ -234,7 +234,16 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
      */
     private String findSimulatorFromDisk(final ScriptRuntime runtime) {
         //取出现有的模拟器
-        final List<Map<String, Object>> simulators = LeiDianSimulatorUtil.list(leiDianHome).values().stream().collect(Collectors.toList());
+        final List<Map<String, Object>> simulators = LeiDianSimulatorUtil.list(leiDianHome).values().stream()
+                .filter((it) -> {
+                    //过滤内存中存在的模拟器
+                    for (RunningSimulator runningSimulator : this.runningSimulators) {
+                        if (runningSimulator.getSimulatorName().equals(it.get(SimulatorPlayerName)) && runningSimulator.isWorking()) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }).collect(Collectors.toList());
         return this.findSimulatorFromList(runtime, simulators);
     }
 
@@ -295,7 +304,8 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         //取出运行环境的设备id( mac地址 )
         final String deviceId = runtime.getDeviceId();
 
-        //通过设备id进行匹配
+
+        //通过设备id进行匹配,如果绑定过
         if (StringUtils.hasText(deviceId)) {
             AtomicReference<String> simulatorDeviceInfo = new AtomicReference();
             //目标查询的模拟器
@@ -308,10 +318,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
             }).findFirst().ifPresent((it) -> {
                 simulatorDeviceInfo.set(String.valueOf(it.get(SimulatorPlayerName)));
             });
-            String simulatorName = simulatorDeviceInfo.get();
-            if (StringUtils.hasText(simulatorName)) {
-                return simulatorName;
-            }
+            return simulatorDeviceInfo.get();
         }
 
 

@@ -7,7 +7,7 @@ import top.dzurl.task.bridge.helper.MapHelper
 import top.dzurl.task.bridge.script.Environment
 import top.dzurl.task.bridge.script.ScriptEvent
 import top.dzurl.task.bridge.script.SuperScript
-import top.dzurl.task.bridge.script.action.SimulatorAction
+import top.dzurl.task.bridge.script.action.device.SimulatorDeviceAction
 
 class AndroidSimulatorDeviceScript extends SuperScript {
 
@@ -57,7 +57,7 @@ class AndroidSimulatorDeviceScript extends SuperScript {
     Object run() {
         AndroidDriver driver = runtime.getDriver()
 
-        SimulatorAction simulatorAction = action(SimulatorAction.class);
+        SimulatorDeviceAction simulatorAction = action(SimulatorDeviceAction.class);
         println simulatorAction.getMacAddress()
 
         return [

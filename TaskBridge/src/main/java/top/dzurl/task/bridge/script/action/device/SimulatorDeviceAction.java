@@ -1,4 +1,4 @@
-package top.dzurl.task.bridge.script.action;
+package top.dzurl.task.bridge.script.action.device;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import top.dzurl.task.bridge.util.LeiDianSimulatorUtil;
  * 模拟器功能
  */
 @Slf4j
-public class SimulatorAction extends AndroidAction {
+public class SimulatorDeviceAction extends AndroidDeviceAction {
 
     @Autowired
     private AndroidSimulatorDeviceRunTime androidSimulatorDeviceRunTime;

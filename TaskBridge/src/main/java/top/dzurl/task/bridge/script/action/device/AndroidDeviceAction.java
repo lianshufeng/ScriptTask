@@ -1,4 +1,4 @@
-package top.dzurl.task.bridge.script.action;
+package top.dzurl.task.bridge.script.action.device;
 
 
 import io.appium.java_client.android.AndroidDriver;
@@ -19,7 +19,7 @@ import java.util.HashMap;
  * android的工具
  */
 @Slf4j
-public class AndroidAction extends SuperScriptAction {
+public class AndroidDeviceAction extends SuperScriptAction {
 
     //驱动
     protected AndroidDriver driver;
