@@ -214,7 +214,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         String simulatorName = findSimulatorFromDisk(runtime);
 
         //是否新的模拟器
-        if (simulatorName == null) {
+        if (!StringUtils.hasText(simulatorName)) {
             simulatorName = findCustomName(Set.of(), TokenUtil.create());
             log.info("[新建] - 模拟器: {}", simulatorName);
             //创建虚拟机
@@ -343,7 +343,11 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         final AndroidSimulatorDevice device = (AndroidSimulatorDevice) environment.getDevice();
         for (Map<String, Object> map : canUsedList) {
             if (matchSimulator(device, map)) {
-                return String.valueOf(map.get(SimulatorPlayerName));
+                Object simulatorName = map.get(SimulatorPlayerName);
+                if (simulatorName == null) {
+                    return null;
+                }
+                return String.valueOf(simulatorName);
             }
         }
 
