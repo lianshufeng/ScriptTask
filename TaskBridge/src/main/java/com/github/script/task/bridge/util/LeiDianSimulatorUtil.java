@@ -23,6 +23,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LeiDianSimulatorUtil {
 
+    //模拟器配置的key
+    public static final String SimulatorPlayerName = "statusSettings.playerName";
+    public static final String SimulatorMacAddress = "propertySettings.macAddress";
+
+
     private final static String fileFlag = "leidian";
 
 
@@ -228,6 +233,32 @@ public class LeiDianSimulatorUtil {
 
 
     /**
+     * @param home
+     * @param name
+     * @param items
+     */
+    public static void updateConfig(File home, String name, Map<String, Object> items) {
+        final File vmsFile = new File(home.getAbsolutePath() + "/vms");
+
+        Map<String, Map<String, Object>> deviceInfos = list(home);
+        deviceInfos.entrySet().stream().filter((it) -> {
+            Object simulatorName = it.getValue().get(SimulatorPlayerName);
+            return simulatorName != null && name.equals(simulatorName);
+        }).findFirst().ifPresent((it) -> {
+            try {
+                File configFile = new File(vmsFile.getAbsolutePath() + "/config/" + it.getKey() + ".config");
+                String configContent = FileUtils.readFileToString(configFile, "UTF-8");
+                Map<String, Object> ret = JsonUtil.toObject(configContent, Map.class);
+                ret.putAll(items);
+                FileUtils.writeStringToFile(configFile, JsonUtil.toJson(ret, true), "UTF-8");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    /**
      * 查询雷电模拟
      */
     public static Map<String, Map<String, Object>> list(File home) {
@@ -246,8 +277,6 @@ public class LeiDianSimulatorUtil {
                 }
             }
         });
-
-
         return ret;
     }
 

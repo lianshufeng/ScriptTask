@@ -31,9 +31,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
 
     private static final String CustomName = "device";
 
-    //模拟器配置的key
-    private static final String SimulatorPlayerName = "statusSettings.playerName";
-    private static final String SimulatorMacAddress = "propertySettings.macAddress";
+
 
 
     @Autowired
@@ -240,7 +238,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
                 .filter((it) -> {
                     //过滤内存中存在的模拟器
                     for (RunningSimulator runningSimulator : this.runningSimulators) {
-                        if (runningSimulator.getSimulatorName().equals(it.get(SimulatorPlayerName)) && runningSimulator.isWorking()) {
+                        if (runningSimulator.getSimulatorName().equals(it.get(LeiDianSimulatorUtil.SimulatorPlayerName)) && runningSimulator.isWorking()) {
                             return false;
                         }
                     }
@@ -270,9 +268,6 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
 
         RunningSimulator simulator = findRunningSimulatorByName(name);
 
-
-        //是否已过期
-        boolean expire = false;
 
         //如果没有运行则删除内存中状态
         if (!LeiDianSimulatorUtil.isrunning(leiDianHome, simulator.getSimulatorName())) {
@@ -327,13 +322,16 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
             AtomicReference<String> simulatorDeviceInfo = new AtomicReference();
             //目标查询的模拟器
             canUsedList.stream().filter((it) -> {
-                Object simulatorMac = it.get(SimulatorMacAddress);
+                Object simulatorMac = it.get(LeiDianSimulatorUtil.SimulatorMacAddress);
                 if (simulatorMac != null && deviceId.equals(simulatorMac)) {
+                    Optional.ofNullable(it.get(LeiDianSimulatorUtil.SimulatorPlayerName)).ifPresent((simulatorName) -> {
+                        setDeviceBind(String.valueOf(simulatorName));
+                    });
                     return true;
                 }
                 return false;
             }).findFirst().ifPresent((it) -> {
-                simulatorDeviceInfo.set(String.valueOf(it.get(SimulatorPlayerName)));
+                simulatorDeviceInfo.set(String.valueOf(it.get(LeiDianSimulatorUtil.SimulatorPlayerName)));
             });
             return simulatorDeviceInfo.get();
         }
@@ -343,7 +341,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         final AndroidSimulatorDevice device = (AndroidSimulatorDevice) environment.getDevice();
         for (Map<String, Object> map : canUsedList) {
             if (matchSimulator(device, map)) {
-                Object simulatorName = map.get(SimulatorPlayerName);
+                Object simulatorName = map.get(LeiDianSimulatorUtil.SimulatorPlayerName);
                 if (simulatorName == null) {
                     return null;
                 }
@@ -352,6 +350,19 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         }
 
         return null;
+    }
+
+
+    /**
+     * 绑定Mac
+     *
+     * @param simulatorName
+     */
+    private void setDeviceBind(String simulatorName) {
+        log.info("[绑定] - [模拟器] - [{}]", simulatorName);
+        LeiDianSimulatorUtil.updateConfig(leiDianHome, simulatorName, new HashMap<String, Object>() {{
+            put("script.task.bind", true);
+        }});
     }
 
 
