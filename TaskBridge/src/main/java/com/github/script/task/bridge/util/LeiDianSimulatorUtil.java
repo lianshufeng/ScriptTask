@@ -239,9 +239,15 @@ public class LeiDianSimulatorUtil {
         }).forEach((file) -> {
             File configFile = new File(vmsFile.getAbsolutePath() + "/config/" + file.getName() + ".config");
             if (configFile.exists()) {
-                ret.put(file.getName(), readFileFromJson(configFile));
+                Map<String, Object> items = readFileFromJson(configFile);
+                //过滤存在模拟器名
+                if (items.containsKey("statusSettings.playerName")) {
+                    ret.put(file.getName(), items);
+                }
             }
         });
+
+
         return ret;
     }
 
