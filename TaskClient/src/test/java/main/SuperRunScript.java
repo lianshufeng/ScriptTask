@@ -5,11 +5,11 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.springframework.context.ConfigurableApplicationContext;
-import top.dzurl.task.bridge.model.ScriptRunTimeModel;
-import top.dzurl.task.bridge.script.Environment;
-import top.dzurl.task.bridge.service.ScriptService;
-import top.dzurl.task.client.ClientApplication;
-import top.dzurl.task.client.core.util.ApplicationHomeUtil;
+import com.github.script.task.bridge.model.ScriptRunTimeModel;
+import com.github.script.task.bridge.script.Environment;
+import com.github.script.task.bridge.service.ScriptService;
+import com.github.script.task.client.ClientApplication;
+import com.github.script.task.client.core.util.ApplicationHomeUtil;
 
 import java.io.File;
 import java.util.Map;

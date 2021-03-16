@@ -2,12 +2,12 @@ package script
 
 import io.appium.java_client.android.AndroidDriver
 import org.springframework.beans.factory.annotation.Autowired
-import top.dzurl.task.bridge.device.impl.AndroidSimulatorDevice
-import top.dzurl.task.bridge.helper.MapHelper
-import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.ScriptEvent
-import top.dzurl.task.bridge.script.SuperScript
-import top.dzurl.task.bridge.script.action.device.SimulatorDeviceAction
+import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice
+import com.github.script.task.bridge.helper.MapHelper
+import com.github.script.task.bridge.script.Environment
+import com.github.script.task.bridge.script.ScriptEvent
+import com.github.script.task.bridge.script.SuperScript
+import com.github.script.task.bridge.script.action.device.SimulatorDeviceAction
 
 class AndroidSimulatorDeviceScript extends SuperScript {
 

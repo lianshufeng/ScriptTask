@@ -7,27 +7,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>top.dzurl.task</groupId>
+        <groupId>com.github.script.task</groupId>
         <artifactId>TaskParent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../TaskParent</relativePath>
     </parent>
 
-    <properties>
-        <webdrivermanager.version>4.3.1</webdrivermanager.version>
-        <selenium.version>4.0.0-beta-1</selenium.version>
-        <appium.version>7.4.1</appium.version>
-        <jsoup.version>1.13.1</jsoup.version>
-    </properties>
 
-
-    <groupId>top.dzurl.task</groupId>
+    <groupId>com.github.script.task</groupId>
     <artifactId>TaskBridge</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
-
+        <!-- 客户端 -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -54,11 +46,6 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-
-
-       
-
-
     </dependencies>
 
 </project>

@@ -1,10 +1,9 @@
 package script
 
 
-import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.Parameter
-import top.dzurl.task.bridge.script.ScriptEvent
-import top.dzurl.task.bridge.script.SuperScript
+import com.github.script.task.bridge.script.Environment
+import com.github.script.task.bridge.script.ScriptEvent
+import com.github.script.task.bridge.script.SuperScript
 
 class TestScript extends SuperScript {
 

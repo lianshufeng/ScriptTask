@@ -1,9 +1,9 @@
 package script
 
 import org.jsoup.Jsoup
-import top.dzurl.task.bridge.device.impl.NoDevice
-import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.SuperScript
+import com.github.script.task.bridge.device.impl.NoDevice
+import com.github.script.task.bridge.script.Environment
+import com.github.script.task.bridge.script.SuperScript
 
 class NoneDeviceScript extends SuperScript {
 

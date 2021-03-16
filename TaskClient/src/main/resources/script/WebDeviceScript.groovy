@@ -3,10 +3,10 @@ package script
 
 import org.openqa.selenium.By
 import org.openqa.selenium.chrome.ChromeDriver
-import top.dzurl.task.bridge.device.impl.WebDevice
-import top.dzurl.task.bridge.script.Environment
-import top.dzurl.task.bridge.script.ScriptEvent
-import top.dzurl.task.bridge.script.SuperScript
+import com.github.script.task.bridge.device.impl.WebDevice
+import com.github.script.task.bridge.script.Environment
+import com.github.script.task.bridge.script.ScriptEvent
+import com.github.script.task.bridge.script.SuperScript
 
 class WebDeviceScript extends SuperScript {
 
@@ -58,7 +58,7 @@ class WebDeviceScript extends SuperScript {
 
         //取出热搜的第一条连接
         driver.get('https://s.weibo.com/top/summary?cate=realtimehot')
-        def a = driver.findElementById('pl_top_realtimehot')
+        def a = driver.findElement(By.id('pl_top_realtimehot'))
                 .findElement(By.tagName('table'))
                 .findElement(By.tagName('tbody'))
                 .findElements(By.tagName('tr'))
@@ -71,7 +71,7 @@ class WebDeviceScript extends SuperScript {
         driver.get(url)
 
         //取出对这个主题的发言的用户
-        def element = driver.findElementById('pl_feedlist_index').findElements(By.className('info'));
+        def element = driver.findElement(By.id('pl_feedlist_index')).findElements(By.className('info'));
         element.forEach((it) -> {
             try {
                 def nameA = it.findElement(By.className('name'))
@@ -80,6 +80,7 @@ class WebDeviceScript extends SuperScript {
             } catch (Exception e) {
             }
         })
+
 
 
         return [

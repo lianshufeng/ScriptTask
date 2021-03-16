@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.dzurl.task</groupId>
+        <groupId>com.github.script.task</groupId>
         <artifactId>TaskParent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../TaskParent</relativePath>
     </parent>
 
 
-    <groupId>top.dzurl.task</groupId>
+    <groupId>com.github.script.task</groupId>
     <artifactId>TaskServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>TaskServer</name>
@@ -28,7 +28,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>top.dzurl.task</groupId>
+            <groupId>com.github.script.task</groupId>
             <artifactId>TaskBridge</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
