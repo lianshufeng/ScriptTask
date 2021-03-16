@@ -31,7 +31,7 @@ public class MapHelper {
     @SneakyThrows
     public Location query(String address) {
         String url = String.format("http://api.map.baidu.com/geocoding/v3/?address=%s&output=json&ak=%s", address, getAk());
-        Map<String, String> ret = JsonUtil.toObject(new String(new HttpClient().get(url)), Map.class);
+        Map<String, String> ret = new HttpClient().get(url).parse().json(Map.class);
         Object result = ret.get("result");
         if (result == null) {
             return null;

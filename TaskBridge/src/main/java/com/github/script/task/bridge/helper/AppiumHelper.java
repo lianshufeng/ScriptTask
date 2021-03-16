@@ -18,6 +18,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class AppiumHelper {
 
+    //模拟器默认支持的时间
+    public static final long NewCommandTimeout = 1L * 60 * 60 * 24 * 7;
+
+
     @Autowired
     private ScriptTaskConf appTaskConf;
 
@@ -60,7 +64,7 @@ public class AppiumHelper {
         capabilities.setCapability("udid", adbConnectionName);
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("automationName", "UiAutomator2");
-        capabilities.setCapability("newCommandTimeout", 60 * 60 * 24);
+        capabilities.setCapability("newCommandTimeout", NewCommandTimeout);
 
         //不允许脚本退出与关闭
         AndroidDriver driver = new AndroidDriver(appiumDriverLocalService.getUrl(), capabilities) {

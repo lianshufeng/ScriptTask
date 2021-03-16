@@ -58,7 +58,6 @@ class AndroidSimulatorDeviceScript extends SuperScript {
         AndroidDriver driver = runtime.getDriver()
 
         SimulatorDeviceAction simulatorAction = action(SimulatorDeviceAction.class);
-        println simulatorAction.getMacAddress()
 
         return [
                 'time': System.currentTimeMillis(),

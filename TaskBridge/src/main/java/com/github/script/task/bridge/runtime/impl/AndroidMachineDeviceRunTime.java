@@ -86,6 +86,9 @@ public class AndroidMachineDeviceRunTime extends SuperDeviceRunTime {
         //最后一次访问时间
         private long lastAccessTime;
 
+        //创建时间
+        private long createTime;
+
         //android的驱动
         private AndroidDriver driver;
 

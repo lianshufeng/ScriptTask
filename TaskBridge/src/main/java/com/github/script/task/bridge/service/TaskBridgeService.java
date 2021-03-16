@@ -57,7 +57,6 @@ public class TaskBridgeService {
      * @return
      */
     public <T> T postJson(String uri, Object parameter, Class<T> retCls) {
-        String json = JsonUtil.toJson(parameter);
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType(MediaType.APPLICATION_JSON.toString() + "; charset=UTF-8");
         headers.setContentType(type);

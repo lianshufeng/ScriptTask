@@ -36,6 +36,7 @@
         <appium.version>7.4.1</appium.version>
         <jsoup.version>1.13.1</jsoup.version>
 
+        <httpclient.version>4.5.9</httpclient.version>
     </properties>
 
     <groupId>com.github.script.task</groupId>

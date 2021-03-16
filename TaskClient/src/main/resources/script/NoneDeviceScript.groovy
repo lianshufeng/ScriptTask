@@ -1,5 +1,6 @@
 package script
 
+import com.github.script.task.bridge.script.action.net.HttpAction
 import org.jsoup.Jsoup
 import com.github.script.task.bridge.device.impl.NoDevice
 import com.github.script.task.bridge.script.Environment
@@ -28,9 +29,11 @@ class NoneDeviceScript extends SuperScript {
 
     @Override
     Object run() {
+        HttpAction httpAction = action(HttpAction.class)
+
         def list = []
 
-        def ret = Jsoup.connect('http://top.baidu.com').get();
+        def ret = httpAction.get('http://top.baidu.com').parse("GBK").html()
         ret.getElementById('hot-list').getElementsByTag('li').forEach((it) -> {
             def title = it.getElementsByTag('a').get(0).attr('title')
             list.push(title);

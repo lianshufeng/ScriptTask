@@ -4,6 +4,7 @@ import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice;
 import com.github.script.task.bridge.device.type.DeviceType;
 import com.github.script.task.bridge.helper.AppiumHelper;
 import com.github.script.task.bridge.script.Environment;
+import com.github.script.task.bridge.script.action.device.AndroidDeviceAction;
 import com.github.script.task.bridge.util.ADBUtil;
 import com.github.script.task.bridge.util.LeiDianSimulatorUtil;
 import com.github.script.task.bridge.util.TokenUtil;
@@ -65,8 +66,8 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
             return;
         }
         firstRun = false;
+        log.info("[adb] - {}", "restart");
         ADBUtil.restartADB(this.scriptTaskConf.getRunTime().getADBHome());
-        log.info("[adb] -> {}", "restart");
     }
 
 
@@ -122,6 +123,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
 
         final RunningSimulator runningSimulator = new RunningSimulator();
 
+        runningSimulator.setCreateTime(System.currentTimeMillis());
         runningSimulator.setWorking(true);
         runningSimulator.setSimulatorName(simulatorName);
         this.runningSimulators.add(runningSimulator);
@@ -265,13 +267,28 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
             return null;
         }
 
+
         RunningSimulator simulator = findRunningSimulatorByName(name);
+
+
+        //是否已过期
+        boolean expire = false;
+
         //如果没有运行则删除内存中状态
         if (!LeiDianSimulatorUtil.isrunning(leiDianHome, simulator.getSimulatorName())) {
             this.runningSimulators.remove(simulator);
             log.info("[过期] - 模拟器: {}", simulator.getSimulatorName());
             return null;
         }
+
+        //驱动连接超时,删掉内存后，重新添加到内存里
+        if (System.currentTimeMillis() - simulator.getCreateTime() > AppiumHelper.NewCommandTimeout) {
+            this.runningSimulators.remove(simulator);
+            log.info("[过期] - 模拟器: {}", simulator.getSimulatorName());
+            return null;
+        }
+
+
         log.info("[缓存] - 模拟器: {}", simulator.getSimulatorName());
         return simulator;
 
