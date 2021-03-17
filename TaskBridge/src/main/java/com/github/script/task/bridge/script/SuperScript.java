@@ -1,12 +1,12 @@
 package com.github.script.task.bridge.script;
 
 import com.github.script.task.bridge.helper.ScriptEventHelper;
+import com.github.script.task.bridge.helper.SpringBeanHelper;
 import groovy.lang.Script;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import com.github.script.task.bridge.helper.SpringBeanHelper;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public abstract class SuperScript extends Script {
      * @return
      */
     @SneakyThrows
-    public <T> T action(Class<? extends SuperScriptAction> actionClass) {
+    public <T extends SuperScriptAction> T action(Class<T> actionClass) {
         Assert.notNull(actionClass, "Action不能为空");
         Constructor constructor = actionClass.getConstructor(null);
         SuperScriptAction superAction = (SuperScriptAction) constructor.newInstance(null);

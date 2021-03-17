@@ -92,9 +92,6 @@ public class AndroidMachineDeviceRunTime extends SuperDeviceRunTime {
         //android的驱动
         private AndroidDriver driver;
 
-        //信息
-        private Map<String, Object> info;
-
         //当前正在执行的脚本
         private SuperScript script;
 

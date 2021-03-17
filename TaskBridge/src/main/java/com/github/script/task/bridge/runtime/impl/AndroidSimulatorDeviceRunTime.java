@@ -32,8 +32,6 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
     private static final String CustomName = "device";
 
 
-
-
     @Autowired
     private AppiumHelper appiumHelper;
 
@@ -141,9 +139,6 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         log.info("[连接] - {} -> {}", simulatorName, appiumDriverLocalService.getUrl().toString());
         AndroidDriver driver = this.appiumHelper.buildAndroidDriver(appiumDriverLocalService, adbConnectionName);
         runningSimulator.setDriver(driver);
-
-        //设置磁盘上数据
-        runningSimulator.setInfo(LeiDianSimulatorUtil.get(leiDianHome, simulatorName));
 
 
         return runningSimulator;
@@ -258,7 +253,8 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
                 .filter((it) -> {
                     return !it.isWorking();
                 }).map((it) -> {
-                    return it.getInfo();
+                    //每次重新加载配置
+                    return LeiDianSimulatorUtil.get(scriptTaskConf.getRunTime().getSimulator(), it.getSimulatorName());
                 }).collect(Collectors.toList());
         String name = findSimulatorFromList(runtime, canUsedList);
         if (name == null) {
@@ -272,14 +268,14 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         //如果没有运行则删除内存中状态
         if (!LeiDianSimulatorUtil.isrunning(leiDianHome, simulator.getSimulatorName())) {
             this.runningSimulators.remove(simulator);
-            log.info("[过期] - 模拟器: {}", simulator.getSimulatorName());
+            log.info("[过期] - [未运行] - 模拟器: {}", simulator.getSimulatorName());
             return null;
         }
 
         //驱动连接超时,删掉内存后，重新添加到内存里
-        if (System.currentTimeMillis() - simulator.getCreateTime() > AppiumHelper.NewCommandTimeout) {
+        if (System.currentTimeMillis() - simulator.getCreateTime() > AppiumHelper.NewCommandTimeout * 1000) {
             this.runningSimulators.remove(simulator);
-            log.info("[过期] - 模拟器: {}", simulator.getSimulatorName());
+            log.info("[过期] - [超时] - 模拟器: {}", simulator.getSimulatorName());
             return null;
         }
 
@@ -316,30 +312,43 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         //取出运行环境的设备id( mac地址 )
         final String deviceId = runtime.getDeviceId();
 
-
-        //通过设备id进行匹配,如果绑定过
+        //优先检查绑定过的设备
         if (StringUtils.hasText(deviceId)) {
             AtomicReference<String> simulatorDeviceInfo = new AtomicReference();
-            //目标查询的模拟器
+            //优先匹配已经绑定过的设备
             canUsedList.stream().filter((it) -> {
-                Object simulatorMac = it.get(LeiDianSimulatorUtil.SimulatorMacAddress);
-                if (simulatorMac != null && deviceId.equals(simulatorMac)) {
-                    Optional.ofNullable(it.get(LeiDianSimulatorUtil.SimulatorPlayerName)).ifPresent((simulatorName) -> {
-                        setDeviceBind(String.valueOf(simulatorName));
-                    });
-                    return true;
+                Object deviceBind = it.containsKey(LeiDianSimulatorUtil.DeviceBindName);
+                if (deviceBind == null) {
+                    return false;
                 }
-                return false;
+                return (boolean) deviceBind == true;
+            }).filter((it) -> {
+                return deviceId.equals(it.get(LeiDianSimulatorUtil.SimulatorMacAddress));
             }).findFirst().ifPresent((it) -> {
-                simulatorDeviceInfo.set(String.valueOf(it.get(LeiDianSimulatorUtil.SimulatorPlayerName)));
+                Object simulatorPlayerName = it.get(LeiDianSimulatorUtil.SimulatorPlayerName);
+                if (simulatorPlayerName != null) {
+                    simulatorDeviceInfo.set(String.valueOf(simulatorPlayerName));
+                }
             });
-            return simulatorDeviceInfo.get();
+            if (simulatorDeviceInfo.get() != null) {
+                return simulatorDeviceInfo.get();
+            }
         }
-
 
         //匹配模拟器设备信息
         final AndroidSimulatorDevice device = (AndroidSimulatorDevice) environment.getDevice();
-        for (Map<String, Object> map : canUsedList) {
+
+        //过滤绑定的设备
+        final List<Map<String, Object>> notBindDevice = canUsedList.stream().filter((it) -> {
+            Object deviceBind = it.containsKey(LeiDianSimulatorUtil.DeviceBindName);
+            if (deviceBind == null) {
+                return false;
+            }
+            return (boolean) deviceBind == false;
+        }).collect(Collectors.toList());
+
+        //取消设备绑定
+        for (Map<String, Object> map : notBindDevice) {
             if (matchSimulator(device, map)) {
                 Object simulatorName = map.get(LeiDianSimulatorUtil.SimulatorPlayerName);
                 if (simulatorName == null) {
@@ -350,19 +359,6 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
         }
 
         return null;
-    }
-
-
-    /**
-     * 绑定Mac
-     *
-     * @param simulatorName
-     */
-    private void setDeviceBind(String simulatorName) {
-        log.info("[绑定] - [模拟器] - [{}]", simulatorName);
-        LeiDianSimulatorUtil.updateConfig(leiDianHome, simulatorName, new HashMap<String, Object>() {{
-            put("script.task.bind", true);
-        }});
     }
 
 

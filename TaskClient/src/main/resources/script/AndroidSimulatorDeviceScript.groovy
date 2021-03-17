@@ -1,5 +1,6 @@
 package script
 
+import com.github.script.task.bridge.script.action.bind.DeviceBindAction
 import io.appium.java_client.android.AndroidDriver
 import org.springframework.beans.factory.annotation.Autowired
 import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice
@@ -55,9 +56,10 @@ class AndroidSimulatorDeviceScript extends SuperScript {
 
     @Override
     Object run() {
-        AndroidDriver driver = runtime.getDriver()
+        //设备绑定
+        action(DeviceBindAction.class).bind()
 
-        SimulatorDeviceAction simulatorAction = action(SimulatorDeviceAction.class);
+        AndroidDriver driver = runtime.getDriver()
 
         return [
                 'time': System.currentTimeMillis(),

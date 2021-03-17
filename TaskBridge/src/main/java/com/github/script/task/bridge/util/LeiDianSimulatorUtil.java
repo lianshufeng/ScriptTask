@@ -26,9 +26,12 @@ public class LeiDianSimulatorUtil {
     //模拟器配置的key
     public static final String SimulatorPlayerName = "statusSettings.playerName";
     public static final String SimulatorMacAddress = "propertySettings.macAddress";
-
+    public static final String DeviceBindName = "script.task.bind";
 
     private final static String fileFlag = "leidian";
+
+    //扩展目录
+    private final static String extendName = "extend";
 
 
     /**
@@ -231,30 +234,31 @@ public class LeiDianSimulatorUtil {
         return "running".equals(ret);
     }
 
+    /**
+     * 扩展文件
+     *
+     * @param home
+     * @param name
+     * @return
+     */
+    private static File extendFile(File home, String name) {
+        return new File(home.getAbsolutePath() + "/vms/" + extendName + "/" + name + ".json");
+    }
 
     /**
      * @param home
      * @param name
      * @param items
      */
-    public static void updateConfig(File home, String name, Map<String, Object> items) {
-        final File vmsFile = new File(home.getAbsolutePath() + "/vms");
-
-        Map<String, Map<String, Object>> deviceInfos = list(home);
-        deviceInfos.entrySet().stream().filter((it) -> {
-            Object simulatorName = it.getValue().get(SimulatorPlayerName);
-            return simulatorName != null && name.equals(simulatorName);
-        }).findFirst().ifPresent((it) -> {
-            try {
-                File configFile = new File(vmsFile.getAbsolutePath() + "/config/" + it.getKey() + ".config");
-                String configContent = FileUtils.readFileToString(configFile, "UTF-8");
-                Map<String, Object> ret = JsonUtil.toObject(configContent, Map.class);
-                ret.putAll(items);
-                FileUtils.writeStringToFile(configFile, JsonUtil.toJson(ret, true), "UTF-8");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    @SneakyThrows
+    public static void updateExtendConfig(File home, String name, Map<String, Object> items) {
+        File configFile = extendFile(home, name);
+        final Map<String, Object> ret = new HashMap<>();
+        if (configFile.exists()) {
+            ret.putAll(JsonUtil.toObject(FileUtils.readFileToString(configFile, "UTF-8"), Map.class));
+        }
+        ret.putAll(items);
+        FileUtils.writeStringToFile(configFile, JsonUtil.toJson(ret, true), "UTF-8");
     }
 
 
@@ -271,8 +275,13 @@ public class LeiDianSimulatorUtil {
             File configFile = new File(vmsFile.getAbsolutePath() + "/config/" + file.getName() + ".config");
             if (configFile.exists()) {
                 Map<String, Object> items = readFileFromJson(configFile);
+                Object playerName = items.get(SimulatorPlayerName);
                 //过滤存在模拟器名
-                if (items.containsKey("statusSettings.playerName")) {
+                if (playerName != null) {
+                    File extendFile = extendFile(home, String.valueOf(playerName));
+                    if (extendFile.exists()) {
+                        items.putAll(readFileFromJson(extendFile));
+                    }
                     ret.put(file.getName(), items);
                 }
             }
@@ -289,8 +298,13 @@ public class LeiDianSimulatorUtil {
      */
     public static Map<String, Object> get(File home, String name) {
         for (Map<String, Object> map : list(home).values()) {
-            Object playerName = map.get("statusSettings.playerName");
+            Object playerName = map.get(SimulatorPlayerName);
             if (playerName != null && name.equals(playerName)) {
+                //加载扩展信息
+                File extendFile = extendFile(home, String.valueOf(playerName));
+                if (extendFile.exists()) {
+                    map.putAll(readFileFromJson(extendFile));
+                }
                 return map;
             }
         }

@@ -1,6 +1,7 @@
 package com.github.script.task.bridge.service;
 
 import com.github.script.task.bridge.conf.ScriptTaskConf;
+import com.github.script.task.bridge.util.HttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,23 +33,7 @@ public class TaskBridgeService {
      * @return
      */
     public <T> T postForm(String uri, Object parameter, Class<T> retCls) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        //对象转换为表单
-        Map<String, Object> param = null;
-        if (parameter instanceof Map) {
-            param = (Map) parameter;
-        } else {
-            param = BeanUtil.toMap(parameter);
-        }
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        param.entrySet().forEach((it) -> {
-            params.add(it.getKey(), String.valueOf(it.getValue()));
-        });
-
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-        return (T) this.restTemplate.postForEntity(url(uri), requestEntity, retCls);
+        return (T) new HttpClient().form(url(uri), parameter).parse().json(retCls);
     }
 
     /**
@@ -57,12 +42,7 @@ public class TaskBridgeService {
      * @return
      */
     public <T> T postJson(String uri, Object parameter, Class<T> retCls) {
-        HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType(MediaType.APPLICATION_JSON.toString() + "; charset=UTF-8");
-        headers.setContentType(type);
-        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-        HttpEntity<Object> formEntity = new HttpEntity<>(parameter, headers);
-        return (T) restTemplate.postForObject(url(uri), formEntity, retCls);
+        return (T) new HttpClient().json(url(uri), parameter).parse().json(retCls);
     }
 
     private String url(String uri) {
