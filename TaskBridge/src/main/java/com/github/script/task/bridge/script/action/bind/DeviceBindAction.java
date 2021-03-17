@@ -22,12 +22,6 @@ public class DeviceBindAction extends SuperScriptAction {
     private AndroidSimulatorDeviceRunTime androidSimulatorDeviceRunTime;
 
 
-    @Override
-    protected void after() {
-
-    }
-
-
     /**
      * 绑定
      */
