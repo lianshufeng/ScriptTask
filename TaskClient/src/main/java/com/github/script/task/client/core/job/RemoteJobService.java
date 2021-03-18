@@ -41,7 +41,7 @@ public class RemoteJobService {
             return;
         }
 
-        log.info("[允许] - [执行任务]");
+        log.info("[执行] - [远程任务]");
         //定时器接任务
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

@@ -39,6 +39,7 @@ public class ScriptTaskConf {
     @AllArgsConstructor
     public static class RemoteTask {
 
+
         //是否执行远程任务
         private boolean work = true;
 
@@ -76,6 +77,14 @@ public class ScriptTaskConf {
             return new File(FilenameUtils.normalize(applicationHome.getDir().getAbsolutePath() + "/" + home + "/" + fileName));
         }
 
+        /**
+         * 取出脚本目录
+         *
+         * @return
+         */
+        public File getScriptHome() {
+            return getHome("script");
+        }
 
         /**
          * 获取JDK的路径
