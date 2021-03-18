@@ -3,6 +3,8 @@ server:
 
 script:
   task:
+    remoteTask:
+      work: false
     runTime:
       home: ../runtime
 

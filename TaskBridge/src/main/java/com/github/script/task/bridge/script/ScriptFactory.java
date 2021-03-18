@@ -3,11 +3,12 @@ package com.github.script.task.bridge.script;
 import com.github.script.task.bridge.helper.SpringBeanHelper;
 import com.github.script.task.bridge.model.ScriptRunTimeModel;
 import com.github.script.task.bridge.runtime.DeviceRunTimeManager;
+import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.bridge.util.ScriptUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.github.script.task.bridge.util.BeanUtil;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -15,9 +16,9 @@ import java.util.concurrent.Executors;
 /**
  * 脚本运行环境工厂
  */
+@Slf4j
 @Component
 public class ScriptFactory {
-
 
     @Autowired
     private SpringBeanHelper springBeanHelper;

@@ -1,6 +1,7 @@
 package com.github.script.task.bridge.runtime;
 
 import com.github.script.task.bridge.device.type.DeviceType;
+import com.github.script.task.bridge.helper.CurrentStateHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +24,10 @@ public class DeviceRunTimeManager {
     private Map<DeviceType, SuperDeviceRunTime> _cache = new ConcurrentHashMap<>();
 
 
+    @Autowired
+    private CurrentStateHelper currentStateHelper;
+
+
     /**
      * 初始化并缓存设备类型
      *
@@ -42,6 +47,8 @@ public class DeviceRunTimeManager {
      * @return
      */
     public void create(SuperScript script) {
+        //删除此能力
+        currentStateHelper.removePower(script.environment().getDevice().getType());
         executeEvent(script, ScriptEvent.EventType.Create);
     }
 
@@ -51,6 +58,7 @@ public class DeviceRunTimeManager {
      */
     public void close(SuperScript script) {
         executeEvent(script, ScriptEvent.EventType.Close);
+        currentStateHelper.addPower(script.environment().getDevice().getType());
     }
 
 

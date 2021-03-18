@@ -1,5 +1,6 @@
 package com.github.script.task.bridge.conf;
 
+import com.github.script.task.bridge.device.type.DeviceType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.util.Set;
 
 @Data
 @Component
@@ -24,14 +26,35 @@ public class ScriptTaskConf {
     //最大并发任务的数量
     private int maxRunTaskCount = 5;
 
+
+    //远程任务
+    private RemoteTask remoteTask = new RemoteTask();
+
+
     //运行环境的配置
     private RunTime runTime = new RunTime();
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RemoteTask {
+
+        //是否执行远程任务
+        private boolean work = true;
+
+        //能力值
+        private Set<DeviceType> powerType = Set.of(
+                DeviceType.AndroidMachine,
+                DeviceType.AndroidSimulator,
+                DeviceType.None,
+                DeviceType.Web
+        );
+    }
+
 
     /**
-     * 模拟器
+     * 运行环境
      */
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
