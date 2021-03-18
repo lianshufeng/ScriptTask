@@ -21,7 +21,4 @@ public class JobService extends SuperService {
         return null;
     }
 
-    public Object delJob(String jobId){
-        return null;
-    }
 }
