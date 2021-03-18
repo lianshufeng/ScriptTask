@@ -31,5 +31,11 @@ public class TestRunScript extends SuperRunScript {
         System.out.println("ret : " + ret);
     }
 
+    @Test
+    public void GetWeiBoUserScript() {
+        Object ret = runScript("GetWeiBoUserScript.groovy");
+        System.out.println("ret : " + ret);
+    }
+
 
 }

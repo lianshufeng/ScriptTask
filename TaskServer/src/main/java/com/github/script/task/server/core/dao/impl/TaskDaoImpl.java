@@ -47,10 +47,7 @@ public class TaskDaoImpl implements TaskDaoExtend {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(param.getId()));
         Update update=new Update();
-        EntityObjectUtil.entity2Update(param,update,new HashSet<String>(){{
-            add("id");
-            add("scriptName");
-        }});
+
         if (param.getDevice() != null){
             param.getDevice().forEach((key,value)->{
                 if (value != null){
@@ -58,6 +55,12 @@ public class TaskDaoImpl implements TaskDaoExtend {
                 }
             });
         }
+        EntityObjectUtil.entity2Update(param,update,new HashSet<String>(){{
+            add("id");
+            add("scriptName");
+            add("environment");
+            add("device");
+        }});
         dbHelper.updateTime(update);
         return mongoTemplate.updateFirst(query, update, Task.class).getModifiedCount() > 0;
     }

@@ -7,6 +7,7 @@ import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import com.github.script.task.bridge.model.param.TaskParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,10 +39,12 @@ public class TaskService {
      */
     public ResultContent<String> create(TaskParam param){
         //检验表达式
-        try {
-            CronExpression.parse(param.getCron());
-        } catch (Exception e){
-            return ResultContent.build(ResultState.CronError);
+        if (!StringUtils.isBlank(param.getCron())){
+            try {
+                CronExpression.parse(param.getCron());
+            } catch (Exception e){
+                return ResultContent.build(ResultState.CronError);
+            }
         }
         //查询脚本
         if (!this.scriptDao.existsByName(param.getScriptName())){
@@ -71,7 +75,7 @@ public class TaskService {
         }
         Task old = optional.get();
         //合并参数
-        if (param.getDevice()!= null){
+        if (param.getEnvironment() != null && param.getEnvironment().getDevice()!= null){
             param.setDevice(merge(BeanUtil.bean2Map(old.getEnvironment().getDevice()),BeanUtil.bean2Map(param.getEnvironment().getDevice())));
         }
         if (param.getParameters()!= null){
@@ -81,12 +85,16 @@ public class TaskService {
     }
 
     private Map<String,Object> merge(Map<String,Object> m1,Map<String,Object> m2){
+        Map<String, Object> result  = new HashMap<>();
+        if (m1 != null){
+            result.putAll(m1);
+        }
         m2.forEach((key, value) -> {
             if (value != null){
-                m1.put(key,value);
+                result.put(key,value);
             }
         });
-        return m1;
+        return result;
     }
 
     /**
