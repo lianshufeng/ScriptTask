@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -18,10 +19,10 @@ public class JobParam {
     private String jobId;
 
     //设备id
-    private List<String> deviceIds;
+    private Set<String> deviceIds;
 
     //设备类型
-    private List<DeviceType> deviceTypes;
+    private Set<DeviceType> deviceTypes;
 
     //获取条数
     private Integer count;

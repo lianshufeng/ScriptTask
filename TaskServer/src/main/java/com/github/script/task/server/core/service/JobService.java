@@ -17,6 +17,7 @@ import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,10 +96,20 @@ public class JobService {
         }
         JobModel model = new JobModel();
         BeanUtils.copyProperties(job, model);
+        model.setTaskId(job.getTask().getId());
         return model;
     }
 
     public ResultContent<String> createByTaskId(String taskId) {
-        return null;
+        Optional<Task> optional = taskDao.findById(taskId);
+        if (!optional.isPresent()){
+            return ResultContent.buildContent(ResultState.TaskNoneExists);
+        }
+        Task task = optional.get();
+
+        Job job = new Job();
+        BeanUtils.copyProperties(task,job,"id");
+        job.setTask(task);
+        return ResultContent.buildContent(toModel(jobDao.save(job)));
     }
 }

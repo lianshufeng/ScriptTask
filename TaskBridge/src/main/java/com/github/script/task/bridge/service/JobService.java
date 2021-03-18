@@ -12,9 +12,17 @@ import java.util.Map;
 public class JobService extends SuperService {
 
     public Object createJobByTaskId(String taskId){
-
         try {
             return postForm("job/createByTaskId", Map.of("taskId",taskId), Object.class);
+        } catch (Exception e) {
+            log.error("exception : {}", e.getMessage());
+        }
+        return null;
+    }
+
+    public Object getJob(JobParam param){
+        try {
+            return postJson("job/getJob",param, Object.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }
