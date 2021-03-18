@@ -5,4 +5,6 @@ import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.dao.MongoDao;
 
 public interface TaskDao extends MongoDao<Task>, TaskDaoExtend {
+
+
 }

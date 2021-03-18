@@ -12,6 +12,7 @@ public enum ResultState {
     Error("错误"),
     Exception("异常"),
     Robot("机器验证"),
+    TaskNoneExists("任务不存在"),
     ScriptNoneExists("脚本不存在"),
     ScriptNotSameVersion("脚本版本不一致"),
     CronError("表达式错误"),

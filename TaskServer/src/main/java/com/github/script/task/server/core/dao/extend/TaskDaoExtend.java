@@ -1,5 +1,6 @@
 package com.github.script.task.server.core.dao.extend;
 
+import com.github.script.task.bridge.model.param.UpdateTaskParam;
 import com.github.script.task.server.core.domain.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,6 @@ public interface TaskDaoExtend {
 
     Boolean del(String id);
 
-    Boolean update(TaskParam param);
+    Boolean update(UpdateTaskParam param);
 
 }

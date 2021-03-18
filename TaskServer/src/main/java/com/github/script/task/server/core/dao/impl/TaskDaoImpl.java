@@ -1,5 +1,7 @@
 package com.github.script.task.server.core.dao.impl;
 
+import com.github.script.task.bridge.model.param.UpdateTaskParam;
+import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
@@ -41,15 +43,21 @@ public class TaskDaoImpl implements TaskDaoExtend {
     }
 
     @Override
-    public Boolean update(TaskParam param) {
-        Task task = new Task();
-        BeanUtils.copyProperties(param,task);
+    public Boolean update(UpdateTaskParam param) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(param.getId()));
         Update update=new Update();
-        EntityObjectUtil.entity2Update(task,update,new HashSet<String>(){{
+        EntityObjectUtil.entity2Update(param,update,new HashSet<String>(){{
             add("id");
+            add("scriptName");
         }});
+        if (param.getDevice() != null){
+            param.getDevice().forEach((key,value)->{
+                if (value != null){
+                    update.set("environment.device." + key,value);
+                }
+            });
+        }
         dbHelper.updateTime(update);
         return mongoTemplate.updateFirst(query, update, Task.class).getModifiedCount() > 0;
     }

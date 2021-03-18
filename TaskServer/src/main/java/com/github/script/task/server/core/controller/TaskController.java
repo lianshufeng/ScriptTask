@@ -1,7 +1,9 @@
 package com.github.script.task.server.core.controller;
 
+import com.github.script.task.bridge.model.param.UpdateTaskParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,6 @@ public class TaskController {
      */
     @RequestMapping("create")
     public Object create(@RequestBody TaskParam param){
-        Assert.hasText(param.getCron(),"cron表达式不能为空");
         Assert.hasText(param.getScriptName(),"脚本名称不能为空");
         return taskService.create(param);
     }
@@ -34,7 +35,7 @@ public class TaskController {
      * @return
      */
     @RequestMapping("update")
-    public Object update(@RequestBody TaskParam param){
+    public Object update(@RequestBody UpdateTaskParam param){
         Assert.hasText(param.getId(),"任务ID不能为空");
         return taskService.update(param);
     }

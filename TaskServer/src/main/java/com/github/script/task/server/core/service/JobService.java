@@ -2,6 +2,7 @@ package com.github.script.task.server.core.service;
 
 import com.github.script.task.server.core.dao.JobDao;
 import com.github.script.task.server.core.dao.JobRunLogDao;
+import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.core.domain.JobRunLog;
 import com.github.script.task.server.core.domain.Task;
@@ -29,6 +30,9 @@ public class JobService {
 
     @Autowired
     private DBHelper dbHelper;
+
+    @Autowired
+    private TaskDao taskDao;
 
 
     public JobModel createByTask(Task task){
@@ -92,5 +96,9 @@ public class JobService {
         JobModel model = new JobModel();
         BeanUtils.copyProperties(job, model);
         return model;
+    }
+
+    public ResultContent<String> createByTaskId(String taskId) {
+        return null;
     }
 }

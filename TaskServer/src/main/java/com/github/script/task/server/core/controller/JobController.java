@@ -1,5 +1,6 @@
 package com.github.script.task.server.core.controller;
 
+import com.github.script.task.bridge.model.param.TaskParam;
 import com.github.script.task.server.core.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -26,5 +27,17 @@ public class JobController {
     @RequestMapping("writeLog")
     public Object writeLog(@RequestBody JobLogParam param){
         return jobService.writeLog(param);
+    }
+
+
+    /**
+     * 创建job
+     * @param taskId
+     * @return
+     */
+    @RequestMapping("createByTaskId")
+    public Object createByTaskId(String taskId){
+        Assert.hasText(taskId,"任务id不能为空");
+        return jobService.createByTaskId(taskId);
     }
 }

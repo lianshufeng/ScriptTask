@@ -1,5 +1,7 @@
 package com.github.script.task.server.core.service;
 
+import com.github.script.task.bridge.model.param.UpdateTaskParam;
+import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.server.core.dao.ScriptDao;
 import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.domain.Script;
@@ -15,6 +17,9 @@ import com.github.script.task.bridge.model.TaskModel;
 import com.github.script.task.bridge.model.param.TaskParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
+
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -57,8 +62,31 @@ public class TaskService {
      * @param param
      * @return
      */
-    public ResultContent<ResultState> update(TaskParam param){
+    public ResultContent<ResultState> update(UpdateTaskParam param){
+
+        Optional<Task> optional = taskDao.findById(param.getId());
+
+        if (!optional.isPresent()){
+            return ResultContent.buildContent(ResultState.TaskNoneExists);
+        }
+        Task old = optional.get();
+        //合并参数
+        if (param.getDevice()!= null){
+            param.setDevice(merge(BeanUtil.bean2Map(old.getEnvironment().getDevice()),BeanUtil.bean2Map(param.getEnvironment().getDevice())));
+        }
+        if (param.getParameters()!= null){
+            param.setParameters(merge(old.getParameters(),param.getParameters()));
+        }
         return taskDao.update(param)?ResultContent.buildContent(ResultState.Success):ResultContent.buildContent(ResultState.Fail);
+    }
+
+    private Map<String,Object> merge(Map<String,Object> m1,Map<String,Object> m2){
+        m2.forEach((key, value) -> {
+            if (value != null){
+                m1.put(key,value);
+            }
+        });
+        return m1;
     }
 
     /**
