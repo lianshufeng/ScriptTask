@@ -3,6 +3,8 @@ package com.github.script.task.client.core.job;
 import com.github.script.task.bridge.conf.ScriptTaskConf;
 import com.github.script.task.bridge.device.type.DeviceType;
 import com.github.script.task.bridge.helper.CurrentStateHelper;
+import com.github.script.task.bridge.model.param.JobParam;
+import com.github.script.task.bridge.service.JobService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class RemoteJobService {
 
     @Autowired
     private CurrentStateHelper currentStateHelper;
+
+    @Autowired
+    private JobService jobService;
 
 
     /**
@@ -59,13 +64,24 @@ public class RemoteJobService {
 
     @SneakyThrows
     private void requestJob() {
-        build();
+        //构建请求参数
+        JobParam jobParam = buildRequestJobParam();
+
+//        jobService.getJob(jobParam);
+        
+
+
     }
 
-    private void build() {
+    /**
+     * 构建请求Job的参数
+     *
+     * @return
+     */
+    private JobParam buildRequestJobParam() {
         final Set<String> deviceIds = currentStateHelper.getDeviceIds();
         final Set<DeviceType> powerTypes = new HashSet<>(currentStateHelper.getPowerType());
-
+        return JobParam.builder().deviceIds(deviceIds).deviceTypes(powerTypes).build();
     }
 
 
