@@ -40,9 +40,9 @@ public class Job extends SuperEntity {
     //执行设备
     private DeviceType deviceType;
 
-    //操作索引
+
     @Indexed
-    private String uuid;
+    private long inc;
 
 
 }

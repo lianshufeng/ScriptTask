@@ -4,6 +4,7 @@ import com.github.script.task.bridge.conf.ScriptTaskConf;
 import com.github.script.task.bridge.runtime.impl.AndroidSimulatorDeviceRunTime;
 import com.github.script.task.bridge.script.ScriptRuntime;
 import com.github.script.task.bridge.script.SuperScriptAction;
+import com.github.script.task.bridge.service.TaskService;
 import com.github.script.task.bridge.util.LeiDianSimulatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class DeviceBindAction extends SuperScriptAction {
     @Autowired
     private AndroidSimulatorDeviceRunTime androidSimulatorDeviceRunTime;
 
+    @Autowired
+    private TaskService taskService;
+
 
     /**
      * 绑定
@@ -36,10 +40,6 @@ public class DeviceBindAction extends SuperScriptAction {
     private void checkAndBind() {
         ScriptRuntime scriptRuntime = getScript().getRuntime();
         String deviceId = scriptRuntime.getDeviceId();
-        //任务的设备id为空则不用绑定
-        if (deviceId == null) {
-            return;
-        }
 
 
         //取出当前正在执行的模拟器
@@ -58,7 +58,7 @@ public class DeviceBindAction extends SuperScriptAction {
 
 
         //模拟器的设备id与任务的设备id不匹配则允许重新绑定
-        if (!deviceId.equals(simulatorMacAddress)) {
+        if (deviceId == null || !deviceId.equals(simulatorMacAddress)) {
             bindRemoteTask(simulatorMacAddress);
         }
 
@@ -81,7 +81,7 @@ public class DeviceBindAction extends SuperScriptAction {
         ScriptRuntime scriptRuntime = getScript().getRuntime();
         String taskId = scriptRuntime.getTaskId();
         log.info("[绑定] -[任务]- {} -> {}", taskId, deviceMac);
-        //todo 调用接口远程访问
+        this.taskService.bindTask(taskId, deviceMac);
 
     }
 

@@ -36,9 +36,9 @@ public class JobService {
     private TaskDao taskDao;
 
 
-    public JobModel createByTask(Task task){
+    public JobModel createByTask(Task task) {
         Job job = new Job();
-        BeanUtils.copyProperties(task,job,"id");
+        BeanUtils.copyProperties(task, job, "id");
         job.setTask(task);
         jobDao.save(job);
         return toModel(job);
@@ -50,13 +50,34 @@ public class JobService {
      * @param param
      * @return
      */
-    public List<JobModel> get(JobParam param) {
-        List<Job> jobs = jobDao.get(param);
-        return jobs.stream().map((it) -> {
-            createLog(it);
-            return toModel(it);
-        }).collect(Collectors.toList());
+//    public List<JobModel> getByList(JobParam param) {
+//        List<Job> jobs = jobDao.get(param);
+//        return jobs.stream().map((it) -> {
+//            createLog(it);
+//            return toModel(it);
+//        }).collect(Collectors.toList());
+//    }
+
+    /**
+     * 查询
+     * @param param
+     * @return
+     */
+    public JobModel get(JobParam param) {
+        Job job = jobDao.get(param);
+        if (job != null) {
+            return toModel(job);
+        }
+        return null;
+
+
+//        List<Job> jobs = jobDao.get(param);
+//        return jobs.stream().map((it) -> {
+//            createLog(it);
+//            return toModel(it);
+//        }).collect(Collectors.toList());
     }
+
 
     /**
      * 创建日志
@@ -102,12 +123,12 @@ public class JobService {
 
     public ResultContent<String> createByTaskId(String taskId) {
         Optional<Task> optional = taskDao.findById(taskId);
-        if (!optional.isPresent()){
+        if (!optional.isPresent()) {
             return ResultContent.buildContent(ResultState.TaskNoneExists);
         }
         Task task = optional.get();
         Job job = new Job();
-        BeanUtils.copyProperties(task,job,"id");
+        BeanUtils.copyProperties(task, job, "id");
         job.setTask(task);
         return ResultContent.buildContent(toModel(jobDao.save(job)));
     }

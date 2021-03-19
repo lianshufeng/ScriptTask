@@ -24,8 +24,5 @@ public class JobParam {
     //设备类型
     private Set<DeviceType> deviceTypes;
 
-    //获取条数
-    private Integer count;
-
 
 }

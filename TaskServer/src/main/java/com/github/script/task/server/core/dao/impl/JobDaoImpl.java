@@ -1,23 +1,25 @@
 package com.github.script.task.server.core.dao.impl;
 
+import com.github.script.task.bridge.device.type.DeviceType;
 import com.github.script.task.bridge.model.param.JobParam;
 import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.dao.extend.JobDaoExtend;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
+@Slf4j
 public class JobDaoImpl implements JobDaoExtend {
 
 
@@ -30,19 +32,83 @@ public class JobDaoImpl implements JobDaoExtend {
     @Autowired
     private TTLConf ttlConf;
 
-    /*@Override
-    public Job get(String deviceId) {
-        Sort sort = Sort.by(Sort.Direction.ASC,"createTime");
-        Job job = this.mongoTemplate
-                .findAndRemove(Query.query(Criteria.where("deviceId").is(deviceId)).with(sort).limit(1),Job.class);
-        return job != null ? job : this.mongoTemplate
-                .findAndRemove(Query.query(Criteria.where("createTime").gte(0)).with(sort).limit(1),Job.class);
-    }*/
+
+    /**
+     * 构建查询条件`
+     *
+     * @param param
+     * @return
+     */
+    public Job queryJob(JobParam param, boolean isContainDeviceId) {
+        final Criteria rootCriteria = new Criteria();
+        final Query query = new Query(rootCriteria);
+
+        List<Criteria> andCriteria = new ArrayList<>();
+        Sort.Order[] orders = null;
+        if (isContainDeviceId) {
+            //包含 : 'deviceType' in ()    and   'deviceId' in ()  order by deviceId desc
+            orders = new Sort.Order[]{Sort.Order.desc("deviceId"), Sort.Order.asc("createTime")};
+
+            //deviceType in ()
+            andCriteria.add(buildDeviceTypeCriteria(param));
+
+            andCriteria.add(Criteria.where("deviceId").in(param.getDeviceIds()));
+
+        } else {
+            orders = new Sort.Order[]{Sort.Order.asc("createTime"), Sort.Order.asc("deviceId")};
+            //排除 : 'deviceType' in ()    and   ( 'deviceId' is null or 'deviceId'  exists false )  order by deviceId asc
+
+            //deviceType in ()
+            andCriteria.add(buildDeviceTypeCriteria(param));
+
+            andCriteria.add(new Criteria().andOperator(
+                    Criteria.where("deviceId").exists(false),
+                    Criteria.where("deviceId").is(null)
+            ));
+        }
+
+
+        query.with(Sort.by(orders));
+        rootCriteria.andOperator(andCriteria.toArray(new Criteria[0]));
+        return this.mongoTemplate.findOne(query, Job.class);
+    }
+
+    /**
+     * 构建设备类型查询条件
+     *
+     * @param param
+     * @return
+     */
+    private Criteria buildDeviceTypeCriteria(JobParam param) {
+        Set<DeviceType> deviceTypes = null;
+        if (param.getDeviceTypes() == null || param.getDeviceTypes().size() == 0) {
+            deviceTypes = Set.of();
+        } else {
+            deviceTypes = param.getDeviceTypes();
+        }
+        return Criteria.where("deviceType").in(deviceTypes);
+    }
+
 
     @Override
-    public List<Job> get(JobParam param) {
-        List<Job> jobs = getJobByDeviceId(param);
-        return jobs.size() > 0 ? jobs : getJob(param);
+    public Job get(JobParam param) {
+        Job job = queryJob(param, param.getDeviceIds() != null);
+        if (job == null) {
+            job = queryJob(param, false);
+        }
+        if (job == null) {
+            return null;
+        }
+        log.info("get job : {}", job.getId());
+
+        Update update = new Update();
+        update.inc("inc", 1);
+        this.mongoTemplate.updateFirst(Query.query(Criteria.where("_id").is(job.getId())), update, Job.class);
+
+        return this.mongoTemplate.findAndRemove(
+                Query.query(
+                        Criteria.where("_id").is(job.getId()).and("inc").is(1)
+                ), Job.class);
     }
 
     @Override
@@ -57,6 +123,16 @@ public class JobDaoImpl implements JobDaoExtend {
         return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Job.class);
     }
 
+       /*@Override
+    public Job get(String deviceId) {
+        Sort sort = Sort.by(Sort.Direction.ASC,"createTime");
+        Job job = this.mongoTemplate
+                .findAndRemove(Query.query(Criteria.where("deviceId").is(deviceId)).with(sort).limit(1),Job.class);
+        return job != null ? job : this.mongoTemplate
+                .findAndRemove(Query.query(Criteria.where("createTime").gte(0)).with(sort).limit(1),Job.class);
+    }*/
+
+/*
     private List<Job> getJob(JobParam param){
         Query query = new Query();
         query.with(Sort.by(Sort.Direction.ASC,"createTime"));
@@ -102,6 +178,6 @@ public class JobDaoImpl implements JobDaoExtend {
             bulkOperations.updateOne(query, update);
         }
         bulkOperations.execute();
-    }
+    }*/
 
 }

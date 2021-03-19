@@ -44,69 +44,71 @@ public class TaskService {
 
     /**
      * 创建任务
+     *
      * @param param
      * @return
      */
-    public ResultContent<String> create(TaskParam param){
+    public ResultContent<String> create(TaskParam param) {
         //检验表达式
-        if (!StringUtils.isBlank(param.getCron())){
+        if (!StringUtils.isBlank(param.getCron())) {
             try {
                 CronExpression.parse(param.getCron());
-            } catch (Exception e){
+            } catch (Exception e) {
                 return ResultContent.build(ResultState.CronError);
             }
         }
         //查询脚本
-        if (!this.scriptDao.existsByName(param.getScriptName())){
-            return ResultContent.build(ResultState.ScriptNoneExists);
+        if (!this.scriptDao.existsByName(param.getScriptName())) {
+            return ResultContent.build(ResultState.ScriptNotExists);
         }
         Script script = this.scriptDao.findByName(param.getScriptName());
         Task task = new Task();
+        BeanUtils.copyProperties(script, task, "id");
         task.setCron(param.getCron());
         task.setScriptName(script.getName());
-        BeanUtils.copyProperties(script,task);
-        if (param.getTimeout() == null){
+
+        if (param.getTimeout() == null) {
             task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTTL()));
         } else {
             task.setTtl(new Date(dbHelper.getTime() + param.getTimeout()));
         }
         //入库
-        this.taskDao.save(task);
         return ResultContent.buildContent(toModel(this.taskDao.save(task)));
     }
 
 
     /**
      * 修改任务
+     *
      * @param param
      * @return
      */
-    public ResultContent<ResultState> update(UpdateTaskParam param){
+    public ResultContent<ResultState> update(UpdateTaskParam param) {
 
         Optional<Task> optional = taskDao.findById(param.getId());
 
-        if (!optional.isPresent()){
+        if (!optional.isPresent()) {
             return ResultContent.buildContent(ResultState.TaskNoneExists);
         }
         Task old = optional.get();
         //合并参数
-        if (param.getEnvironment() != null && param.getEnvironment().getDevice()!= null){
-            param.setDevice(merge(BeanUtil.bean2Map(old.getEnvironment().getDevice()),BeanUtil.bean2Map(param.getEnvironment().getDevice())));
+        if (param.getEnvironment() != null && param.getEnvironment().getDevice() != null) {
+            param.setDevice(merge(BeanUtil.bean2Map(old.getEnvironment().getDevice()), BeanUtil.bean2Map(param.getEnvironment().getDevice())));
         }
-        if (param.getParameters()!= null){
-            param.setParameters(merge(old.getParameters(),param.getParameters()));
+        if (param.getParameters() != null) {
+            param.setParameters(merge(old.getParameters(), param.getParameters()));
         }
-        return taskDao.update(param)?ResultContent.buildContent(ResultState.Success):ResultContent.buildContent(ResultState.Fail);
+        return taskDao.update(param) ? ResultContent.buildContent(ResultState.Success) : ResultContent.buildContent(ResultState.Fail);
     }
 
-    private Map<String,Object> merge(Map<String,Object> m1,Map<String,Object> m2){
-        Map<String, Object> result  = new HashMap<>();
-        if (m1 != null){
+    private Map<String, Object> merge(Map<String, Object> m1, Map<String, Object> m2) {
+        Map<String, Object> result = new HashMap<>();
+        if (m1 != null) {
             result.putAll(m1);
         }
         m2.forEach((key, value) -> {
-            if (value != null){
-                result.put(key,value);
+            if (value != null) {
+                result.put(key, value);
             }
         });
         return result;
@@ -114,11 +116,12 @@ public class TaskService {
 
     /**
      * 任务列表
+     *
      * @param param
      * @param pageable
      * @return
      */
-    public Page<TaskModel> list(TaskParam param,Pageable pageable){
+    public Page<TaskModel> list(TaskParam param, Pageable pageable) {
         return PageEntityUtil.concurrent2PageModel(this.taskDao.list(param, pageable), (it) -> {
             return toModel(it);
         });
@@ -127,14 +130,13 @@ public class TaskService {
 
     /**
      * 删除任务
+     *
      * @param id
      * @return
      */
-    public ResultContent<ResultState> del(String id){
-        return taskDao.del(id)?ResultContent.buildContent(ResultState.Success):ResultContent.buildContent(ResultState.Fail);
+    public ResultContent<ResultState> del(String id) {
+        return taskDao.del(id) ? ResultContent.buildContent(ResultState.Success) : ResultContent.buildContent(ResultState.Fail);
     }
-
-
 
 
     /**

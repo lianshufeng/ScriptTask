@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JobModel extends ScriptRunTimeModel {
 
+    //Job的Id
+    private String id;
+
     //脚本名
     private String scriptName;
 

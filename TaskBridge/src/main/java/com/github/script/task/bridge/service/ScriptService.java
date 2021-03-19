@@ -1,11 +1,11 @@
 package com.github.script.task.bridge.service;
 
-import com.github.script.task.bridge.result.ResultContent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.github.script.task.bridge.model.ScriptRunTimeModel;
+import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.script.ScriptFactory;
 import com.github.script.task.bridge.script.SuperScript;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 
@@ -25,7 +25,8 @@ public class ScriptService extends SuperService {
      */
     public ResultContent<String> checkOrUpdate(String scriptName, String hash) {
         return postForm("/script/check", new HashMap<String, Object>() {{
-            put("x", 1);
+            put("scriptName", scriptName);
+            put("hash", hash);
         }}, ResultContent.class);
     }
 

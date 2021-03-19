@@ -1,10 +1,7 @@
 package com.github.script.task.bridge.result;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Optional;
 
@@ -14,6 +11,8 @@ import java.util.Optional;
  * @param <T>
  */
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultContent<T> {

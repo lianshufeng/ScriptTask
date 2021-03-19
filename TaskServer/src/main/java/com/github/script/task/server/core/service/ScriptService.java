@@ -1,19 +1,17 @@
 package com.github.script.task.server.core.service;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.github.script.task.bridge.model.ScriptModel;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.server.core.dao.ScriptDao;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
-
-import java.util.Base64;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ScriptService {
@@ -47,27 +45,29 @@ public class ScriptService {
 
     /**
      * 删除
+     *
      * @param scriptName
      * @return
      */
-    public ResultContent<ResultState> del(String scriptName){
+    public ResultContent<ResultState> del(String scriptName) {
         return scriptDao.del(scriptName) ? ResultContent.buildContent(ResultState.Success) : ResultContent.buildContent(ResultState.Fail);
     }
 
 
     /**
      * 检查脚本版本
+     *
      * @param scriptName
      * @param hash
      * @return
      */
     public ResultContent<String> check(String scriptName, String hash) {
-        if (scriptDao.existsByName(scriptName)){
-            return ResultContent.build(ResultState.ScriptNoneExists);
+        if (!scriptDao.existsByName(scriptName)) {
+            return ResultContent.build(ResultState.ScriptNotExists);
         }
         Script script = scriptDao.findByName(scriptName);
         return script.getHash().equals(hash) ? ResultContent.build(ResultState.Success) :
-                ResultContent.build(ResultState.ScriptNotSameVersion,Base64.getEncoder().encode(script.getBody()));
+                ResultContent.build(ResultState.ScriptNotSameVersion, script.getBody());
     }
 
 

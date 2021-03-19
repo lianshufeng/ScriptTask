@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface JobDaoExtend {
 
-    List<Job> get(JobParam param);
+    Job get(JobParam param);
+
+//    List<Job> get(JobParam param);
 
     Job resetDeice();
 }

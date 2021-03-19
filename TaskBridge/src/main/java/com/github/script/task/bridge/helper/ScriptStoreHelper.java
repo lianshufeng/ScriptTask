@@ -55,19 +55,22 @@ public class ScriptStoreHelper {
 
         //检查或者更新脚本
         ResultContent<String> resultContent = scriptService.checkOrUpdate(scriptName, hash);
-        if (resultContent.getState() != ResultState.Success) {
+
+        if (resultContent.getState() == ResultState.Success) {
+            log.info("[脚本] - [缓存] - [{}]", scriptName);
             return scriptBin == null ? null : toScriptText(scriptBin);
         }
 
+        log.info("[脚本] - [更新] - [{}]", scriptName);
 
         //服务端返回的最新的脚本,base64编码
         if (resultContent.getContent() != null) {
-            log.info("[脚本] - [更新] - [{}]", scriptName);
+            log.info("[脚本] - [保存] - [{}]", scriptName);
             scriptBin = Base64.getDecoder().decode(resultContent.getContent());
             saveDiskScript(scriptName, scriptBin);
         }
 
-        return toScriptText(scriptBin);
+        return scriptBin == null ? null : toScriptText(scriptBin);
     }
 
 
@@ -119,7 +122,7 @@ public class ScriptStoreHelper {
      * @return
      */
     private File scriptFile(String scriptName) {
-        return new File(this.scriptHome.getAbsolutePath() + "/" + scriptName);
+        return new File(this.scriptHome.getAbsolutePath() + "/" + scriptName + ".groovy");
     }
 
 

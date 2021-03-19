@@ -2,6 +2,7 @@ package com.github.script.task.bridge.service;
 
 
 import com.github.script.task.bridge.model.param.JobParam;
+import com.github.script.task.bridge.result.ResultContent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,18 +12,24 @@ import java.util.Map;
 @Service
 public class JobService extends SuperService {
 
-    public Object createJobByTaskId(String taskId){
+    public Object createJobByTaskId(String taskId) {
         try {
-            return postForm("job/createByTaskId", Map.of("taskId",taskId), Object.class);
+            return postForm("job/createByTaskId", Map.of("taskId", taskId), Object.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }
         return null;
     }
 
-    public Object getJob(JobParam param){
+    /**
+     * 获取一个Job
+     *
+     * @param param
+     * @return
+     */
+    public ResultContent getJob(JobParam param) {
         try {
-            return postJson("job/getJob",param, Object.class);
+            return postJson("job/get", param, ResultContent.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }
