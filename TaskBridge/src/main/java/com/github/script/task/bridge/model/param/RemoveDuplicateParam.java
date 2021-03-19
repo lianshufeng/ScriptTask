@@ -10,4 +10,6 @@ public class RemoveDuplicateParam {
     private List<String> values;
 
     private String scriptName;
+
+    private Long ttl;
 }

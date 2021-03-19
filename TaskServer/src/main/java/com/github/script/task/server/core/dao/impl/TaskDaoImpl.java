@@ -2,6 +2,7 @@ package com.github.script.task.server.core.dao.impl;
 
 import com.github.script.task.bridge.model.param.UpdateTaskParam;
 import com.github.script.task.bridge.util.BeanUtil;
+import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -63,5 +65,17 @@ public class TaskDaoImpl implements TaskDaoExtend {
         }});
         dbHelper.updateTime(update);
         return mongoTemplate.updateFirst(query, update, Task.class).getModifiedCount() > 0;
+    }
+
+    @Override
+    public Task resetDeice(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        Update update = new Update();
+        update.unset("deviceId");
+        FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions();
+        findAndModifyOptions.returnNew(true);
+        dbHelper.updateTime(update);
+        return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Task.class);
     }
 }

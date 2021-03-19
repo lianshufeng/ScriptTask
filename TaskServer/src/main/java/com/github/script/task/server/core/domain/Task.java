@@ -9,6 +9,7 @@ import com.github.script.task.bridge.device.type.DeviceType;
 import com.github.script.task.bridge.script.Environment;
 import com.github.script.task.server.other.timer.domain.SimpleTaskTimerTable;
 
+import java.util.Date;
 import java.util.Map;
 
 @Document
@@ -33,6 +34,10 @@ public class Task extends SimpleTaskTimerTable {
 
     //执行设备
     private DeviceType deviceType;
+
+
+    @Indexed(expireAfterSeconds = 0)
+    private Date ttl;
 
 
 }

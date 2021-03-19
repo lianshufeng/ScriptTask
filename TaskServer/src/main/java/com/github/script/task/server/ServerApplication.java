@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"com.github.script.task.server.core"})
-@ComponentScan({"com.github.script.task.bridge.conf"})
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class ServerApplication {
 

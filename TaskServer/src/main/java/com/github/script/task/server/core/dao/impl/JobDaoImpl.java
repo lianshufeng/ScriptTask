@@ -1,10 +1,12 @@
 package com.github.script.task.server.core.dao.impl;
 
+import com.github.script.task.server.core.conf.JobConf;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.BulkOperations;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,6 +27,9 @@ public class JobDaoImpl implements JobDaoExtend {
     @Autowired
     private DBHelper dbHelper;
 
+    @Autowired
+    private JobConf jobConf;
+
     /*@Override
     public Job get(String deviceId) {
         Sort sort = Sort.by(Sort.Direction.ASC,"createTime");
@@ -38,6 +43,18 @@ public class JobDaoImpl implements JobDaoExtend {
     public List<Job> get(JobParam param) {
         List<Job> jobs = getJobByDeviceId(param);
         return jobs.size() > 0 ? jobs : getJob(param);
+    }
+
+    @Override
+    public Job resetDeice() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("creatTime").lt(dbHelper.getTime() - jobConf.getTimeOut()));
+        Update update = new Update();
+        update.unset("deviceId");
+        FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions();
+        findAndModifyOptions.returnNew(true);
+        dbHelper.updateTime(update);
+        return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Job.class);
     }
 
     private List<Job> getJob(JobParam param){

@@ -14,4 +14,6 @@ public interface TaskDaoExtend {
 
     Boolean update(UpdateTaskParam param);
 
+    Task resetDeice(String id);
+
 }

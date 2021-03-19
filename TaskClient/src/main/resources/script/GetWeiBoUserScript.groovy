@@ -1,18 +1,28 @@
 package script.demo
 
 import com.github.script.task.bridge.device.impl.NoDevice
+import com.github.script.task.bridge.model.param.TaskParam
 import com.github.script.task.bridge.script.Environment
 import com.github.script.task.bridge.script.Parameter
 import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
+import com.github.script.task.bridge.service.JobService
 import com.github.script.task.bridge.service.RemoveDuplicateService
+import com.github.script.task.bridge.service.TaskService
 import org.jsoup.Jsoup
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job
 
 class GetWeiBoUserScript extends SuperScript {
 
     @Autowired
-    private RemoveDuplicateService removeDuplicateService;
+    private RemoveDuplicateService removeDuplicateService
+
+    @Autowired
+    private JobService jobService
+
+    @Autowired
+    private TaskService taskService
 
 
     @Override
@@ -36,7 +46,7 @@ class GetWeiBoUserScript extends SuperScript {
     @Override
     Map<String, Parameter> parameters() {
         return [
-                'cookie' : new Parameter(value: 'SINAGLOBAL=4295076059692.5376.1586332527804; login_sid_t=4574926056df9821576e726403230869; cross_origin_proto=SSL; _s_tentry=www.baidu.com; Apache=7706960892441.834.1615531942069; ULV=1615531942073:13:2:1:7706960892441.834.1615531942069:1614841585473; WBtopGlobal_register_version=2021031215; SSOLoginState=1615533281; un=18682630458; wvr=6; wb_view_log_2906191177=2560*14401; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhJ2TWaCdSW3kzQUE_eojmZ5JpX5KMhUgL.Foz4ehqp1K2pS0M2dJLoIEXLxK-L1KML1-eLxKML1-BLBK2LxKML1-2L1hBLxK-L1KqLBo-LxK-L1K5L1-zt; ALF=1647409705; SCF=Agyy7fZ5uwLCOE_SfvwDtyHWN5W-pBRELMkWd9hfLHsxbnOD8iprTbs0-vbyPeZebiiOAhPMOQNgOUzRRsYSN88.; SUB=_2A25NVDb7DeRhGeRH61QQ-S_NzDuIHXVuIC8zrDV8PUNbmtANLRSjkW9NTfMTS2IHWjVQH1WSJHEEwjtpOAOL5QJM; UOR=,,login.sina.com.cn; webim_unReadCount={"time":1615882155165,"dm_pub_total":0,"chat_group_client":0,"chat_group_notice":0,"allcountNum":38,"msgbox":0}'),
+                'cookie' : new Parameter(value: 'SINAGLOBAL=4295076059692.5376.1586332527804; un=18682630458; wvr=6; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhJ2TWaCdSW3kzQUE_eojmZ5JpX5KMhUgL.Foz4ehqp1K2pS0M2dJLoIEXLxK-L1KML1-eLxKML1-BLBK2LxKML1-2L1hBLxK-L1KqLBo-LxK-L1K5L1-zt; ALF=1647654735; SSOLoginState=1616118736; SCF=Agyy7fZ5uwLCOE_SfvwDtyHWN5W-pBRELMkWd9hfLHsx53uWq1GwT4LPi7kCVYDtwxHlF5tGTZaXVNiMXb8Bngw.; SUB=_2A25NUHOADeRhGeRH61QQ-S_NzDuIHXVuJOJIrDV8PUNbmtANLXTAkW9NTfMTS1P0Xx-gcAAN6WEk0GGVtOvxuNoz; _s_tentry=login.sina.com.cn; UOR=,,www.baidu.com; Apache=56067474428.02762.1616118739470; ULV=1616118739475:14:3:2:56067474428.02762.1616118739470:1615531942073; WBStorage=8daec78e6a891122|undefined'),
                 'host' : new Parameter(value: 'https://s.weibo.com/weibo'),
                 'keyWord': new Parameter(value: '美术生')
         ]
@@ -92,6 +102,12 @@ class GetWeiBoUserScript extends SuperScript {
         if (result != null && result['state'] == 'Success'){
             def content = result['content']
                 //Todo 调用其他脚本
+            TaskParam param = new TaskParam()
+            param.setScriptName("")
+
+            def taskResult = taskService.creatTask(param)
+
+
         }
         return [
                 'time' : System.currentTimeMillis(),

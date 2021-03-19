@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskService extends SuperService {
 
-    private Object creatTask(TaskParam param){
+    public Object creatTask(TaskParam param){
         try {
             return postJson("task/create", param, Object.class);
         } catch (Exception e) {

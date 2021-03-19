@@ -8,4 +8,6 @@ import java.util.List;
 public interface JobDaoExtend {
 
     List<Job> get(JobParam param);
+
+    Job resetDeice();
 }

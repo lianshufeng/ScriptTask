@@ -1,5 +1,4 @@
-package com.github.script.task.bridge.conf;
-
+package com.github.script.task.server.core.conf;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-@ConfigurationProperties(prefix = "removeduplicate")
-public class RemoveDuplicateConf {
-    //过期时间
-    private Long defaultTTl = 86400000L;
+@ConfigurationProperties(prefix = "job")
+public class JobConf {
+
+    private Long timeOut;
 }
