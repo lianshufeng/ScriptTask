@@ -1,6 +1,8 @@
 package com.github.script.task.server.core.dao.impl;
 
-import com.github.script.task.server.core.conf.JobConf;
+import com.github.script.task.bridge.model.param.JobParam;
+import com.github.script.task.server.core.conf.TTLConf;
+import com.github.script.task.server.core.dao.extend.JobDaoExtend;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.CollectionUtils;
-import com.github.script.task.bridge.model.param.JobParam;
-import com.github.script.task.server.core.dao.extend.JobDaoExtend;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class JobDaoImpl implements JobDaoExtend {
     private DBHelper dbHelper;
 
     @Autowired
-    private JobConf jobConf;
+    private TTLConf ttlConf;
 
     /*@Override
     public Job get(String deviceId) {
@@ -48,7 +48,7 @@ public class JobDaoImpl implements JobDaoExtend {
     @Override
     public Job resetDeice() {
         Query query = new Query();
-        query.addCriteria(Criteria.where("creatTime").lt(dbHelper.getTime() - jobConf.getTimeOut()));
+        query.addCriteria(Criteria.where("creatTime").lt(dbHelper.getTime() - ttlConf.getJobTimeOut()));
         Update update = new Update();
         update.unset("deviceId");
         FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions();

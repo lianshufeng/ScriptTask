@@ -3,7 +3,7 @@ package com.github.script.task.server.core.event;
 import com.github.script.task.bridge.model.param.RemoveDuplicateParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.conf.RemoveDuplicateConf;
+import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.core.service.RemoveDuplicateService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +27,14 @@ public class TaskTimerEvent implements SimpleTaskTimerEvent<Task> {
     private RemoveDuplicateService removeDuplicateService;
 
     @Autowired
-    private RemoveDuplicateConf removeDuplicateConf;
+    private TTLConf ttlConf;
 
     @Override
     public void execute(Task task) {
         RemoveDuplicateParam param = new RemoveDuplicateParam();
         param.setValues(List.of(task.getId()));
         param.setScriptName(task.getScriptName());
-        param.setTtl(removeDuplicateConf.getDefaultTTl());
+        param.setTtl(ttlConf.getRemoveDuplicateTTl());
         ResultContent<List<String>> content = removeDuplicateService.duplicateAndSave(param);
         if (content.getState() == ResultState.Success){
             JobModel jobModel = jobService.createByTask(task);

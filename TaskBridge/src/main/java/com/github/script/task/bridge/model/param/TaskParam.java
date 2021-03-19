@@ -37,4 +37,9 @@ public class TaskParam {
      * 绑定的设备标识
      */
     private String deviceId;
+
+    /**
+     * 过期时间
+     */
+    private Long timeout;
 }

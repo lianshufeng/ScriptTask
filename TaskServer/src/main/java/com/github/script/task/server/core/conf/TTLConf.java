@@ -10,8 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-@ConfigurationProperties(prefix = "job")
-public class JobConf {
+@ConfigurationProperties(prefix = "ttl")
+public class TTLConf {
 
-    private Long timeOut;
+    private Long jobTimeOut = 86400000L;
+
+    private Long taskTTL = 86400000L;
+
+    private Long removeDuplicateTTl = 86400000L;
 }

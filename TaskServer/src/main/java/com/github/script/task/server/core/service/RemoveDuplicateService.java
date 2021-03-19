@@ -3,7 +3,7 @@ package com.github.script.task.server.core.service;
 import com.github.script.task.bridge.model.param.RemoveDuplicateParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.conf.RemoveDuplicateConf;
+import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.dao.RemoveDuplicateDao;
 import com.github.script.task.server.core.domain.RemoveDuplicate;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
@@ -26,7 +26,7 @@ public class RemoveDuplicateService {
     private DBHelper dbHelper;
 
     @Autowired
-    private RemoveDuplicateConf removeDuplicateConf;
+    private TTLConf ttlConf;
 
     /**
      * 检查去重
@@ -54,7 +54,7 @@ public class RemoveDuplicateService {
                     if (param.getTtl() != null && param.getTtl() > 0){
                         removeDuplicate.setTtl(new Date(dbHelper.getTime() + param.getTtl()));
                     } else {
-                        removeDuplicate.setTtl(new Date(dbHelper.getTime() + removeDuplicateConf.getDefaultTTl()));
+                        removeDuplicate.setTtl(new Date(dbHelper.getTime() + ttlConf.getRemoveDuplicateTTl()));
                     }
                     saveList.add(removeDuplicate);
                 }));

@@ -2,10 +2,12 @@ package com.github.script.task.server.core.service;
 
 import com.github.script.task.bridge.model.param.UpdateTaskParam;
 import com.github.script.task.bridge.util.BeanUtil;
+import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.dao.ScriptDao;
 import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.core.domain.Task;
+import com.github.script.task.server.other.mongo.helper.DBHelper;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +21,7 @@ import com.github.script.task.bridge.model.param.TaskParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +34,13 @@ public class TaskService {
 
     @Autowired
     private ScriptDao scriptDao;
+
+    @Autowired
+    private TTLConf ttlConf;
+
+    @Autowired
+    private DBHelper dbHelper;
+
 
     /**
      * 创建任务
@@ -55,9 +65,14 @@ public class TaskService {
         task.setCron(param.getCron());
         task.setScriptName(script.getName());
         BeanUtils.copyProperties(script,task);
+        if (param.getTimeout() == null){
+            task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTTL()));
+        } else {
+            task.setTtl(new Date(dbHelper.getTime() + param.getTimeout()));
+        }
         //入库
         this.taskDao.save(task);
-        return ResultContent.buildContent(this.taskDao.save(task).getId());
+        return ResultContent.buildContent(toModel(this.taskDao.save(task)));
     }
 
 

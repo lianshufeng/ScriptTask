@@ -106,7 +106,6 @@ public class JobService {
             return ResultContent.buildContent(ResultState.TaskNoneExists);
         }
         Task task = optional.get();
-
         Job job = new Job();
         BeanUtils.copyProperties(task,job,"id");
         job.setTask(task);
