@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("removeDuplicate")
+@RequestMapping("data")
 public class RemoveDuplicateController {
 
     @Autowired

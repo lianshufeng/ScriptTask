@@ -42,7 +42,7 @@ public class Job extends SuperEntity {
 
 
     @Indexed
-    private long inc;
+    private String uuid;
 
 
 }

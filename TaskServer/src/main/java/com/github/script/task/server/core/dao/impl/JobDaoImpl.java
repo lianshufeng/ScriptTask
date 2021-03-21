@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 public class JobDaoImpl implements JobDaoExtend {
@@ -39,7 +40,7 @@ public class JobDaoImpl implements JobDaoExtend {
      * @param param
      * @return
      */
-    public Job queryJob(JobParam param, boolean isContainDeviceId) {
+    public boolean findAndUpdateJob(String uuid, JobParam param, boolean isContainDeviceId) {
         final Criteria rootCriteria = new Criteria();
         final Query query = new Query(rootCriteria);
 
@@ -70,7 +71,8 @@ public class JobDaoImpl implements JobDaoExtend {
 
         query.with(Sort.by(orders));
         rootCriteria.andOperator(andCriteria.toArray(new Criteria[0]));
-        return this.mongoTemplate.findOne(query, Job.class);
+
+        return this.mongoTemplate.updateFirst(query, Update.update("uuid", uuid), Job.class).getModifiedCount() > 0;
     }
 
     /**
@@ -92,23 +94,16 @@ public class JobDaoImpl implements JobDaoExtend {
 
     @Override
     public Job get(JobParam param) {
-        Job job = queryJob(param, param.getDeviceIds() != null);
-        if (job == null) {
-            job = queryJob(param, false);
+        final String uuid = UUID.randomUUID().toString();
+        boolean success = findAndUpdateJob(uuid, param, param.getDeviceIds() != null);
+        if (!success) {
+            success = findAndUpdateJob(uuid, param, false);
         }
-        if (job == null) {
+        if (!success) {
             return null;
         }
-        log.info("get job : {}", job.getId());
 
-        Update update = new Update();
-        update.inc("inc", 1);
-        this.mongoTemplate.updateFirst(Query.query(Criteria.where("_id").is(job.getId())), update, Job.class);
-
-        return this.mongoTemplate.findAndRemove(
-                Query.query(
-                        Criteria.where("_id").is(job.getId()).and("inc").is(1)
-                ), Job.class);
+        return this.mongoTemplate.findAndRemove(Query.query(Criteria.where("uuid").is(uuid)), Job.class);
     }
 
     @Override

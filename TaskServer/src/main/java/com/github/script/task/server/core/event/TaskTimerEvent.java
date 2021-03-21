@@ -34,7 +34,6 @@ public class TaskTimerEvent implements SimpleTaskTimerEvent<Task> {
         RemoveDuplicateParam param = new RemoveDuplicateParam();
         param.setValues(List.of(task.getId()));
         param.setScriptName(task.getScriptName());
-        param.setTtl(ttlConf.getRemoveDuplicateTTl());
         ResultContent<List<String>> content = removeDuplicateService.duplicateAndSave(param);
         if (content.getState() == ResultState.Success){
             JobModel jobModel = jobService.createByTask(task);
