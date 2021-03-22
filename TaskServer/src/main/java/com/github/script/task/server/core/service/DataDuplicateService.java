@@ -1,6 +1,7 @@
 package com.github.script.task.server.core.service;
 
-import com.github.script.task.bridge.model.param.RemoveDuplicateParam;
+import com.github.script.task.bridge.model.param.DataDuplicateAndSaveParam;
+import com.github.script.task.bridge.model.param.DataDuplicateParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.server.core.conf.TTLConf;
@@ -10,14 +11,13 @@ import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class RemoveDuplicateService {
+public class DataDuplicateService {
 
 
     @Autowired
@@ -30,9 +30,19 @@ public class RemoveDuplicateService {
     private TTLConf ttlConf;
 
 
-    private Date buildDuplicateTTL(RemoveDuplicateParam param) {
-        long ttl = (param.getTtl() != null && param.getTtl() > 0) ? param.getTtl() : ttlConf.getRemoveDuplicateTTl();
+    private Date buildDuplicateTTL(DataDuplicateAndSaveParam param) {
+        long ttl = (param.getTtl() != null && param.getTtl() > 0) ? param.getTtl() : ttlConf.getDuplicateTimout();
         return new Date(this.dbHelper.getTime() + ttl);
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param removeDuplicateParam
+     */
+    public void remove(DataDuplicateParam removeDuplicateParam) {
+
     }
 
 
@@ -42,10 +52,10 @@ public class RemoveDuplicateService {
      * @param param
      * @return
      */
-    public ResultContent<List<String>> duplicateAndSave(RemoveDuplicateParam param) {
+    public ResultContent<List<String>> duplicateAndSave(DataDuplicateAndSaveParam param) {
 
         //查询存在的值
-        Set<String> existValues = dataDuplicateDao.findByScriptNameAndValueIn(param.getScriptName(), param.getValues()).stream().map((it) -> {
+        Set<String> existValues = dataDuplicateDao.findByKeyAndValueIn(param.getKey(), param.getValues()).stream().map((it) -> {
             return it.getValue();
         }).collect(Collectors.toSet());
 
@@ -55,7 +65,7 @@ public class RemoveDuplicateService {
             return !existValues.contains(it);
         }).map((it) -> {
             DataDuplicate dataDuplicate = new DataDuplicate();
-            dataDuplicate.setScriptName(param.getScriptName());
+            dataDuplicate.setKey(param.getKey());
             dataDuplicate.setValue(it);
             dataDuplicate.setTtl(buildDuplicateTTL(param));
             this.dbHelper.saveTime(dataDuplicate);

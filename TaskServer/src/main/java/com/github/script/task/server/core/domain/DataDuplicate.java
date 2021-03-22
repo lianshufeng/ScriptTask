@@ -18,13 +18,13 @@ import java.util.Date;
 @CompoundIndexes({
         //name：索引名称 def：字段(1正序 -1倒序) unique：是否唯一索引
         //直接加到字段上面没用
-        @CompoundIndex(name = "data_duplicate", def = "{scriptName:-1, value:-1}", unique = true)
+        @CompoundIndex(name = "data_duplicate", def = "{key:-1, value:-1}", unique = true)
 })
 public class DataDuplicate extends SuperEntity {
 
     //脚本名称
     @Indexed
-    private String scriptName;
+    private String key;
 
     //值
     @Indexed

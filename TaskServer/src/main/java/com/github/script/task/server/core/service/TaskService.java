@@ -68,7 +68,7 @@ public class TaskService {
         task.setScriptName(script.getName());
 
         if (param.getTimeout() == null) {
-            task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTTL()));
+            task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTimeOut()));
         } else {
             task.setTtl(new Date(dbHelper.getTime() + param.getTimeout()));
         }

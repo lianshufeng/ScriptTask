@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DataDuplicateDao extends MongoDao<DataDuplicate> {
 
-    List<DataDuplicate> findByScriptNameAndValueIn(String scriptName, List<String> value);
+    List<DataDuplicate> findByKeyAndValueIn(String scriptName, List<String> value);
 }

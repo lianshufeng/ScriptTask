@@ -15,7 +15,7 @@ public class TTLConf {
 
     private Long jobTimeOut = 86400000L;
 
-    private Long taskTTL = 86400000L;
+    private Long taskTimeOut = 86400000L;
 
-    private Long removeDuplicateTTl = 86400000L;
+    private Long duplicateTimout = 86400000L;
 }
