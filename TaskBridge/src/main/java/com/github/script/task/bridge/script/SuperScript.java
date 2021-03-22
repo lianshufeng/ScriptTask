@@ -2,6 +2,7 @@ package com.github.script.task.bridge.script;
 
 import com.github.script.task.bridge.helper.ScriptEventHelper;
 import com.github.script.task.bridge.helper.SpringBeanHelper;
+import com.github.script.task.bridge.script.action.async.AsyncAction;
 import groovy.lang.Script;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -22,10 +23,6 @@ public abstract class SuperScript extends Script {
 
     @Getter
     protected ScriptRuntime runtime;
-
-    //异步方法
-    @Getter
-    protected ScriptAsync async;
 
     @Autowired
     private SpringBeanHelper springBeanHelper;

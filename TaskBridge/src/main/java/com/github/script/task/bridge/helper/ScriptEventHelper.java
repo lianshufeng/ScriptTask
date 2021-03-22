@@ -15,7 +15,7 @@ public class ScriptEventHelper {
      * 事件发布
      */
     public void publish(SuperScript script, ScriptEvent.EventType eventType, Object... args) {
-        Optional.ofNullable(script.event()).ifPresent((it) -> {
+        Optional.ofNullable(script.getRuntime().getScriptEvent()).ifPresent((it) -> {
             try {
                 eventType.getMethod().invoke(it, args);
             } catch (Exception e) {

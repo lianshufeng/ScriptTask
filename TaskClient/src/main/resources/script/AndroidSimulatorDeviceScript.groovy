@@ -1,14 +1,13 @@
 package script
 
-import com.github.script.task.bridge.script.action.bind.DeviceBindAction
-import io.appium.java_client.android.AndroidDriver
-import org.springframework.beans.factory.annotation.Autowired
 import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice
 import com.github.script.task.bridge.helper.MapHelper
 import com.github.script.task.bridge.script.Environment
+import com.github.script.task.bridge.script.action.async.AsyncAction
 import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
-import com.github.script.task.bridge.script.action.device.SimulatorDeviceAction
+import com.github.script.task.bridge.script.action.bind.DeviceBindAction
+import org.springframework.beans.factory.annotation.Autowired
 
 class AndroidSimulatorDeviceScript extends SuperScript {
 
@@ -58,8 +57,13 @@ class AndroidSimulatorDeviceScript extends SuperScript {
     Object run() {
         //设备绑定
         action(DeviceBindAction.class).bind()
+        def asyncAction = action(AsyncAction.class)
 
-        AndroidDriver driver = runtime.getDriver()
+
+//
+
+//        scriptAsync.await();
+
 
         return [
                 'time': System.currentTimeMillis(),

@@ -36,9 +36,6 @@ public class ScriptFactory {
         //运行环境
         runTime(script, runTimeModel);
 
-        //异步功能
-        async(script);
-
         //日志功能
         log(script);
 
@@ -99,6 +96,8 @@ public class ScriptFactory {
         script.runtime = scriptRuntime;
         BeanUtils.copyProperties(runTimeModel, scriptRuntime, "parameters", "environment");
 
+        //脚本事件
+        scriptRuntime.setScriptEvent(script.event());
 
         //合并运行的脚本环境
         final Environment runTimeEnvironment = mergeEnvironment(script.environment(), runTimeModel.getEnvironment());
@@ -127,16 +126,6 @@ public class ScriptFactory {
     private void log(SuperScript script) {
         script.log = ScriptLog.builder().script(script).build();
         springBeanHelper.injection(script.log);
-    }
-
-    /**
-     * 设置异步功能
-     *
-     * @param script
-     */
-    private void async(SuperScript script) {
-        script.async = ScriptAsync.builder().script(script).build();
-        this.springBeanHelper.injection(script.async);
     }
 
 

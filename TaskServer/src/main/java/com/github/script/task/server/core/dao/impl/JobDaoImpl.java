@@ -9,6 +9,7 @@ import com.github.script.task.server.other.mongo.helper.DBHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -40,7 +41,7 @@ public class JobDaoImpl implements JobDaoExtend {
      * @param param
      * @return
      */
-    public boolean findAndUpdateJob(String uuid, JobParam param, boolean isContainDeviceId) {
+    public boolean updateJob(String uuid, JobParam param, boolean isContainDeviceId) {
         final Criteria rootCriteria = new Criteria();
         final Query query = new Query(rootCriteria);
 
@@ -72,7 +73,11 @@ public class JobDaoImpl implements JobDaoExtend {
         query.with(Sort.by(orders));
         rootCriteria.andOperator(andCriteria.toArray(new Criteria[0]));
 
-        return this.mongoTemplate.updateFirst(query, Update.update("uuid", uuid), Job.class).getModifiedCount() > 0;
+        BulkOperations bulkOperations = this.mongoTemplate.bulkOps(BulkOperations.BulkMode.ORDERED, Job.class);
+        bulkOperations.updateOne(query, Update.update("uuid", uuid));
+        return bulkOperations.execute().getModifiedCount() > 0;
+
+//        return this.mongoTemplate.updateFirst(query, Update.update("uuid", uuid), Job.class).getModifiedCount() > 0;
     }
 
     /**
@@ -95,9 +100,9 @@ public class JobDaoImpl implements JobDaoExtend {
     @Override
     public Job get(JobParam param) {
         final String uuid = UUID.randomUUID().toString();
-        boolean success = findAndUpdateJob(uuid, param, param.getDeviceIds() != null);
+        boolean success = updateJob(uuid, param, param.getDeviceIds() != null);
         if (!success) {
-            success = findAndUpdateJob(uuid, param, false);
+            success = updateJob(uuid, param, false);
         }
         if (!success) {
             return null;

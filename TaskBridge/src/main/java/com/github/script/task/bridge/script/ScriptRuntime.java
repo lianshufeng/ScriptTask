@@ -26,4 +26,8 @@ public class ScriptRuntime extends ScriptRunTimeModel {
     //当前脚本
     protected SuperScript script;
 
+    //脚本的事件
+    protected ScriptEvent scriptEvent;
+
+
 }

@@ -1,6 +1,8 @@
-package com.github.script.task.bridge.script;
+package com.github.script.task.bridge.script.action.async;
 
 import com.github.script.task.bridge.helper.Where;
+import com.github.script.task.bridge.script.SuperScript;
+import com.github.script.task.bridge.script.SuperScriptAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -16,10 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScriptAsync {
-
-    //当前脚本
-    protected SuperScript script;
+public class AsyncAction extends SuperScriptAction {
 
     //调度器线程池
     private ScheduledExecutorService threadPool;

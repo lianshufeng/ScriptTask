@@ -77,7 +77,11 @@ public class RemoteJobService {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                requestJob();
+                try {
+                    requestJob();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 5000, 5000);
 
@@ -92,7 +96,7 @@ public class RemoteJobService {
     private void requestJob() {
         //获取可执行的任务
         ResultContent resultContent = jobService.getJob(buildRequestJobParam());
-        if (resultContent.getState() != ResultState.Success) {
+        if (resultContent == null || resultContent.getState() != ResultState.Success) {
             return;
         }
         JobModel jobModel = JsonUtil.toObject(JsonUtil.toJson(resultContent.getContent()), JobModel.class);
@@ -102,6 +106,7 @@ public class RemoteJobService {
         executorService.execute(() -> {
             this.execute(jobModel);
         });
+
 
     }
 
