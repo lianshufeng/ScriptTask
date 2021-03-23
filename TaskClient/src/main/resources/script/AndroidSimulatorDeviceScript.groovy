@@ -26,6 +26,7 @@ class AndroidSimulatorDeviceScript extends SuperScript {
     Environment environment() {
         return [
                 'device': [
+                        "resolution": "1080,1920,260"
                 ] as AndroidSimulatorDevice
         ] as Environment
     }
@@ -61,7 +62,6 @@ class AndroidSimulatorDeviceScript extends SuperScript {
 
 
 //
-
 //        scriptAsync.await();
 
 

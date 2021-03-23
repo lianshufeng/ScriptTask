@@ -11,12 +11,4 @@ public abstract class SuperScriptAction {
     @Getter
     protected SuperScript script;
 
-
-    /**
-     * 初始化完后执行
-     */
-    protected void after() {
-
-    }
-
 }

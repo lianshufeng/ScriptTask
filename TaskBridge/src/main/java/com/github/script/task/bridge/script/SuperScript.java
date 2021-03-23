@@ -97,7 +97,6 @@ public abstract class SuperScript extends Script {
         SuperScriptAction superAction = (SuperScriptAction) constructor.newInstance(null);
         superAction.script = this;
         this.springBeanHelper.injection(superAction);
-        superAction.after();
         return (T) superAction;
     }
 

@@ -1,17 +1,18 @@
 package com.github.script.task.bridge.script.action.device;
 
 
-import io.appium.java_client.android.AndroidDriver;
-import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.html5.Location;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import com.github.script.task.bridge.conf.ScriptTaskConf;
 import com.github.script.task.bridge.helper.MapHelper;
 import com.github.script.task.bridge.runtime.impl.AndroidMachineDeviceRunTime;
 import com.github.script.task.bridge.runtime.impl.AndroidSimulatorDeviceRunTime;
 import com.github.script.task.bridge.script.SuperScriptAction;
 import com.github.script.task.bridge.util.ADBUtil;
+import io.appium.java_client.android.AndroidDriver;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.html5.Location;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 
@@ -35,8 +36,8 @@ public class AndroidDeviceAction extends SuperScriptAction {
     private AndroidMachineDeviceRunTime androidMachineDeviceRunTime;
 
 
-    @Override
-    protected void after() {
+    @Autowired
+    private void init(ApplicationContext applicationContext) {
         Object d = this.script.getRuntime().getDriver();
         Assert.state(d instanceof AndroidDriver, "必须为Android驱动");
         driver = (AndroidDriver) d;

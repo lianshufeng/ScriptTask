@@ -1,7 +1,7 @@
 package com.github.script.task.bridge.script.action.async;
 
+import com.github.script.task.bridge.helper.SpringBeanHelper;
 import com.github.script.task.bridge.helper.Where;
-import com.github.script.task.bridge.script.SuperScript;
 import com.github.script.task.bridge.script.SuperScriptAction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import com.github.script.task.bridge.helper.SpringBeanHelper;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 异步功能支持
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

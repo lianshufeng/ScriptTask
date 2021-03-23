@@ -17,9 +17,7 @@ public enum ResultState {
     ScriptNotSameVersion("脚本版本不一致"),
     CronError("表达式错误"),
     JobLogNoneExists("日志不存在"),
-
-
-    ;
+    JobNotExists("工作不存在");
 
     @Getter
     private String remark;

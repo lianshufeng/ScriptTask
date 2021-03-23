@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 设备任务绑定
+ */
 @Slf4j
 public class DeviceBindAction extends SuperScriptAction {
 
