@@ -18,6 +18,10 @@ public enum ResultState {
     CronError("表达式错误"),
     JobLogNoneExists("日志不存在"),
     JobNotExists("工作不存在");
+    MatchWordExists("匹配词已经存在"),
+
+
+    ;
 
     @Getter
     private String remark;

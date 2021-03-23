@@ -6,17 +6,16 @@ import com.github.script.task.bridge.script.Environment
 import com.github.script.task.bridge.script.Parameter
 import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
+import com.github.script.task.bridge.service.DataDuplicateService
 import com.github.script.task.bridge.service.JobService
-import com.github.script.task.bridge.service.RemoveDuplicateService
 import com.github.script.task.bridge.service.TaskService
 import org.jsoup.Jsoup
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job
 
 class GetWeiBoUserScript extends SuperScript {
 
     @Autowired
-    private RemoveDuplicateService removeDuplicateService
+    private DataDuplicateService dataDuplicateService
 
     @Autowired
     private JobService jobService
@@ -48,7 +47,9 @@ class GetWeiBoUserScript extends SuperScript {
         return [
                 'cookie' : new Parameter(value: 'SINAGLOBAL=4295076059692.5376.1586332527804; un=18682630458; wvr=6; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhJ2TWaCdSW3kzQUE_eojmZ5JpX5KMhUgL.Foz4ehqp1K2pS0M2dJLoIEXLxK-L1KML1-eLxKML1-BLBK2LxKML1-2L1hBLxK-L1KqLBo-LxK-L1K5L1-zt; ALF=1647654735; SSOLoginState=1616118736; SCF=Agyy7fZ5uwLCOE_SfvwDtyHWN5W-pBRELMkWd9hfLHsx53uWq1GwT4LPi7kCVYDtwxHlF5tGTZaXVNiMXb8Bngw.; SUB=_2A25NUHOADeRhGeRH61QQ-S_NzDuIHXVuJOJIrDV8PUNbmtANLXTAkW9NTfMTS1P0Xx-gcAAN6WEk0GGVtOvxuNoz; _s_tentry=login.sina.com.cn; UOR=,,www.baidu.com; Apache=56067474428.02762.1616118739470; ULV=1616118739475:14:3:2:56067474428.02762.1616118739470:1615531942073; WBStorage=8daec78e6a891122|undefined'),
                 'host' : new Parameter(value: 'https://s.weibo.com/weibo'),
-                'keyWord': new Parameter(value: '美术生')
+                'keyWord': new Parameter(value: '美术生'),
+                'isDel' : new Parameter(value: true),
+                'callScript' : new Parameter(value: '')
         ]
     }
 
@@ -78,6 +79,7 @@ class GetWeiBoUserScript extends SuperScript {
         def cookie = parameters['cookie']
         def host = parameters['host']
         def keyWord = parameters['keyWord']
+        def isDel = parameters['true']
         def page = 1
         def url = host + '?q=' + keyWord
         def flag = true
@@ -87,9 +89,7 @@ class GetWeiBoUserScript extends SuperScript {
                 def timeText = it.getElementsByClass('from').get(0).getElementsByTag('a').text()
                 if (timeText.indexOf('分') > 0 || timeText.indexOf('秒') > 0) {
                     def userUrl = it.getElementsByClass('avator').get(0).getElementsByTag('a').attr('href')
-                    def nickName = it.getElementsByClass('name').get(0).attr('nick-name')
-                    //log.info('昵称：' + nickName + ',用户地址：' + userUrl + ',发送时间：' + timeText)
-                    ret.push('https:' + userUrl)
+                    ret.push('https:' + userUrl + "&is_all=1")
                 } else {
                     if (page != 1) {
                         flag = false
@@ -97,22 +97,30 @@ class GetWeiBoUserScript extends SuperScript {
                 }
             })
             page++
+            createAnalysisUserJob(name(),ret)
+            ret.clear()
+            Thread.sleep(1000)
         }
-        def result = removeDuplicateService.check(name(),ret)
+        if (isDel){
+            taskService.del(getRuntime().getTaskId())
+        }
+        return [
+                'time' : System.currentTimeMillis()
+        ]
+    }
+
+    def createAnalysisUserJob(def name,def ret){
+        def result = dataDuplicateService.check(name(),ret)
         if (result != null && result['state'] == 'Success'){
             def content = result['content']
                 //Todo 调用其他脚本
             TaskParam param = new TaskParam()
-            param.setScriptName("")
-
+            param.setScriptName(getRuntime().getParameters().get('callScript'))
             def taskResult = taskService.creatTask(param)
-
-
+            if (taskResult['state'] == 'Success'){
+                jobService.createJobByTaskId(taskResult['content'])
+            }
         }
-        return [
-                'time' : System.currentTimeMillis(),
-                'title': result
-        ]
     }
 
     def connect(def url , def cookie, def page ){
