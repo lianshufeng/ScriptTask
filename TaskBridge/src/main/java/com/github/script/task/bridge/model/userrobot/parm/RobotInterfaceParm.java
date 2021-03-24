@@ -2,7 +2,6 @@ package com.github.script.task.bridge.model.userrobot.parm;
 
 import com.github.script.task.bridge.model.userrobot.type.RobotInterfaceType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,7 @@ public class RobotInterfaceParm {
     private String tips;
 
 
-    //type.RobotInterface
+    //人机交互的参数
     private Object value;
 
 

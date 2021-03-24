@@ -22,6 +22,18 @@ public class UserRobotInterfaceController {
 
 
     /**
+     * 获取用户的输入
+     *
+     * @return
+     */
+    @RequestMapping("getUserInput")
+    public Object getUserInput(String id) {
+        Assert.hasText(id, "人机交互id不能为空");
+        return this.userRobotInterfaceService.getUserInput(id);
+    }
+
+
+    /**
      * 更新用户输入
      *
      * @return
@@ -35,7 +47,7 @@ public class UserRobotInterfaceController {
 
 
     /**
-     * 创建任务
+     * 增加一个人机交互
      *
      * @return
      */
@@ -53,9 +65,9 @@ public class UserRobotInterfaceController {
      * @param pageable
      * @return
      */
-    @RequestMapping("list")
-    public Object list(@PageableDefault(size = 5, sort = {"createTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
-        return this.userRobotInterfaceService.list(pageable);
+    @RequestMapping("listRobotInput")
+    public Object listRobotInput(@PageableDefault(size = 5, sort = {"createTime"}, direction = Sort.Direction.ASC) Pageable pageable) {
+        return this.userRobotInterfaceService.listRobotInput(pageable);
     }
 
 

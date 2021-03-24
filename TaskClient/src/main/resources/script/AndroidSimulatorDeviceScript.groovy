@@ -2,11 +2,16 @@ package script
 
 import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice
 import com.github.script.task.bridge.helper.MapHelper
+import com.github.script.task.bridge.model.userrobot.robot.RobotInput
+import com.github.script.task.bridge.model.userrobot.user.UserInput
+import com.github.script.task.bridge.model.userrobot.user.UserInterface
+import com.github.script.task.bridge.result.ResultState
 import com.github.script.task.bridge.script.Environment
-import com.github.script.task.bridge.script.action.async.AsyncAction
 import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
+import com.github.script.task.bridge.script.action.async.AsyncAction
 import com.github.script.task.bridge.script.action.bind.DeviceBindAction
+import com.github.script.task.bridge.script.action.robot.UserRobotAction
 import org.springframework.beans.factory.annotation.Autowired
 
 class AndroidSimulatorDeviceScript extends SuperScript {
@@ -57,12 +62,24 @@ class AndroidSimulatorDeviceScript extends SuperScript {
     @Override
     Object run() {
         //设备绑定
-        action(DeviceBindAction.class).bind()
-        def asyncAction = action(AsyncAction.class)
+//        action(DeviceBindAction.class).bind()
+
+        //异步方法
+//        def asyncAction = action(AsyncAction.class)
 
 
-//
-//        scriptAsync.await();
+        //等待用户输入
+        UserRobotAction.UserInput userInput = action(UserRobotAction.class).waitUserInput([
+                'tips'   : '请输入收到的短信',
+                'value'  : [] as RobotInput,
+                'timeOut': 6000
+        ] as UserRobotAction.UserRobotInterface)
+        if (userInput.getState() == ResultState.Success) {
+            UserInput userRobot = userInput.getUserInterface();
+            println "用户输入 : " + userRobot.getText()
+
+
+        }
 
 
         return [

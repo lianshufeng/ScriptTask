@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -52,6 +53,9 @@ public class UserRobotInterface extends SuperEntity {
      */
     @SneakyThrows
     public RobotInterface getRobotInterface() {
+        if (!StringUtils.hasText(robotInput)) {
+            return null;
+        }
         return JsonUtil.toObject(robotInput, type.getRobotClass());
     }
 
@@ -62,6 +66,9 @@ public class UserRobotInterface extends SuperEntity {
      */
     @SneakyThrows
     public UserInterface getUserInterface() {
+        if (!StringUtils.hasText(userInput)) {
+            return null;
+        }
         return JsonUtil.toObject(userInput, type.getUserClass());
     }
 

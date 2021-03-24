@@ -1,26 +1,23 @@
 package com.github.script.task.server.core.service;
 
 import com.github.script.task.bridge.model.userrobot.RobotInterfaceModel;
-import com.github.script.task.bridge.model.userrobot.parm.RobotInterfaceParm;
 import com.github.script.task.bridge.model.userrobot.parm.RobotInterfacePutParm;
 import com.github.script.task.bridge.model.userrobot.parm.UserInterfaceParm;
+import com.github.script.task.bridge.model.userrobot.user.UserInterface;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.dao.JobDao;
 import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.dao.UserRobotInterfaceDao;
 import com.github.script.task.server.core.domain.UserRobotInterface;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import javax.management.Query;
 
 @Service
 public class UserRobotInterfaceService {
@@ -47,6 +44,19 @@ public class UserRobotInterfaceService {
         return ResultContent.buildContent(userRobotInterfaceDao.put(userRobotInterface));
     }
 
+    /**
+     * 设置用户交互事件
+     *
+     * @return
+     */
+    public ResultContent<UserInterface> getUserInput(String id) {
+        UserRobotInterface userRobotInterface = this.userRobotInterfaceDao.findTop1ById(id);
+        if (userRobotInterface == null) {
+            return ResultContent.build(ResultState.UserRobotNotExists);
+        }
+        return ResultContent.build(userRobotInterface.getUserInterface() == null ? ResultState.UserRobotNotExistsUserInput : ResultState.Success, userRobotInterface.getUserInterface());
+    }
+
 
     /**
      * 设置用户交互事件
@@ -55,7 +65,7 @@ public class UserRobotInterfaceService {
      */
     public ResultContent<Boolean> updateUserInput(UserInterfaceParm parm) {
         Assert.hasText(parm.getId(), "人机交互的id不能为空");
-        Assert.notNull(parm.getValue(),"参数不能为空");
+        Assert.notNull(parm.getValue(), "参数不能为空");
         return ResultContent.build(userRobotInterfaceDao.updateUserInput(parm));
     }
 
@@ -65,7 +75,7 @@ public class UserRobotInterfaceService {
      * @param pageable
      * @return
      */
-    public Object list(Pageable pageable) {
+    public Page<RobotInterfaceModel> listRobotInput(Pageable pageable) {
         return PageEntityUtil.toPageModel(userRobotInterfaceDao.findByUserInputExists(false, pageable), (it) -> {
             return toModel(it);
         });
