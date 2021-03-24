@@ -21,8 +21,7 @@ public enum ResultState {
     UserRobotNotExists("人机交互不存在"),
     UserRobotNotExistsUserInput("人机交互不存在用户输入"),
 
-    ;
-
+	;
     @Getter
     private String remark;
 

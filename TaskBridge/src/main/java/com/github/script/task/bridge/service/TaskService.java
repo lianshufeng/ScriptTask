@@ -42,4 +42,14 @@ public class TaskService extends SuperService {
         return null;
     }
 
+
+    public Object del(String id){
+        try {
+            return postJson("task/del", id, Object.class);
+        } catch (Exception e) {
+            log.error("exception : {}", e.getMessage());
+        }
+        return null;
+    }
+
 }
