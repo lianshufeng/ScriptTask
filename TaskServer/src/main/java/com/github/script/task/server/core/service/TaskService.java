@@ -66,7 +66,7 @@ public class TaskService {
         BeanUtils.copyProperties(script, task, "id");
         task.setCron(param.getCron());
         task.setScriptName(script.getName());
-
+        task.setParameters(param.getParameters());
         if (param.getTimeout() == null) {
             task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTimeOut()));
         } else {

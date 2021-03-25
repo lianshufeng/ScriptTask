@@ -9,6 +9,7 @@ import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.dao.UserClueDao;
 import com.github.script.task.server.core.domain.MatchWord;
 import com.github.script.task.server.core.domain.UserClue;
+import com.github.script.task.server.other.mongo.helper.DBHelper;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserClueService {
@@ -29,11 +28,17 @@ public class UserClueService {
     @Autowired
     private TTLConf ttlConf;
 
+    @Autowired
+    private DBHelper dbHelper;
+
 
     public ResultContent<String> save(UserClueParam param){
+        if (userClueDao.existsByUser(param.getUser())){
+            return ResultContent.build(ResultState.Fail);
+        }
         UserClue userClue = new UserClue();
         BeanUtils.copyProperties(param,userClue);
-        Set<MatchWord> matchWords = new HashSet<>();
+        List<MatchWord> matchWords = new ArrayList<>();
         param.getMatchWordIds().forEach((it)->{
             MatchWord matchWord = new MatchWord();
             matchWord.setId(it);
@@ -43,7 +48,7 @@ public class UserClueService {
         if (param.getTimeOut() != 0) {
             userClue.setTtl(new Date(param.getTimeOut()));
         } else {
-            userClue.setTtl(new Date(ttlConf.getUserClueTimeout()));
+            userClue.setTtl(new Date(dbHelper.getTime() + ttlConf.getUserClueTimeout()));
         }
         userClueDao.save(userClue);
         return ResultContent.build(ResultState.Success);

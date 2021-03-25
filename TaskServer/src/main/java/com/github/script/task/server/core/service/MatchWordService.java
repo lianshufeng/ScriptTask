@@ -50,10 +50,10 @@ public class MatchWordService {
     }
 
     public ResultContent<Set> findByCollectionName(SearchMatchWordParam param){
-        Assert.notNull(param.getCollectionName(),"集合名称不能为空");
-        return ResultContent.buildContent(matchWordDao.findByCollectionNameIn(param.getCollectionName()).stream().map((it)->{
+        Assert.notNull(param.getCollectionNames(),"集合名称不能为空");
+        return ResultContent.buildContent(matchWordDao.findByCollectionNameIn(param.getCollectionNames()).stream().map((it)->{
             return toModel(it);
-        }).collect(Collectors.toSet()));
+        }).collect(Collectors.toList()));
     }
 
     public ResultContent<String> del(String id){

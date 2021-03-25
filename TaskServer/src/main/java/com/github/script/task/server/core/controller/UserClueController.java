@@ -5,6 +5,7 @@ import com.github.script.task.server.core.service.UserClueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class UserClueController {
 
 
     @RequestMapping("save")
-    public Object save(UserClueParam param){
+    public Object save(@RequestBody UserClueParam param){
         return userClueService.save(param);
     }
 

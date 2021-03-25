@@ -12,9 +12,9 @@ import java.util.HashMap;
 @Service
 public class TaskService extends SuperService {
 
-    public Object creatTask(TaskParam param) {
+    public ResultContent creatTask(TaskParam param) {
         try {
-            return postJson("task/create", param, Object.class);
+            return postJson("task/create", param, ResultContent.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface MatchWordDao extends MongoDao<MatchWord> , MatchWordDaoExtend {
 
-    List<MatchWord> findByCollectionNameIn(Set<String> collectionName);
+    List<MatchWord> findByCollectionNameIn(List<String> collectionName);
 
     boolean existsByCollectionNameAndKeyWord(String collectionName,String keyWord);
 }

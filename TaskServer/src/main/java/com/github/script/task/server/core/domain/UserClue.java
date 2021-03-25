@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Document
@@ -26,7 +27,7 @@ public class UserClue extends SuperEntity {
 
     //匹配词库
     @DBRef(lazy = true)
-    private Set<MatchWord> matchWords;
+    private List<MatchWord> matchWords;
 
     //权重值
     @Indexed

@@ -11,14 +11,15 @@ import com.github.script.task.bridge.service.UserClueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 
 @Slf4j
 public class MatchWordAction extends SuperScriptAction {
 
     private String platformName = null;
 
-    private Set<MatchWordModel> matchWordModels = null;
+    private List<Map> matchWordModels = new ArrayList<>();
 
     @Autowired
     private MatchWordService matchWordService;
@@ -27,29 +28,37 @@ public class MatchWordAction extends SuperScriptAction {
     private UserClueService userClueService;
 
 
-    public MatchWordAction build(String platformName,Set<String> collectionName){
+    public MatchWordAction build(String platformName, List<String> collectionNames){
         this.platformName = platformName;
-        ResultContent content = matchWordService.findByCollectionName(SearchMatchWordParam.builder().collectionName(collectionName).build());
+        ResultContent content = matchWordService.findByCollectionName(SearchMatchWordParam.builder().collectionNames(collectionNames).build());
         if (content != null && content.getState() == ResultState.Success){
-            matchWordModels = (Set<MatchWordModel>) content.getContent();
+            matchWordModels = (List<Map>) content.getContent();
         }
         return this;
     }
 
 
-    public void match(String user,String text){
-        UserClueParam param = new UserClueParam();
+    public long match(String user,String text){
         long weightValue = 0L;
-        for (MatchWordModel matchWordModel:matchWordModels){
-            if (text.indexOf(matchWordModel.getKeyWord()) > -1){
-                weightValue = weightValue + matchWordModel.getWeightValue();
+        for (Map map : matchWordModels){
+            if (text.indexOf((String) map.get("keyWord")) > -1){
+                weightValue = weightValue + (int)map.get("weightValue");
             }
         }
-        if (param.getWeightValue() > 0){
-            param.setPlatform(platformName);
-            param.setUser(user);
-            userClueService.save(param);
+        return weightValue;
+    }
+
+    public void save(String user,long weightValue){
+        UserClueParam param = new UserClueParam();
+        param.setWeightValue(weightValue);
+        param.setPlatform(platformName);
+        param.setUser(user);
+        Set<String> matchWords = new HashSet<>();
+        for (Map map : matchWordModels){
+            matchWords.add((String) map.get("id"));
         }
+        param.setMatchWordIds(matchWords);
+        userClueService.save(param);
     }
 
 }

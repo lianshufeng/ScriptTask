@@ -28,6 +28,6 @@ public class UserClueDaoImpl implements UserClueDaoExtend {
         Query query = Query.query(criteria);
         Sort.Order[] orders = new Sort.Order[]{Sort.Order.desc("weightValue"), Sort.Order.asc("createTime")};
         query.with(Sort.by(orders));
-        return this.dbHelper.pages(query, pageable, Task.class);
+        return this.dbHelper.pages(query, pageable, UserClue.class);
     }
 }
