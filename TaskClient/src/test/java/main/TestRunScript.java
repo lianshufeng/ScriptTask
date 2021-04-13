@@ -7,27 +7,27 @@ public class TestRunScript extends SuperRunScript {
 
     @Test
     public void testScript() {
-        Object ret = runScript("TestScript.groovy");
+        Object ret = runScript("simple/TestScript.groovy");
         System.out.println("ret : " + ret);
     }
 
     @Test
     public void noneDeviceScript() {
-        Object ret = runScript("NoneDeviceScript.groovy");
+        Object ret = runScript("simple/NoneDeviceScript.groovy");
         System.out.println("ret : " + ret);
     }
 
 
     @Test
     public void webDeviceScript() {
-        Object ret = runScript("WebDeviceScript.groovy");
+        Object ret = runScript("simple/WebDeviceScript.groovy");
         System.out.println("ret : " + ret);
     }
 
 
     @Test
     public void androidSimulatorDeviceScript() {
-        Object ret = runScript("AndroidSimulatorDeviceScript.groovy");
+        Object ret = runScript("simple/AndroidSimulatorDeviceScript.groovy");
         System.out.println("ret : " + ret);
     }
 

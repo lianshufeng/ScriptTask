@@ -1,4 +1,4 @@
-package script
+package script.simple
 
 
 import com.github.script.task.bridge.script.Environment

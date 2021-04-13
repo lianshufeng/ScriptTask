@@ -1,4 +1,4 @@
-package script
+package script.simple
 
 import com.github.script.task.bridge.device.impl.AndroidSimulatorDevice
 import com.github.script.task.bridge.helper.MapHelper

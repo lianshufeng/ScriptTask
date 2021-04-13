@@ -1,4 +1,4 @@
-package script
+package script.simple
 
 
 import org.openqa.selenium.By

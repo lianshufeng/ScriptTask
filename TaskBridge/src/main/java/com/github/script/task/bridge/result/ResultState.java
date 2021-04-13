@@ -18,8 +18,10 @@ public enum ResultState {
     CronError("表达式错误"),
     JobLogNoneExists("日志不存在"),
     JobNotExists("工作不存在"),
+    MatchWordExists("匹配的关键词已存在"),
     UserRobotNotExists("人机交互不存在"),
     UserRobotNotExistsUserInput("人机交互不存在用户输入"),
+
 
 	;
     @Getter
