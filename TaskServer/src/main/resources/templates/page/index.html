@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/page::commonHeader"></head>
+
+<body class="body-container">
+<nav th:replace="common/page::commonNavbar"/>
+
+<div class="main-container bgc-white">
+
+    <!--侧边栏-->
+    <div th:replace="common/page::commonSidebar"></div>
+
+    <div role="main" class="main-content">
+        <div class="page-content">
+            <!-- 内容详情 -->
+
+            <div class="px-2">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-lg-3 p-0 p-md-1 mb-2 mb-lg-0">
+                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                            <div class="pl-1">
+                                <span class="d-inline-block bgc-success-tp1 p-3 radius-round text-center border-2 brc-black-tp11"> <i class="fas fa-chart-line text-white text-170 w-3 mx-3px"></i> </span>
+                            </div>
+                            <div class="pl-25">
+                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                    <span class="text-grey-d3 text-160 mr-4">100</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    脚本
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 p-0 p-md-1 mb-2 mb-lg-0">
+                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                            <div class="pl-1">
+                                <span class="d-inline-block bgc-blue-tp1 p-3 radius-round text-center border-2 brc-black-tp11"> <i class="fab fa-twitter text-white text-170 w-3 mx-3px"></i> </span>
+                            </div>
+                            <div class="pl-25">
+                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                    <span class="text-grey-d3 text-160 mr-4">640</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    任务
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 p-0 p-md-1 mb-2 mb-lg-0">
+                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                            <div class="pl-1">
+                                <span class="d-inline-block bgc-purple-tp1 p-3 radius-round text-center border-2 brc-black-tp11"> <i class="far fa-user text-white text-170 w-3 mx-3px"></i> </span>
+                            </div>
+                            <div class="pl-25">
+                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                    <span class="text-grey-d3 text-160 mr-4">433</span>
+                                </div>
+                                <div class="text-nowrap">
+                                    词库
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3 p-0 p-md-1 mb-2 mb-lg-0">
+                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                            <div class="pl-1">
+                                <span class="d-inline-block bgc-danger-tp1 p-3 radius-round text-center border-2 brc-black-tp11"> <i class="far fa-calendar-check text-white text-170 w-3 mx-3px"></i> </span>
+                            </div>
+                            <div class="pl-25">
+                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                    <span class="text-grey-d3 text-160 mr-4"> 16 </span>
+                                </div>
+                                <div class="text-nowrap">
+                                    线索
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer th:replace="common/page::commonFooter1"/>
+        <footer th:replace="common/page::commonFooter2"/>
+    </div>
+
+</div>
+
+<div th:replace="common/page::commonIncludeScripts"/>
+
+</body>
+</html>
+
+
+
+

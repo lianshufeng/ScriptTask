@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/page::commonHeader"></head>
+<!-- include vendor stylesheets used in "jqGrid" page. see "/views//pages/partials/table-jqgrid/@vendor-stylesheets.hbs" -->
+
+<body class="body-container">
+<nav th:replace="common/page::commonNavbar"/>
+
+<div class="main-container bgc-white">
+
+    <!--侧边栏-->
+    <div th:replace="common/page::commonSidebar"></div>
+
+    <div role="main" class="main-content">
+
+
+        <div class="page-content container container-plus">
+
+            <div class="page-header" style="text-align: right !important ; display: block !important; ">
+                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
+                    <i class="fa fa-edit mr-1"></i>
+                    新增
+                </button>
+                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
+                    <i class="fa fa-trash-alt mr-1"></i>
+                    删除
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bcard radius-2px overflow-hidden">
+                        <div class="card-body p-1px bgc-dark-l4 border-b-1 brc-primary-m4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="bgc-white">
+                                        <table id="grid-table"
+                                               class="table border-0 table-bordered brc-black-tp11 bgc-white">
+                                            <!-- grid -->
+                                        </table>
+                                        <div id="grid-pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer th:replace="common/page::commonFooter1"/>
+        <footer th:replace="common/page::commonFooter2"/>
+    </div>
+
+</div>
+
+<div th:replace="common/page::commonIncludeScripts"/>
+
+
+<!-- include vendor scripts used in "jqGrid" page. see "/views//pages/partials/table-jqgrid/@vendor-scripts.hbs" -->
+<script src="./node_modules/free-jqgrid/js/jquery.jqgrid.src.js"></script>
+
+
+<!--页面功能-->
+<script src="./page/clue.js"></script>
+
+
+</body>
+
+
+</html>
+
+

@@ -1,0 +1,56 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<ul class="nav flex-column has-active-border active-on-top active-on-right">
+    <li class="nav-item active open">
+
+        <a href="#" class="nav-link dropdown-toggle">
+            <i class="nav-icon fa fa-cube"></i>
+            <span class="nav-text fadeable">
+               	  <span>功能</span>
+                    </span>
+            <b class="caret fa fa-angle-left rt-n90"></b>
+        </a>
+
+        <div class="hideable submenu collapse show">
+            <ul class="submenu-inner">
+                <li class="nav-item active" th:class="${viewName} =='index' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/index.html" th:href="@{/page/index.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>主页</span>
+                          </span>
+                    </a>
+                </li>
+                <li class="nav-item" th:class="${viewName} =='script' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/script.html" th:href="@{/page/script.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>脚本管理</span>
+                          </span>
+                    </a>
+                </li>
+
+                <li class="nav-item" th:class="${viewName} =='task' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/task.html" th:href="@{/page/task.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>任务管理</span>
+                          </span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item" th:class="${viewName} =='clue' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/clue.html" th:href="@{/page/clue.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>线索管理</span>
+                          </span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+
+        <b class="sub-arrow"></b>
+
+    </li>
+</ul>
+</html>
+

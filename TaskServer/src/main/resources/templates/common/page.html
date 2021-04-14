@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="commonHeader">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <base href="../resources/resources" th:href="@{/resources/resources}"/>
+
+    <title>脚本任务控制台</title>
+
+    <!-- include common vendor stylesheets & fontawesome -->
+    <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.css"/>
+
+    <link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/fontawesome.css"/>
+    <link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/regular.css"/>
+    <link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/brands.css"/>
+    <link rel="stylesheet" type="text/css" href="./node_modules/@fortawesome/fontawesome-free/css/solid.css"/>
+
+
+    <!-- include vendor stylesheets used in "jqGrid" page. see "/views//pages/partials/table-jqgrid/@vendor-stylesheets.hbs" -->
+    <link rel="stylesheet" type="text/css" href="./node_modules/free-jqgrid/css/ui.jqgrid.css">
+
+
+    <!-- include fonts -->
+    <link rel="stylesheet" type="text/css" href="./dist/css/ace-font.css"/>
+
+
+    <!-- ace.css -->
+    <link rel="stylesheet" type="text/css" href="./dist/css/ace.css"/>
+
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="./assets/favicon.png"/>
+
+    <!-- "Dashboard 4" page styles, specific to this page for demo only -->
+<!--    <link rel="stylesheet" type="text/css" href="./views/pages/dashboard-4/@page-style.css"/>-->
+    <link rel="stylesheet" type="text/css" href="./dist/css/ace-themes.css"/>
+
+</head>
+
+<body>
+<div class="body-container">
+
+    <nav th:fragment="commonNavbar" class="navbar navbar-expand-lg navbar-fixed navbar-skyblue">
+        <div class="navbar-inner">
+
+            <div class="navbar-intro justify-content-xl-between">
+
+                <button type="button" class="btn btn-burger burger-arrowed static collapsed ml-2 d-flex d-xl-none"
+                        data-toggle-mobile="sidebar" data-target="#sidebar" aria-controls="sidebar"
+                        aria-expanded="false" aria-label="Toggle sidebar">
+                    <span class="bars"></span>
+                </button><!-- mobile sidebar toggler button -->
+
+                <a class="navbar-brand text-white" href="#">
+                    <i class="fa fa-leaf"></i>
+                    <span>脚本任务管理平台</span>
+                </a><!-- .navbar-brand -->
+
+                <button type="button" class="btn btn-burger mr-2 d-none d-xl-flex" data-toggle="sidebar"
+                        data-target="#sidebar" aria-controls="sidebar" aria-expanded="true" aria-label="Toggle sidebar">
+                    <span class="bars"></span>
+                </button><!-- sidebar toggler button -->
+
+            </div><!-- .navbar-intro -->
+
+
+        </div>
+    </nav>
+
+    <div class="main-container bgc-white">
+
+        <div th:fragment="commonSidebar" id="sidebar"
+             class="sidebar sidebar-fixed expandable sidebar-color sidebar-darkblue sidebar-top sidebar-backdrop"
+             data-swipe="true" data-dismiss="true">
+            <div class="sidebar-inner">
+
+                <div class="ace-scroll flex-grow-1" data-ace-scroll="{}">
+
+                    <div class="sidebar-section my-2">
+                        <div class="sidebar-section-item fadeable-left">
+
+                            <div class="fadeinable sidebar-shortcuts-mini">
+                                <span class="btn btn-outline-primary border-2 text-white radius-2"></span>
+                                <span class="btn btn-outline-primary border-2 text-white radius-2"></span>
+                                <span class="btn btn-outline-primary border-2 text-white radius-2"></span>
+                                <span class="btn btn-outline-primary border-2 text-white radius-2"></span>
+                            </div>
+
+                            <div class="fadeable">
+                                <div class="sub-arrow"></div>
+                                <div>
+                                    <button class="btn px-25 py-2 text-95 btn-outline-primary border-2 text-white radius-2">
+                                        <i class="fa fa-signal"></i>
+                                    </button>
+
+                                    <button class="btn px-25 py-2 text-95 btn-outline-primary border-2 text-white radius-2">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
+                                    <button class="btn px-25 py-2 text-95 btn-outline-primary border-2 text-white radius-2">
+                                        <i class="fa fa-users"></i>
+                                    </button>
+
+                                    <button class="btn px-25 py-2 text-95 btn-outline-primary border-2 text-white radius-2">
+                                        <i class="fa fa-cogs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="sidebar-section-item">
+                            <i class="fadeinable fa fa-search text-orange-l2 mr-n1"></i>
+
+                            <div class="fadeable d-inline-flex align-items-center ml-3 ml-lg-0">
+                                <i class="fa fa-search mr-n3 text-orange-l2"></i>
+                                <input type="text" class="sidebar-search-input pl-4 pr-3 mr-n2" maxlength="60"
+                                       placeholder="Search ..." aria-label="Search"/>
+                                <a href="#"><i class="fa fa-microphone text-white-tp3 ml-n1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 菜单 -->
+                    <div th:replace="common/memu.html"></div>
+                </div>
+            </div>
+        </div>
+
+        <div role="main" class="main-content">
+            <div class="page-content">
+                <div th:replace="'page/' + ${pageName} + '.html'">
+                    <p>内容页面</p>
+                </div>
+            </div>
+
+            <!-- this footer is shown in device width above `sm` -->
+            <footer th:fragment="commonFooter1" class="footer d-none d-sm-block">
+                <div class="footer-inner bgc-white-tp1">
+                    <div class="pt-3 border-none border-t-3 brc-grey-l1 border-double">
+                        <span class="text-muted">脚本任务管理平台 &copy; 2021</span>
+
+                        <span class="mx-3 action-buttons">
+                      <a href="#" class="text-blue-m3 text-140"><i class="fab fa-twitter-square"></i></a>
+                      <a href="#" class="text-blue-d1 text-140"><i class="fab fa-facebook"></i></a>
+                      <a href="#" class="text-orange text-140"><i class="fa fa-rss-square"></i></a>
+                   </span>
+                    </div>
+                </div><!-- .footer-inner -->
+
+                <!-- scroll to top button -->
+                <div class="footer-tools">
+                    <a href="#" class="btn-scroll-up btn btn-dark px-25 py-2 text-95 mb-2 mr-2">
+                        <i class="fa fa-angle-double-up mx-1"></i>
+                    </a>
+                </div>
+            </footer>
+
+            <!-- this footer is shown in mobile devices below `sm` -->
+            <footer th:fragment="commonFooter2" class="d-sm-none footer-sm footer-fixed">
+                <div class="footer-inner">
+                    <div class="btn-group d-flex h-100 mx-0 bgc-primary-m1 px-2 py-15 shadow-lg">
+                        <button class="btn btn-outline-white btn-h-outline-white btn-a-outline-white active border-0 radius-round px-4 mx-2">
+                            <i class="fa fa-home text-120"></i>
+                            Home
+                        </button>
+
+                        <button class="btn btn-outline-white btn-h-outline-white btn-a-outline-white border-0 radius-round">
+                            <i class="fa fa-plus-circle opacity-1 text-120"></i>
+                        </button>
+
+                        <button data-toggle="collapse" data-target="#navbarSearch" aria-controls="navbarSearch"
+                                aria-expanded="false" aria-label="Toggle navbar search"
+                                class="btn btn-outline-white btn-h-outline-white btn-a-outline-white border-0 radius-round">
+                            <i class="fa fa-search opacity-1 text-120"></i>
+                        </button>
+
+                        <button class="btn btn-outline-white btn-h-outline-white btn-a-outline-white border-0 mr-0 radius-round">
+                  <span class="pos-rel">
+                      <i class="fa fa-bell opacity-1 text-120"></i>
+                      <span class="badge badge-dot bgc-yellow-m1 position-tr mt-n1 mr-n2px"></span>
+                  </span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div th:fragment="commonIncludeScripts">
+    <!-- include common vendor scripts used in demo pages -->
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="./node_modules/popper.js/dist/umd/popper.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+
+    <!-- demo.js is only for Ace's demo and you shouldn't use it -->
+<!--    <script src="./app/browser/demo.js"></script>-->
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/page::commonHeader"></head>
+
+<body class="body-container">
+<nav th:replace="common/page::commonNavbar"/>
+
+<div class="main-container bgc-white">
+
+    <!--侧边栏-->
+    <div th:replace="common/page::commonSidebar"></div>
+
+    <div role="main" class="main-content">
+        <div class="page-content">
+            <!-- 内容详情 -->
+            <span>this is page content</span>
+        </div>
+        <footer th:replace="common/page::commonFooter1"/>
+        <footer th:replace="common/page::commonFooter2"/>
+    </div>
+
+</div>
+
+<div th:replace="common/page::commonIncludeScripts"/>
+
+</body>
+
+
+</html>
+
+
