@@ -2,6 +2,7 @@ package com.github.script.task.bridge.util;
 
 import lombok.Cleanup;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -56,7 +57,7 @@ public class HttpClient {
 
 
     @SneakyThrows
-    private Result request(HttpClientUtil.HttpModel httpModel) {
+    protected Result request(HttpClientUtil.HttpModel httpModel) {
         Result result = new Result();
         result.headers = new HashMap<>();
         @Cleanup ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -92,16 +93,17 @@ public class HttpClient {
      * @return
      */
     public Result get(final String url) {
-        return get(url, new HashMap<>());
+        return get(url, new HashMap<>(), DefaultCharset);
     }
 
-    public Result get(final String url, Map<String, Object> headers) {
+
+    public Result get(final String url, Map<String, Object> headers, String charset) {
         //设置默认的请求头
         setDefaultRequestHeader(url, headers);
 
         HttpClientUtil.HttpModel httpModel = new HttpClientUtil.HttpModel();
         httpModel.setUrl(url);
-        httpModel.setCharset(DefaultCharset);
+        httpModel.setCharset(charset);
         httpModel.setHeader(headers);
         httpModel.setMethod(HttpClientUtil.MethodType.Get);
 
@@ -109,13 +111,14 @@ public class HttpClient {
     }
 
 
-    public Result form(final String url) {
-        return form(url, new HashMap<>());
-    }
-
-
-    public Result form(final String url, Object parameter) {
-        return form(url, parameter, new HashMap<>());
+    /**
+     * 表单
+     *
+     * @param url
+     * @return
+     */
+    public Result form(final String url, final Object parameter) {
+        return form(url, parameter, new HashMap<>(), DefaultCharset);
     }
 
 
@@ -127,13 +130,13 @@ public class HttpClient {
      * @param headers
      * @return
      */
-    public Result form(final String url, final Object parameter, Map<String, Object> headers) {
+    public Result form(final String url, final Object parameter, final Map<String, Object> headers, final String charset) {
         //设置默认的请求头
         setDefaultRequestHeader(url, headers);
 
         HttpClientUtil.HttpModel httpModel = new HttpClientUtil.HttpModel();
         httpModel.setUrl(url);
-        httpModel.setCharset(DefaultCharset);
+        httpModel.setCharset(charset);
         httpModel.setHeader(headers);
         httpModel.setMethod(HttpClientUtil.MethodType.Post);
         httpModel.setBody(parameter);
@@ -142,23 +145,18 @@ public class HttpClient {
     }
 
 
-    public Result json(String url) {
-        return json(url, new HashMap<>());
-    }
-
-
     public Result json(String url, Object parameter) {
-        return json(url, parameter, new HashMap<>());
+        return json(url, parameter, new HashMap<>(), DefaultCharset);
     }
 
 
-    public Result json(String url, Object parameter, Map<String, Object> headers) {
+    public Result json(String url, Object parameter, Map<String, Object> headers, final String charset) {
         //设置默认的请求头
         setDefaultRequestHeader(url, headers);
 
         HttpClientUtil.HttpModel httpModel = new HttpClientUtil.HttpModel();
         httpModel.setUrl(url);
-        httpModel.setCharset(DefaultCharset);
+        httpModel.setCharset(charset);
         httpModel.setHeader(headers);
         httpModel.setMethod(HttpClientUtil.MethodType.Json);
         httpModel.setBody(parameter);
@@ -202,14 +200,17 @@ public class HttpClient {
     public static class Result {
 
         //数据返回的实体
+        @Setter
         @Getter
         protected int code;
 
         //响应头
+        @Setter
         @Getter
         protected Map<String, Set<Object>> headers;
 
         //数据
+        @Setter
         @Getter
         protected byte[] bin;
 

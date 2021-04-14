@@ -7,6 +7,3 @@ spring:
     active: dev
 
 
-logging:
-  file:
-    name: logs/TaskClient.log
