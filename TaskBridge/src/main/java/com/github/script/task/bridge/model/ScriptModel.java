@@ -34,5 +34,7 @@ public class ScriptModel {
     //脚本内容
     private byte[] body;
 
+    //更新时间
+    private long updateTime;
 
 }
