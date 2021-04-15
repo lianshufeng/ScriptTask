@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="commonHeader">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <base href="../resources/resources" th:href="@{/resources/resources}"/>
 
-    <title>脚本任务控制台</title>
+    <title>任务管理平台</title>
 
     <!-- include common vendor stylesheets & fontawesome -->
     <link rel="stylesheet" type="text/css" href="./node_modules/bootstrap/dist/css/bootstrap.css"/>
@@ -51,9 +51,9 @@
                     <span class="bars"></span>
                 </button><!-- mobile sidebar toggler button -->
 
-                <a class="navbar-brand text-white" href="#">
+                <a class="navbar-brand text-white" href="../../" >
                     <i class="fa fa-leaf"></i>
-                    <span>脚本任务管理平台</span>
+                    <span>任务平台</span>
                 </a><!-- .navbar-brand -->
 
                 <button type="button" class="btn btn-burger mr-2 d-none d-xl-flex" data-toggle="sidebar"
@@ -198,11 +198,18 @@
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
 
-    <!-- demo.js is only for Ace's demo and you shouldn't use it -->
-    <!--    <script src="./app/browser/demo.js"></script>-->
-
     <!-- include vendor scripts used in "jqGrid" page. see "/views//pages/partials/table-jqgrid/@vendor-scripts.hbs" -->
     <script src="./node_modules/free-jqgrid/js/jquery.jqgrid.src.js"></script>
+
+
+    <!-- 弹窗 -->
+    <!-- include vendor scripts used in "Alerts" page. see "/views//pages/partials/alerts/@vendor-scripts.hbs" -->
+    <script src="./node_modules/sweetalert2/dist/sweetalert2.all.js"></script>
+    <script src="./node_modules/interactjs/dist/interact.js"></script>
+
+
+    <!-- include ace.js -->
+    <script src="./dist/js/ace.js"></script>
 
 </div>
 

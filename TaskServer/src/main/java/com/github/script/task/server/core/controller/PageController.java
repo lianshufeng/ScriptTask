@@ -19,10 +19,16 @@ public class PageController {
     private List<String> pages = null;
 
 
-    @RequestMapping({"", "/"})
+    @RequestMapping({"", "/", "index.html"})
     @SneakyThrows
     public void index(HttpServletResponse response) {
         response.sendRedirect("page/index.html");
+    }
+
+    @RequestMapping({"page", "page/"})
+    @SneakyThrows
+    public void page(HttpServletResponse response) {
+        response.sendRedirect("index.html");
     }
 
     @RequestMapping("page/{viewName}.html")

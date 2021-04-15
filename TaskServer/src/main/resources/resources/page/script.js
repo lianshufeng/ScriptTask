@@ -1,42 +1,63 @@
+/**
+ * 删除脚本
+ */
+var removeScript = function (scriptName) {
+    var swalWithBootstrapButtons = Swal.mixin({
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        text: "确认删除脚本 : " + scriptName,
+        type: 'warning',
+        showCancelButton: true,
+        scrollbarPadding: false,
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        reverseButtons: true,
+        customClass: {'confirmButton': 'btn btn-green mx-2 px-3', 'cancelButton': 'btn btn-red mx-2 px-3'}
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                type: 'post',
+                url: "../script/del",
+                datatype: "json",
+                data: "scriptName=" + scriptName,
+                success: function (data) {
+                    if (data.state != "Success") {
+                        alert(JSON.stringify(data));
+                        return;
+                    }
+                    swalWithBootstrapButtons.fire({
+                        title: '删除成功!',
+                        type: 'success',
+                        icon: 'success',
+                        customClass: {'confirmButton': 'btn btn-info px-5'}
+                    })
+                    //刷新脚本
+                    $("#grid-table").jqGrid("setGridParam", {
+                        postData: {}
+                    }).trigger("reloadGrid");
+                }
+            })
+
+
+        }
+    })
+}
+
+
 jQuery(function ($) {
+
 
     var grid_data =
         [
-            {id: "1", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2017-12-13"},
-            {id: "2", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2018-02-03"},
-            {id: "3", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2016-01-17"},
-            {id: "4", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2015-12-23"},
-            {id: "5", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2019-08-06"},
-            {id: "6", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2017-12-14"},
-            {id: "7", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2016-06-20"},
-            {id: "8", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2015-11-11"},
-            {id: "9", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2009-02-10"},
-            {id: "10", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "11", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03"},
-            {id: "12", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "13", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03"},
-            {id: "14", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "15", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "16", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2007-12-03"},
-            {id: "17", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "18", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "19", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "20", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "21", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03"},
-            {id: "22", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "23", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03"}
+            {id: "1", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2017-12-13"}
         ]
 
     var subgrid_data =
         [
             {id: "1", name: "sub grid item 1", qty: 11},
             {id: "2", name: "sub grid item 2", qty: 3},
-            {id: "3", name: "sub grid item 3", qty: 12},
-            {id: "4", name: "sub grid item 4", qty: 5},
-            {id: "5", name: "sub grid item 5", qty: 2},
-            {id: "6", name: "sub grid item 6", qty: 9},
-            {id: "7", name: "sub grid item 7", qty: 3},
-            {id: "8", name: "sub grid item 8", qty: 8}
+            {id: "3", name: "sub grid item 3", qty: 12}
         ]
 
 
@@ -221,8 +242,18 @@ jQuery(function ($) {
 
         //sortable: true,// requires jQuery UI Sortable
 
-        colNames: ['脚本名', '备注', '发布时间', '操作'],
+        colNames: ['参数', '脚本名', '备注', '发布时间', '操作'],
         colModel: [
+            {
+                resizable: false,
+                name: 'parameters',
+                index: 'parameters',
+                width: 0,
+                hidden: true,
+                formatter: function (val, options, rowdata) {
+                    return val ? JSON.stringify(val) : "{}";
+                }
+            },
             {
                 resizable: false,
                 name: 'name',
@@ -237,30 +268,22 @@ jQuery(function ($) {
             },
             {
                 resizable: false,
-                name: 'updateTime',
+                name: 'publishTime',
                 index: 'updateTime',
                 width: 70,
                 formatter: function (val, options, rowdata) {
-                    return Date.format(new Date(val), 'yyyy-MM-dd HH:mm:ss');
+                    return Date.format(new Date(rowdata.updateTime), 'yyyy-MM-dd HH:mm:ss');
                 }
             },
             {
                 resizable: false,
-                name: 'myac',
+                name: 'option',
                 index: '',
                 width: 80,
                 fixed: true,
                 sortable: false,
-                formatter: 'actions',
-                formatoptions: {
-                    // keys: true,
-                    delbutton: true,//disable delete button
-                    delOptions: {
-                        recreateForm: true,
-                        beforeShowForm: style_delete_form
-                    },
-                    // editformbutton:false,
-                    //editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+                formatter: function (val, options, rowdata) {
+                    return '<button class="card-toolbar-btn btn btn-sm radius-1 btn-outline-danger btn-h-outline-danger btn-tp" type="button" onclick="removeScript(\'' + rowdata.name + '\')" ><i class="fa fa-times text-danger-m2"></i></button>'
                 }
             }
         ],
@@ -307,17 +330,29 @@ jQuery(function ($) {
 
         // for this example we are using local data
         subGridRowExpanded: function (subgridDivId, rowId) {
+            //取出当前行数据
+            let rowData = $(grid_selector).jqGrid('getRowData', rowId);
+            let parameters = JSON.parse(rowData.parameters);
+            let subGridData = [];
+            for (let name in parameters) {
+                subGridData.push({
+                    'name': name,
+                    'remark': parameters[name].remark
+                })
+            }
+
+            console.log(subGridData);
+
             var subgridTableId = subgridDivId + "_t";
             $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
             $("#" + subgridTableId).jqGrid({
                 datatype: 'local',
                 guiStyle: "bootstrap4ace",
-                data: subgrid_data,
-                colNames: ['No', 'Item Name', 'Qty'],
+                data: subGridData,
+                colNames: ['参数名', '参数描述'],
                 colModel: [
-                    {name: 'id', width: 50},
                     {name: 'name', width: 150},
-                    {name: 'qty', width: 50}
+                    {name: 'remark', width: 300}
                 ]
             })
         },
@@ -528,6 +563,11 @@ $(() => {
                     headerClass: 'd-none',
                     progress: 'position-bl bgc-black-tp6 py-2px m-1px'
                 })
+
+                //刷新列表
+                $("#grid-table").jqGrid("setGridParam", {
+                    postData: {}
+                }).trigger("reloadGrid");
 
             },
             error: function (e) {
