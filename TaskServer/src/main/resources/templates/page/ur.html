@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/page::commonHeader"></head>
+
+<body class="body-container">
+<nav th:replace="common/page::commonNavbar"/>
+
+<div class="main-container bgc-white">
+
+    <!--侧边栏-->
+    <div th:replace="common/page::commonSidebar"></div>
+
+    <div role="main" class="main-content">
+        <div class="page-content container container-plus">
+            <!-- 内容详情 -->
+
+            <div class="card dcard">
+                <div class="card-header">
+                    <h5 class="card-title text-120 text-primary-d2">
+                        人机交互
+                    </h5>
+
+                    <div class="card-toolbar">
+                        <div class="card-toolbar no-border">
+                            <!-- 刷新按钮-->
+                            <a href="#" class="card-toolbar-btn btn btn-sm radius-1 btn-outline-success mx-2px"
+                               style="pointer-events:none">
+                                <i class="fas fa-sync-alt w-2 mx-1px"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div><!-- /.card-header -->
+
+                <div class="card-body p-0">
+                    <div class="p-3">
+
+
+                        <!-- 默认页面开始 -->
+                        <div class="pos-rel col-12 col-sm-7 mt-1 mt-sm-3">
+                            <div class="py-3 px-1 py-lg-4 px-lg-5">
+
+                                <div class="text-center fa-4x">
+                                    <span class="text-100 text-dark-m3 d-sm-none">¯\_(ツ)_/¯</span>
+                                    <span class="text-110 text-dark-m3 d-none d-sm-inline">¯\_(ツ)_/¯</span>
+                                </div>
+
+
+                                <div class="text-center fa-4x text-orange-d2 letter-spacing-4">
+                                    真棒!
+                                </div>
+
+
+                                <div class="text-center">
+                                    <span class="text-150 text-primary-d2">不需要做什么，等就完了</span>
+                                </div>
+
+
+                                <div class="mt-4 text-105 bgc-secondary-l4 py-2 px-3 radius-1">
+                                    <span class="text-600 text-dark-m3">提示:</span>
+
+                                    <ul class="list-unstyled mt-3 mx-sm-3 mb-0 text-dark-m2 ">
+                                        <li class="my-2">
+                                            <i class="fa fa-circle text-xs text-blue-d1 align-middle mr-1"></i>
+                                            停留此页自动获取人机交互任务
+                                        </li>
+
+                                        <li class="my-2">
+                                            <i class="fa fa-circle text-xs text-blue-d1 align-middle mr-1"></i>
+                                            人机交互存在一定时效性
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- 默认页面结束-->
+
+
+                    </div>
+                </div><!-- /.card-body -->
+            </div>
+
+
+            <!-- 内容结束-->
+        </div>
+        <footer th:replace="common/page::commonFooter1"/>
+    </div>
+
+</div>
+
+<div th:replace="common/page::commonIncludeScripts"/>
+
+</body>
+
+
+</html>
+
+
