@@ -9,12 +9,14 @@ import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 import com.github.script.task.bridge.model.JobModel;
 import com.github.script.task.bridge.model.param.JobLogParam;
 import com.github.script.task.bridge.model.param.JobParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +38,39 @@ public class JobService {
     private TaskDao taskDao;
 
 
-    public JobModel createByTask(Task task) {
+    /**
+     * 创建任务
+     *
+     * @param task
+     * @return
+     */
+    @Transactional
+    public ResultContent<JobModel> createByTask(Task task) {
+        if (this.jobDao.existsByTask(task)) {
+            return ResultContent.build(ResultState.JobExists);
+        }
         Job job = new Job();
         BeanUtils.copyProperties(task, job, "id");
         job.setTask(task);
+        this.dbHelper.saveTime(job);
         jobDao.save(job);
-        return toModel(job);
+        return ResultContent.buildContent(toModel(job));
+    }
+
+
+    /**
+     * 创建任务
+     *
+     * @param taskId
+     * @return
+     */
+    @Transactional
+    public ResultContent<JobModel> createByTaskId(String taskId) {
+        Optional<Task> optional = taskDao.findById(taskId);
+        if (!optional.isPresent()) {
+            return ResultContent.build(ResultState.TaskNoneExists);
+        }
+        return this.createByTask(optional.get());
     }
 
     /**
@@ -60,6 +89,7 @@ public class JobService {
 
     /**
      * 查询
+     *
      * @param param
      * @return
      */
@@ -121,15 +151,5 @@ public class JobService {
         return model;
     }
 
-    public ResultContent<String> createByTaskId(String taskId) {
-        Optional<Task> optional = taskDao.findById(taskId);
-        if (!optional.isPresent()) {
-            return ResultContent.buildContent(ResultState.TaskNoneExists);
-        }
-        Task task = optional.get();
-        Job job = new Job();
-        BeanUtils.copyProperties(task, job, "id");
-        job.setTask(task);
-        return ResultContent.buildContent(toModel(jobDao.save(job)));
-    }
+
 }

@@ -33,8 +33,8 @@ public class Job extends SuperEntity {
     private String deviceId;
 
     //关联的任务
-    @Indexed
     @DBRef(lazy = true)
+    @Indexed(unique = true)
     private Task task;
 
     //执行设备

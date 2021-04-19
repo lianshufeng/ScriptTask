@@ -21,7 +21,7 @@ public class JobRunLog extends SuperEntity {
     private String scriptName;
 
     //jobId
-    @Indexed
+    @Indexed(unique = true)
     private String jobId;
 
     //设备ID
