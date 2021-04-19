@@ -44,6 +44,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item" th:class="${viewName} =='client' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/client.html" th:href="@{/page/client.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>节点管理</span>
+                          </span>
+                    </a>
+                </li>
 
 
                 <li class="nav-item" th:class="${viewName} =='ur' ? 'nav-item active' : 'nav-item'">
