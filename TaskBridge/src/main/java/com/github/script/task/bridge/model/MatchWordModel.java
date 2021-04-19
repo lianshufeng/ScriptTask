@@ -21,5 +21,7 @@ public class MatchWordModel  {
     //权重值
     private long weightValue;
 
+    private Long createTime;
+
 
 }

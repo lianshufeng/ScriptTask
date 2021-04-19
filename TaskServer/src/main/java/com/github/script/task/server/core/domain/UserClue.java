@@ -36,7 +36,10 @@ public class UserClue extends SuperEntity {
     @Indexed(expireAfterSeconds = 0)
     private Date ttl;
 
+    //匹配信息
+    private String matchInfo;
 
+    private String remark;
 
 
 

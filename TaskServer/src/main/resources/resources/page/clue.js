@@ -1,42 +1,72 @@
+/**
+ * 删除线索
+ */
+var removeClue = function (id) {
+    var swalWithBootstrapButtons = Swal.mixin({
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        text: "确认删除线索 : " + id,
+        type: 'warning',
+        showCancelButton: true,
+        scrollbarPadding: false,
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        reverseButtons: true,
+        customClass: {'confirmButton': 'btn btn-green mx-2 px-3', 'cancelButton': 'btn btn-red mx-2 px-3'}
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                type: 'post',
+                url: "../userClue/del",
+                datatype: "json",
+                data: "id=" + id,
+                success: function (data) {
+                    if (data.state != "Success") {
+                        alert(JSON.stringify(data));
+                        return;
+                    }
+                    swalWithBootstrapButtons.fire({
+                        title: '删除成功!',
+                        type: 'success',
+                        icon: 'success',
+                        customClass: {'confirmButton': 'btn btn-info px-5'}
+                    })
+                    //刷新脚本
+                    $("#grid-table").jqGrid("setGridParam", {
+                        postData: {}
+                    }).trigger("reloadGrid");
+                }
+            })
+
+
+        }
+    })
+}
+
+var setData = function (data) {
+    $("#clueId").val(data.id)
+    $("#remarkText").val(data.remark)
+}
+
+
+
+
+
+
 jQuery(function ($) {
+
 
     var grid_data =
         [
-            {id: "1", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2017-12-13"},
-            {id: "2", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2018-02-03"},
-            {id: "3", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2016-01-17"},
-            {id: "4", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2015-12-23"},
-            {id: "5", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2019-08-06"},
-            {id: "6", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2017-12-14"},
-            {id: "7", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2016-06-20"},
-            {id: "8", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2015-11-11"},
-            {id: "9", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2009-02-10"},
-            {id: "10", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "11", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03"},
-            {id: "12", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "13", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03"},
-            {id: "14", name: "Laser Printer", note: "note2", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "15", name: "Play Station", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "16", name: "Mobile Telephone", note: "note", stock: "Yes", ship: "ARAMEX", sdate: "2007-12-03"},
-            {id: "17", name: "Server", note: "note2", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "18", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "19", name: "Matrix Printer", note: "note3", stock: "No", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "20", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2007-12-03"},
-            {id: "21", name: "Laptop", note: "Long text ", stock: "Yes", ship: "InTime", sdate: "2007-12-03"},
-            {id: "22", name: "LCD Monitor", note: "note3", stock: "Yes", ship: "TNT", sdate: "2007-12-03"},
-            {id: "23", name: "Speakers", note: "note", stock: "No", ship: "ARAMEX", sdate: "2007-12-03"}
+            {id: "1", name: "Desktop Computer", note: "note", stock: "Yes", ship: "FedEx", sdate: "2017-12-13"}
         ]
 
     var subgrid_data =
         [
             {id: "1", name: "sub grid item 1", qty: 11},
             {id: "2", name: "sub grid item 2", qty: 3},
-            {id: "3", name: "sub grid item 3", qty: 12},
-            {id: "4", name: "sub grid item 4", qty: 5},
-            {id: "5", name: "sub grid item 5", qty: 2},
-            {id: "6", name: "sub grid item 6", qty: 9},
-            {id: "7", name: "sub grid item 7", qty: 3},
-            {id: "8", name: "sub grid item 8", qty: 8}
+            {id: "3", name: "sub grid item 3", qty: 12}
         ]
 
 
@@ -198,85 +228,85 @@ jQuery(function ($) {
 
         multiselectWidth: 36,
 
-        data: grid_data,
-        datatype: "local",
-        height: 360,//optional
+        // data: grid_data,
+        // datatype: "local",
+
+        url: "../userClue/list",
+        mtype: "post",
+        datatype: "json",
+        jsonReader: {
+            root: function (obj) {
+                return obj.content.content;
+            },
+            total: function (obj) {
+                return obj.content.totalPages;
+            },
+            records: function (obj) {
+                return obj.content.totalElements;
+            }
+        },
+
+        height: 500,//optional
+        prmNames: {page: "page", rows: "size", sort: "sort"},
 
         //sortable: true,// requires jQuery UI Sortable
 
-        colNames: [' ', 'ID', 'Last Sales', 'Name', 'Stock', 'Ship via', 'Notes'],
+        colNames: ['平台', '用户标识', '权重值', '创建时间','匹配信息','备注','操作'],
         colModel: [
             {
                 resizable: false,
-                name: 'myac',
-                index: '',
+                name: 'platform',
+                index: 'platform',
+                width: 30,
+            },
+            {
+                resizable: false,
+                name: 'user',
+                index: 'user',
                 width: 80,
-                fixed: true,
-                sortable: false,
-                formatter: 'actions',
-                formatoptions: {
-                    keys: true,
-                    //delbutton: false,//disable delete button
-                    delOptions: {
-                        recreateForm: true,
-                        beforeShowForm: style_delete_form
-                    },
-                    //editformbutton:true,
-                    //editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+            },
+            {
+                resizable: false,
+                name: 'weightValue',
+                index: 'weightValue',
+                align: 'center',
+                width: 15,
+            },
+            {
+                resizable: false,
+                name: 'displayTime',
+                index: 'createTime',
+                width: 30,
+                formatter: function (val, options, rowdata) {
+                    return Date.format(new Date(rowdata.createTime), 'yyyy-MM-dd HH:mm:ss');
                 }
             },
             {
                 resizable: false,
-                name: 'id',
-                index: 'id',
-                width: 60,
-                sorttype: "int",
-                editable: true
+                name: 'matchInfo',
+                index: 'matchInfo',
+                width: 100,
             },
             {
                 resizable: false,
-                name: 'sdate',
-                index: 'sdate',
-                width: 90,
-                editable: true,
-                sorttype: "date",
-                //unformat: pickDate
+                name: 'remark',
+                index: 'remark',
+                width: 50,
             },
             {
                 resizable: false,
-                name: 'name',
-                index: 'name',
-                width: 150,
-                editable: true,
-                editoptions: {size: "20", maxlength: "30"}
-            },
-            {
-                resizable: false,
-                name: 'stock',
-                index: 'stock',
-                width: 70,
-                editable: true,
-                edittype: "checkbox",
-                editoptions: {value: "Yes:No"}
-            },
-            {
-                resizable: false,
-                name: 'ship',
-                index: 'ship',
-                width: 90,
-                editable: true,
-                edittype: "select",
-                editoptions: {value: "FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}
-            },
-            {
-                resizable: false,
-                name: 'note',
-                index: 'note',
-                width: 150,
+                name: 'option',
+                index: '',
+                width: 120,
+                align: "center",
+                fixed: true,
                 sortable: false,
-                editable: true,
-                edittype: "textarea",
-                editoptions: {rows: "2", cols: "10"}
+                formatter: function (val, options, rowdata) {
+                    /*return '<button class="card-toolbar-btn btn btn-sm radius-1 btn-outline-danger btn-h-outline-danger btn-tp" type="button" onclick="removeScript(\'' + rowdata.id + '\')" ><i class="fa fa-times text-danger-m2"></i></button>'*/
+                    return '<button type="button" class="btn btn-bgc-tp btn-lighter-blue btn-h-primary btn-a-primary" data-toggle="modal" data-target="#exampleModal2" onclick="setData(' + JSON.stringify(rowdata).replace(/"/g, '&quot;') + ')"><i class="fa fa-edit"></i></button> &nbsp;' +
+                        '<button type="button" class="btn btn-bgc-tp btn-lighter-red btn-h-primary btn-a-primary"  onclick="removeClue(\'' + rowdata.id + '\')"><i class="fa fa-trash-alt"></i></button>'
+
+                }
             }
         ],
 
@@ -291,61 +321,21 @@ jQuery(function ($) {
         pager: pager_selector,
         //toppager: true,
 
-        multiselect: true,
+        multiselect: false,
         multiboxonly: true,
         //multikey: "ctrlKey",
 
-        loadComplete: function () {
-            var table = this;
-            setTimeout(function () {
-                $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-                enableTooltips(table);
-            }, 0);
-
-
-        },
-
         editurl: null,//nothing is saved
-        caption: "用户线索",
+        caption: "线索列表",
 
         //autowidth: true, shrinkToFit: true,
         autowidth: true,
         shrinkToFit: $(window).width() > 600,
         forceFit: true,
 
-        grouping: false,
-        groupingView: {
-            groupField: ['name'],
-            groupDataSorted: true,
-            plusicon: 'fa fa-chevron-down px-2 w-auto text-primary-m3 bgc-h-primary-l2 py-1 mx-1 radius-1',
-            minusicon: 'fa fa-chevron-up px-2 w-auto text-primary-m3 bgc-h-primary-l2 py-1 mx-1 radius-1'
-        },
 
-        //subgrid options
-        subGridWidth: 36,
-        subGrid: true,
-        subGridOptions: {
-            plusicon: "fas fa-angle-double-down text-secondary-m2 text-90",
-            minusicon: "fas fa-angle-double-up text-info-m1 text-95",
-            openicon: "fas fa-fw fa-reply fa-rotate-180 text-orange-d1"
-        },
 
-        // for this example we are using local data
-        subGridRowExpanded: function (subgridDivId, rowId) {
-            var subgridTableId = subgridDivId + "_t";
-            $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
-            $("#" + subgridTableId).jqGrid({
-                datatype: 'local',
-                guiStyle: "bootstrap4ace",
-                data: subgrid_data,
-                colNames: ['No', 'Item Name', 'Qty'],
-                colModel: [
-                    {name: 'id', width: 50},
-                    {name: 'name', width: 150},
-                    {name: 'qty', width: 50}
-                ]
-            })
-        },
+
 
         // resize grid after pagination
         onPaging: function (pgButton) {
@@ -355,7 +345,35 @@ jQuery(function ($) {
                 $(grid_box).show();
             }, 0);
         },
+        //修改向服务端请求的数据，把page数量-1
+        serializeGridData: function (postData) {
 
+
+
+            var platform = $("#platform").val()
+            var remark = $("#remark").val()
+
+            if (postData['page']) {
+                postData.page--;
+            }
+
+            postData.platform = platform
+            postData.remark = remark
+            //排序
+            if (postData['sort']) {
+                //postData['sort'] = postData['sort'] + "," + postData['sord']
+                delete postData['sort']
+            }
+
+            return postData;
+        },
+        loadComplete: function () {
+            var table = this;
+            setTimeout(function () {
+                $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+                enableTooltips(table);
+            }, 0);
+        },
     })
 
 
@@ -368,22 +386,22 @@ jQuery(function ($) {
     $(grid_selector)
         .jqGrid('navGrid', pager_selector,
             {	//navbar options
-                add: true,
+                add: false,
                 addicon: 'fa fa-plus-circle text-purple text-100',
 
-                edit: true,
+                edit: false,
                 editicon: 'fa fa-edit text-blue text-100',
 
-                del: true,
+                del: false,
                 delicon: 'fa fa-trash text-danger-m1 text-100',
 
-                search: true,
+                search: false,
                 searchicon: 'fa fa-search text-orange-d1 text-100',
 
                 refresh: true,
                 refreshicon: 'fa fa-sync text-success-m1 text-100',
 
-                view: true,
+                view: false,
                 viewicon: 'fa fa-search-plus text-grey-d1 text-100',
             },
             {
@@ -474,7 +492,6 @@ jQuery(function ($) {
 
     function style_search_form(form) {
         form = $(form)
-
         var dialog = form.closest('.ui-jqdialog')
         var buttons = dialog.find('.EditTable').addClass('text-white')
 
@@ -492,4 +509,39 @@ jQuery(function ($) {
     }
 
     //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow')
+
+
+    $("#search").click(function(){
+        $(grid_selector).jqGrid().trigger("reloadGrid");
+    });
+
+
+    $("#remarkSave").click(function(){
+        var clueId = $("#clueId").val()
+        var remark = $("#remarkText").val()
+
+        $.ajax({
+            type: 'post',
+            url: "../userClue/update",
+            datatype: "json",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({
+                remark : remark,
+                id : clueId
+            }),
+            success: function (data) {
+                if (data.state != "Success") {
+                    alert(JSON.stringify(data));
+                    return;
+                }
+                //刷新脚本
+                $("#clueId").val("")
+                $("#remarkText").val("")
+                $('#exampleModal2').modal('hide');
+                $(grid_selector).jqGrid().trigger("reloadGrid");
+            }
+        })
+
+    });
+
 })

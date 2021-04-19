@@ -53,12 +53,12 @@ public class TaskController {
 
     /**
      * 删除任务
-     * @param id
+     * @param param
      * @return
      */
     @RequestMapping("del")
-    public Object del(String id){
-        Assert.hasText(id,"任务ID不能为空");
-        return taskService.del(id);
+    public Object del(@RequestBody TaskParam param){
+        Assert.hasText(param.getId(),"任务ID不能为空");
+        return taskService.del(param.getId());
     }
 }

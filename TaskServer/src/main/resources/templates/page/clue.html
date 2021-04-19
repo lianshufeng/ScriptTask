@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="common/page::commonHeader"></head>
-<!-- include vendor stylesheets used in "jqGrid" page. see "/views//pages/partials/table-jqgrid/@vendor-stylesheets.hbs" -->
 
 <body class="body-container">
 <nav th:replace="common/page::commonNavbar"/>
@@ -17,14 +16,89 @@
 
         <div class="page-content">
             <div class="page-header" style="text-align: left !important ; display: block !important; ">
-                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
-                    <i class="fa fa-edit mr-1"></i>
+
+                <div class="form-group row mx-0">
+                    <label for="platform" class="col-form-label text-sm-right">平台</label>
+                    <div class="col-lg-1">
+                        <input type="text" class="form-control brc-on-focus brc-success-m2" id="platform" placeholder="平台">
+                    </div>
+                    <div class="form-group row mx-0">
+                        <label for="remark" class="col-form-label text-sm-right">备注</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control brc-on-focus brc-success-m2" id="remark" placeholder="备注">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn px-4 btn-primary mb-1" id="search">搜索</button>
+                    </div>
+
+                </div>
+
+                <!--<table border="0">
+                    <tr>
+                        <td>
+                            <div class="form-group row mx-0">
+                                <label for="platform" class="col-form-label text-sm-right">平台</label>
+                                <div class="col-sm-8 col-lg-6">
+                                    <input type="text" class="form-control brc-on-focus brc-success-m2" id="platform" placeholder="平台名称">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group row mx-0">
+                                <label for="id-field2" class="col-form-label text-sm-right">备注</label>
+                                <div class="col-sm-8 col-lg-6">
+                                    <input type="text" class="form-control brc-on-focus brc-success-m2" id="id-field2" placeholder="备注">
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group row mx-0">
+                                <button class="btn px-4 btn-primary mb-1">搜索</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>-->
+
+                        <!--<div class="form-group row mx-0">
+                            <label for="id-field1" class="col-sm-4 col-xl-3 col-form-label text-sm-right">Full Name</label>
+                            <div class="col-sm-8 col-lg-6">
+                                <input type="text" class="form-control brc-on-focus brc-success-m2" id="id-field1" placeholder="e.g. Alex Doe">
+                            </div>
+                        </div>
+                        <div class="form-group row mx-0">
+                            <label for="id-field2" class="col-sm-4 col-xl-3 col-form-label text-sm-right">Email Address</label>
+                            <div class="col-sm-8 col-lg-6">
+                                <input type="email" class="form-control brc-on-focus brc-success-m2" id="id-field2" placeholder="Enter your email address here">
+                            </div>
+                        </div>
+-->
+              <!-- <div class="form-group row">
+                     <div class="col-sm-1">
+                        <label for="id-form-field-1" class="mb-0">
+                            平台名称
+                        </label>
+                    </div>
+
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control col-sm-8 col-md-6" id="id-form-field-1">
+                    </div>
+                    <div class="col-sm-1">
+                        <button id="search" class="btn px-4 btn-primary mb-1">搜索</button>
+                    </div>
+                </div>-->
+
+
+                <!-- 上传文件的表单 -->
+                <!--<form id="uploadScriptForm" enctype="multipart/form-data" style="display:none">
+                    <input id="scriptFile" type="file" name="file" accept=".groovy,.java"/>
+                </form>
+
+                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button"
+                        id="uploadScriptBtn">
+                    <i class="fas fa-cloud-upload-alt mr-1"></i>
                     新增
-                </button>
-                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
-                    <i class="fa fa-trash-alt mr-1"></i>
-                    删除
-                </button>
+                </button>-->
             </div>
 
             <div class="row">
@@ -52,16 +126,53 @@
         <footer th:replace="common/page::commonFooter1"/>
     </div>
 
+
+
+</div>
+
+<!-- Blurred background/backdrop -->
+<div class="modal fade" id="exampleModal2" data-backdrop-bg="bgc-grey-tp4" data-blur="true" tabindex="-1" role="dialog" aria-labelledby="exampleModal2Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-0 shadow radius-1">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary-d2" id="exampleModal2Label">
+                    备注
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body modal-scroll">
+                <input type="hidden" id="clueId"  />
+                <textarea class="form-control" id="remarkText" placeholder="请输入备注..." style="overflow: hidden; overflow-wrap: break-word; resize: horizontal; height: 62px;"></textarea>
+            </div>
+
+            <div class="modal-footer bgc-default-l5">
+                <button id="remarkSave" type="button" class="btn btn-primary">
+                    保存
+                </button>
+
+                <button type="button" class="btn btn-lighter-grey" data-dismiss="modal">
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div th:replace="common/page::commonIncludeScripts"/>
 
+
+
+<!--日期格式化-->
+<script src="./js/date-format.js"></script>
+
 <!--页面功能-->
 <script src="./page/clue.js"></script>
 
+
 </body>
-
-
 </html>
 
 

@@ -7,6 +7,8 @@ import java.util.Set;
 @Data
 public class UserClueParam {
 
+    private String id;
+
     //平台名
     private String platform;
 
@@ -20,4 +22,8 @@ public class UserClueParam {
     private long weightValue;
 
     private long timeOut;
+
+    private String matchInfo;
+
+    private String remark;
 }

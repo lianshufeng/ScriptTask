@@ -6,6 +6,7 @@ import com.github.script.task.server.core.domain.MatchWord;
 import com.github.script.task.server.core.service.MatchWordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,5 +32,10 @@ public class MatchWordController {
     @RequestMapping("del")
     public Object del(String id){
         return matchWordService.del(id);
+    }
+
+    @RequestMapping("list")
+    public Object list(MatchWordParam param, Pageable pageable){
+        return matchWordService.list(param,pageable);
     }
 }

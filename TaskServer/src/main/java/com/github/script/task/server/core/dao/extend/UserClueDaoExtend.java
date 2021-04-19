@@ -7,4 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserClueDaoExtend {
     Page<UserClue> list(UserClueParam param, Pageable pageable);
+
+    boolean del(String id);
+
+    Boolean update(UserClueParam param);
 }

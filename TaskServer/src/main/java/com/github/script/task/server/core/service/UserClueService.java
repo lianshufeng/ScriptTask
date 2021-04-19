@@ -60,6 +60,16 @@ public class UserClueService {
         });
     }
 
+    /**
+     * 删除任务
+     *
+     * @param id
+     * @return
+     */
+    public ResultContent<ResultState> del(String id) {
+        return userClueDao.del(id) ? ResultContent.buildContent(ResultState.Success) : ResultContent.buildContent(ResultState.Fail);
+    }
+
     UserClueModel toModel(UserClue userClue){
         if (userClue == null){
             return null;
@@ -76,4 +86,7 @@ public class UserClueService {
         return model;
     }
 
+    public ResultContent<ResultState> update(UserClueParam param) {
+        return userClueDao.update(param) ? ResultContent.buildContent(ResultState.Success) : ResultContent.buildContent(ResultState.Fail);
+    }
 }

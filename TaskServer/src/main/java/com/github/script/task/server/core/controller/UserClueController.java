@@ -29,4 +29,14 @@ public class UserClueController {
         return userClueService.list(param,pageable);
     }
 
+    @RequestMapping("del")
+    public Object del(String id){
+        return userClueService.del(id);
+    }
+
+    @RequestMapping("update")
+    public Object update(@RequestBody UserClueParam param){
+        return userClueService.update(param);
+    }
+
 }

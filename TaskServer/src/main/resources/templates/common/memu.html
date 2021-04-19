@@ -27,6 +27,14 @@
                     </a>
                 </li>
 
+                <li class="nav-item" th:class="${viewName} =='matchword' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/matchword.html" th:href="@{/page/matchword.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>匹配词库</span>
+                          </span>
+                    </a>
+                </li>
+
                 <li class="nav-item" th:class="${viewName} =='task' ? 'nav-item active' : 'nav-item'">
                     <a href="../page/task.html" th:href="@{/page/task.html}" class="nav-link">
                           <span class="nav-text">

@@ -41,7 +41,7 @@ public class TaskDaoImpl implements TaskDaoExtend {
 
     @Override
     public Boolean del(String id) {
-        return this.mongoTemplate.remove(Query.query(Criteria.where("_id").is(id)), Script.class).getDeletedCount() > 0;
+        return this.mongoTemplate.remove(Query.query(Criteria.where("_id").is(id)), Task.class).getDeletedCount() > 0;
     }
 
     @Override

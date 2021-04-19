@@ -17,7 +17,7 @@ public class TTLConf {
 
     private Long taskTimeOut = 86400000L;
 
-    private Long duplicateTimout = 86400000L;
+    private Long duplicateTimout = 86400000L * 7 * 12;
 
     private Long UserClueTimeout = 86400000L * 30 * 12;
 

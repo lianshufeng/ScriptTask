@@ -45,7 +45,9 @@ public class TaskService extends SuperService {
 
     public Object del(String id){
         try {
-            return postJson("task/del", id, Object.class);
+            TaskParam param = new TaskParam();
+            param.setId(id);
+            return postJson("task/del", param, Object.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }

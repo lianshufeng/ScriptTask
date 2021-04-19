@@ -8,9 +8,12 @@ import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.server.core.dao.MatchWordDao;
 import com.github.script.task.server.core.domain.MatchWord;
+import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -68,5 +71,11 @@ public class MatchWordService {
         MatchWordModel model = new MatchWordModel();
         BeanUtils.copyProperties(matchWord,model);
         return model;
+    }
+
+    public Page<MatchWordModel> list(MatchWordParam param, Pageable pageable) {
+        return PageEntityUtil.concurrent2PageModel(this.matchWordDao.list(param, pageable), (it) -> {
+            return toModel(it);
+        });
     }
 }

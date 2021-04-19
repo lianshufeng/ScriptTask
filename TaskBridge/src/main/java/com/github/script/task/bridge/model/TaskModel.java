@@ -14,6 +14,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskModel {
 
+    //定时器
+    private String cron;
+
     //任务ID
     private String id;
 
