@@ -33,13 +33,13 @@ public class TestRunScript extends SuperRunScript {
 
     @Test
     public void GetWeiBoUserScript() {
-        Object ret = runScript("GetWeiBoUserScript.groovy");
+        Object ret = runScript("task/weibo/GetWeiBoUserScript.groovy");
         System.out.println("ret : " + ret);
     }
 
     @Test
     public void AnalysisUserScript() {
-        Object ret = runScript("AnalysisUserScript.groovy");
+        Object ret = runScript("task/weibo/AnalysisUserScript.groovy");
         System.out.println("ret : " + ret);
     }
 

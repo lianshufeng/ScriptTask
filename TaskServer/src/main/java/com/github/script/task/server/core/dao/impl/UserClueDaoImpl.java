@@ -6,6 +6,7 @@ import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.core.domain.UserClue;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import com.github.script.task.server.other.mongo.util.EntityObjectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 public class UserClueDaoImpl implements UserClueDaoExtend {
 
@@ -27,7 +29,15 @@ public class UserClueDaoImpl implements UserClueDaoExtend {
 
     @Override
     public Page<UserClue> list(UserClueParam param, Pageable pageable) {
-        Criteria criteria = EntityObjectUtil.buildCriteria(new Criteria(), param, EntityObjectUtil.CriteriaType.Like, "platform","remark");
+        Criteria criteria = new Criteria();
+        if (!StringUtils.isBlank(param.getPlatform())){
+            Pattern pattern = Pattern.compile("^.*" + param.getPlatform() + ".*$");
+            criteria.and("platform").regex(pattern);
+        }
+        if (!StringUtils.isBlank(param.getRemark())){
+            Pattern pattern = Pattern.compile("^.*" + param.getRemark() + ".*$");
+            criteria.and("remark").regex(pattern);
+        }
         Query query = Query.query(criteria);
         Sort.Order[] orders = new Sort.Order[]{Sort.Order.desc("weightValue"), Sort.Order.asc("createTime")};
         query.with(Sort.by(orders));
