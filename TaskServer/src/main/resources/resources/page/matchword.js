@@ -45,8 +45,10 @@ var removeMatchWord = function (id) {
 }
 
 var setData = function (data) {
-    $("#clueId").val(data.id)
-    $("#remarkText").val(data.remark)
+    $("#collectionName_update").val(data.collectionName)
+    $("#keyWord_update").val(data.keyWord)
+    $("#weightValue_update").val(data.weightValue)
+    $("#id_update").val(data.id)
 }
 
 
@@ -503,18 +505,21 @@ jQuery(function ($) {
     });
 
 
-    $("#updateSave").click(function(){
-        var clueId = $("#clueId").val()
-        var remark = $("#remarkText").val()
-
+    $("#updateCommit").click(function(){
+        var collectionName =  $("#collectionName_update").val()
+        var keyWord = $("#keyWord_update").val()
+        var weightValue = $("#weightValue_update").val()
+        var id = $("#id_update").val()
         $.ajax({
             type: 'post',
-            url: "../userClue/update",
+            url: "../matchWord/upset",
             datatype: "json",
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify({
-                remark : remark,
-                id : clueId
+                weightValue : weightValue,
+                id : id,
+                keyWord : keyWord,
+                collectionName : collectionName
             }),
             success: function (data) {
                 if (data.state != "Success") {
@@ -522,9 +527,34 @@ jQuery(function ($) {
                     return;
                 }
                 //刷新脚本
-                $("#clueId").val("")
-                $("#remarkText").val("")
-                $('#exampleModal2').modal('hide');
+                $('#update').modal('hide');
+                $(grid_selector).jqGrid().trigger("reloadGrid");
+            }
+        })
+
+    });
+
+    $("#addCommit").click(function(){
+        var collectionName =  $("#collectionName_add").val()
+        var keyWord = $("#keyWord_add").val()
+        var weightValue = $("#weightValue_add").val()
+        $.ajax({
+            type: 'post',
+            url: "../matchWord/upset",
+            datatype: "json",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({
+                weightValue : weightValue,
+                keyWord : keyWord,
+                collectionName : collectionName
+            }),
+            success: function (data) {
+                if (data.state != "Success") {
+                    alert(JSON.stringify(data));
+                    return;
+                }
+                //刷新脚本
+                $('#add').modal('hide');
                 $(grid_selector).jqGrid().trigger("reloadGrid");
             }
         })

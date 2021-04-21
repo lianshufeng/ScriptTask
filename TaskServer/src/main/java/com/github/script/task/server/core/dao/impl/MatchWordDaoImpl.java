@@ -7,6 +7,7 @@ import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.core.domain.UserClue;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import com.github.script.task.server.other.mongo.util.EntityObjectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 public class MatchWordDaoImpl implements MatchWordDaoExtend {
 
@@ -46,7 +48,15 @@ public class MatchWordDaoImpl implements MatchWordDaoExtend {
 
     @Override
     public Page<MatchWord> list(MatchWordParam param, Pageable pageable) {
-        Criteria criteria = EntityObjectUtil.buildCriteria(new Criteria(), param, EntityObjectUtil.CriteriaType.Like, "collectionName","keyWord");
+        Criteria criteria = new Criteria();
+        if (!StringUtils.isBlank(param.getCollectionName())){
+            Pattern pattern = Pattern.compile("^.*" + param.getCollectionName() + ".*$");
+            criteria.and("collectionName").regex(pattern);
+        }
+        if (!StringUtils.isBlank(param.getKeyWord())){
+            Pattern pattern = Pattern.compile("^.*" + param.getKeyWord() + ".*$");
+            criteria.and("keyWord").regex(pattern);
+        }
         Query query = Query.query(criteria);
         return this.dbHelper.pages(query, pageable, MatchWord.class);
     }

@@ -350,8 +350,8 @@ jQuery(function ($) {
 
 
 
-            var platform = $("#platform").val()
-            var remark = $("#remark").val()
+            var platform = $("#platform").val().trim()
+            var remark = $("#remark").val().trim()
 
             if (postData['page']) {
                 postData.page--;
