@@ -71,7 +71,7 @@ public class UserRobotAction extends SuperScriptAction {
         RobotInterfacePutParm robotInterfacePutParm = new RobotInterfacePutParm();
         robotInterfacePutParm.setTips(userRobotInterface.getTips());
         robotInterfacePutParm.setTimeOut(userRobotInterface.getTimeOut());
-        robotInterfacePutParm.setTaskId(getScript().getRuntime().getTaskId());
+        robotInterfacePutParm.setJobId(getScript().getRuntime().getJobId());
         robotInterfacePutParm.setType(type);
         robotInterfacePutParm.setValue(value);
 

@@ -26,7 +26,7 @@ public class UserRobotInterface extends SuperEntity {
 
     // 任务工作的ID
     @Indexed
-    private String taskId;
+    private String jobId;
 
     //机器人交互的类型
     @Indexed

@@ -18,7 +18,7 @@ public class RobotInterfaceModel {
     private String id;
 
     // 任务工作的ID
-    private String taskId;
+    private String jobId;
 
     //机器人交互的类型
     private RobotInterfaceType type;

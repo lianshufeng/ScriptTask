@@ -139,7 +139,8 @@ public class RemoteJobService {
             log.error("脚本不存在 : {}", scriptName);
             return;
         }
-
+        //设置工作id
+        job.setJobId(job.getId());
         //执行脚本
         this.scriptService.executeScript(scriptCode, job);
 

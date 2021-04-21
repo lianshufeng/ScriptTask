@@ -4,6 +4,12 @@
 <head th:replace="common/page::commonHeader"></head>
 
 <body class="body-container">
+<style type="text/css">
+    .user-robot-item {
+        display: none;
+    }
+</style>
+
 <nav th:replace="common/page::commonNavbar"/>
 
 <div class="main-container bgc-white">
@@ -23,64 +29,82 @@
 
                     <div class="card-toolbar">
                         <div class="card-toolbar no-border">
-                            <!-- 刷新按钮-->
                             <span id="timeSpan" class="text-muted" style="pointer-events:none"> - </span>
-                            <!--                            <a href="#" class="card-toolbar-btn btn btn-sm radius-1 btn-outline-success mx-2px"-->
-                            <!--                               style="pointer-events:none">-->
-                            <!--                                <i class="fas fa-sync-alt w-2 mx-1px"></i>-->
-                            <!--                            </a>-->
                         </div>
                     </div>
 
-                </div><!-- /.card-header -->
+                </div>
 
+
+                <!-- /.card-header -->
                 <div class="card-body p-0">
                     <div class="p-3">
-
-
                         <!-- 默认页面开始 -->
-                        <div class="pos-rel mt-1 mt-sm-3 ">
+                        <div id="backgroundPage" class="pos-rel mt-1 mt-sm-3 ">
                             <div class="py-3 px-1 py-lg-4 px-lg-5">
-
                                 <div class="text-center fa-4x">
                                     <span class="text-100 text-dark-m3 d-sm-none">¯\_(ツ)_/¯</span>
                                     <span class="text-110 text-dark-m3 d-none d-sm-inline">¯\_(ツ)_/¯</span>
                                 </div>
-
-
                                 <div class="text-center fa-4x text-orange-d2 letter-spacing-4">
                                     真棒!
                                 </div>
-
                                 <div class="text-center">
                                     <span class="text-150 text-primary-d2">没事做，我就看着，就是玩儿</span>
                                 </div>
-
-
                                 <div class="mt-4 text-105 bgc-secondary-l4 py-2 px-3 radius-1">
                                     <span class="text-600 text-dark-m3">提示:</span>
-
                                     <ul class="list-unstyled mt-3 mx-sm-3 mb-0 text-dark-m2 ">
                                         <li class="my-2">
                                             <i class="fa fa-circle text-xs text-blue-d1 align-middle mr-1"></i>
                                             停留此页自动获取人机交互任务
                                         </li>
-
                                         <li class="my-2">
                                             <i class="fa fa-circle text-xs text-blue-d1 align-middle mr-1"></i>
                                             人机交互存在一定时效性
                                         </li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- 默认页面结束 -->
+
+
+                        <!-- 输入页面开始-->
+                        <div id="userRobotInputPage" style="display: none" class="pos-rel mt-1 mt-sm-3 ">
+                            <label>提示</label>
+                            <hr/>
+
+                            <!--统一模板-->
+                            <div id="userRobotPageContent">
+
+                                <div id="userRobotPageContentInput" class="input-group form-group user-robot-item">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-indent"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-lg"/>
+                                </div>
 
 
                             </div>
-                        </div>
-                        <!-- 默认页面结束-->
 
+
+                            <hr/>
+                            <div id="userRobotConsole" style="text-align: right;">
+                                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button"
+                                        id="uploadScriptBtn">
+                                    <i class="fa fa-user-edit mr-1"></i>
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 输入页面结束-->
 
                     </div>
-                </div><!-- /.card-body -->
+                </div>
+                <!-- /.card-body -->
+
+
             </div>
 
 
@@ -102,11 +126,11 @@
 
 <script>
     $(function () {
+        //计时器
         setInterval(function () {
             $("#timeSpan").text(Date.format(new Date(), 'yyyy-MM-dd HH:mm:ss'));
         }, 1000);
     })
-
 </script>
 
 </body>
