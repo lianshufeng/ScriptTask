@@ -6,8 +6,6 @@ import com.github.script.task.bridge.model.userrobot.parm.UserInterfaceParm;
 import com.github.script.task.bridge.model.userrobot.user.UserInterface;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.dao.JobDao;
-import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.dao.UserRobotInterfaceDao;
 import com.github.script.task.server.core.domain.UserRobotInterface;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
@@ -15,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -26,14 +23,6 @@ public class UserRobotInterfaceService {
     @Autowired
     private UserRobotInterfaceDao userRobotInterfaceDao;
 
-    @Autowired
-    private TaskDao taskDao;
-
-    @Autowired
-    private JobDao jobDao;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     /**
      * 设置用户交互事件

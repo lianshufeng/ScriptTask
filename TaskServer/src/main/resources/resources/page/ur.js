@@ -80,6 +80,13 @@ jQuery(function ($) {
         }
 
         /**
+         * 重置
+         */
+        reset() {
+            this.render();
+        }
+
+        /**
          * 备注信息
          */
         remark() {
@@ -159,24 +166,109 @@ jQuery(function ($) {
      */
     class UserRobotTap extends SuperUserRobot {
 
+        /**
+         * 标记内容
+         * @type {[]}
+         */
+        markTapContainer = [];
+
         getContentInput() {
             return $("#userRobotPageContentTap");
         }
 
 
-        render() {
-            let template = this.contentInput.find('.template-image');
-            //删除所有的图片
-            template.find('img').remove();
-            for (let i in this.data.robotInterface.picture) {
-                let picture = this.data.robotInterface.picture[i];
-                let img = $('<img/>');
-                img.attr('src', picture);
-                img.attr('class', 'input-group form-group');
+        /**
+         * 取图片宽度与高度
+         * @param picture
+         */
+        getPictureSize(picture) {
+            return new Promise(function (resolve, reject) {
+                let image = new Image();
+                image.onload = () => {
+                    resolve(image);
+                };
+                image.src = picture;
+            });
+        }
 
-                template.append(img);
+
+        /**
+         * 渲染画布
+         */
+        renderCanvas(canvas, item) {
+            let element = canvas.get(0);
+            let markTapItem = {
+                "name": item.name,
+                "tap": []
+            };
+            this.markTapContainer.push(markTapItem);
+
+            /**
+             * 记录触摸数据
+             * @param layer
+             */
+            let markTap = function (layer) {
+                markTapItem.tap.push({
+                    "time": new Date().getTime(),
+                    "x": layer.eventX,
+                    "y": layer.eventY
+                })
+                let badge = markTapItem.tap.length.toString();
+
+
+                canvas.addLayer({
+                    type: 'arc',
+                    fillStyle: 'rgba(255, 255, 255, 0.3)',
+                    strokeStyle: '#69f',
+                    strokeWidth: 2,
+                    x: layer.eventX,
+                    y: layer.eventY,
+                    fromCenter: true,
+                    radius: 20
+                }).addLayer({
+                    type: 'text',
+                    fillStyle: 'rgba(255, 255, 255, 0.1)',
+                    strokeStyle: '#df4b30',
+                    strokeWidth: 3,
+                    x: layer.eventX,
+                    y: layer.eventY,
+                    fromCenter: true,
+                    fontSize: 30,
+                    text: badge
+                }).drawLayers();
+
+
             }
 
+
+            this.getPictureSize(item.picture).then((img) => {
+                element.width = img.width;
+                element.height = img.height;
+
+                canvas.addLayer({
+                    type: 'image',
+                    source: item.picture,
+                    width: img.width,
+                    height: img.height,
+                    fromCenter: false,
+                    mousedown: markTap,
+                    touchstart: markTap
+                }).drawLayers();
+            });
+        }
+
+        render() {
+            let container = this.contentInput.find('.tap-image-container');
+            //清空容器里的所有元素
+            container.empty();
+            let template = $('.tap-image-template');
+            for (let i in this.data.robotInterface.items) {
+                let item = this.data.robotInterface.items[i];
+                let img = template.clone();
+                this.renderCanvas(img.find('canvas'), item);
+                img.show();
+                container.append(img);
+            }
 
             this.contentInput.css("display", "inline-flex");
         }
@@ -186,14 +278,19 @@ jQuery(function ($) {
             this.request({
                 "id": this.data.id,
                 "value": {
-                    "text": this.contentInput.find("input[type='text']").val()
+                    "tap": this.markTapContainer
                 },
             });
         }
 
+        reset() {
+            this.markTapContainer.splice(0, this.markTapContainer.length);
+            super.reset();
+        }
+
 
         remark() {
-            return "触摸图片交"
+            return "点击图片"
         };
     }
 
@@ -292,17 +389,31 @@ jQuery(function ($) {
         $(".user-robot-item").hide();
         urInputObject.render();
 
+
+        //取消页面所有事件
+        page.unbind();
+
         //绑定提交按钮
-        let submitBtn = page.find("#userRobotConsole").find("button");
+        let submitBtn = page.find("#userRobotConsole").find(".ur-submit-btn");
         submitBtn.unbind();
         submitBtn.bind('click', (e) => urInputObject.submit(e));
         submitBtn.bind('tap', (e) => urInputObject.submit(e));
-
-        //绑定回车事件
-        page.unbind();
         page.bind('keydown', (e) => {
             if (e.keyCode == 13) {
                 urInputObject.submit(e);
+            }
+        });
+
+
+        //重置按钮
+        let resetBtn = page.find("#userRobotConsole").find(".ur-reset-btn");
+        resetBtn.unbind();
+        resetBtn.bind('click', (e) => urInputObject.reset(e));
+        resetBtn.bind('tap', (e) => urInputObject.reset(e));
+        //绑定ESC事件
+        page.bind('keydown', (e) => {
+            if (e.keyCode == 27) {
+                urInputObject.reset(e);
             }
         });
 

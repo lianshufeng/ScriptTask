@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
@@ -17,10 +15,40 @@ public class UserTap extends UserInterface {
     /**
      * 图片集合
      */
-    private LinkedHashMap<String, String> tap;
+    private Map<String, Object>[] tap;
 
     @Override
     public RobotInterfaceType getType() {
         return RobotInterfaceType.Tap;
     }
+
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Items {
+
+        //项名
+        private String name;
+
+        //值
+        private Item[] item;
+
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Item {
+
+        //触发时间
+        private long time;
+
+        private int x;
+        private int y;
+
+    }
+
+
 }
