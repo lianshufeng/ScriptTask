@@ -1,3 +1,13 @@
+var copySelectCell = function () {
+    var text = $(".cellSelectContent").text();
+    navigator.clipboard.writeText(text).then(function () {
+        console.log('[clipboard] : ', text);
+        $.aceToaster.removeAll();
+    }, function (err) {
+        alert("复制剪贴板失败");
+    });
+}
+
 /**
  * 删除线索
  */
@@ -48,10 +58,6 @@ var setData = function (data) {
     $("#clueId").val(data.id)
     $("#remarkText").val(data.remark)
 }
-
-
-
-
 
 
 jQuery(function ($) {
@@ -251,19 +257,39 @@ jQuery(function ($) {
 
         //sortable: true,// requires jQuery UI Sortable
 
-        colNames: ['平台', '用户标识', '权重值', '创建时间','匹配信息','备注','操作'],
+        colNames: ['平台', '用户标识', '匹配信息', '备注', '权重值', '创建时间', '操作'],
         colModel: [
             {
                 resizable: false,
                 name: 'platform',
                 index: 'platform',
-                width: 30,
+                width: 20,
             },
             {
                 resizable: false,
                 name: 'user',
                 index: 'user',
-                width: 80,
+                width: 100,
+            },
+            {
+                resizable: false,
+                name: 'matchInfoKeyWord',
+                index: 'matchInfo',
+                width: 100,
+                formatter: function (val, options, rowdata) {
+                    let line = rowdata.matchInfo;
+                    for (let i in rowdata.matchWords) {
+                        let matchWord = rowdata.matchWords[i];
+                        line = line.split(matchWord.keyWord).join("<span class='text-orange-d2'>" + matchWord.keyWord + "</span>");
+                    }
+                    return line;
+                }
+            },
+            {
+                resizable: false,
+                name: 'remark',
+                index: 'remark',
+                width: 50,
             },
             {
                 resizable: false,
@@ -276,22 +302,10 @@ jQuery(function ($) {
                 resizable: false,
                 name: 'displayTime',
                 index: 'createTime',
-                width: 30,
+                width: 40,
                 formatter: function (val, options, rowdata) {
                     return Date.format(new Date(rowdata.createTime), 'yyyy-MM-dd HH:mm:ss');
                 }
-            },
-            {
-                resizable: false,
-                name: 'matchInfo',
-                index: 'matchInfo',
-                width: 100,
-            },
-            {
-                resizable: false,
-                name: 'remark',
-                index: 'remark',
-                width: 50,
             },
             {
                 resizable: false,
@@ -334,9 +348,6 @@ jQuery(function ($) {
         forceFit: true,
 
 
-
-
-
         // resize grid after pagination
         onPaging: function (pgButton) {
             setTimeout(function () {
@@ -347,7 +358,6 @@ jQuery(function ($) {
         },
         //修改向服务端请求的数据，把page数量-1
         serializeGridData: function (postData) {
-
 
 
             var platform = $("#platform").val().trim()
@@ -374,6 +384,24 @@ jQuery(function ($) {
                 enableTooltips(table);
             }, 0);
         },
+
+        onCellSelect: function (rowid, iCol, cellcontent, e) {
+            let content = "<span class='cellSelectContent'>" + cellcontent + "</span>"
+            $.aceToaster.removeAll();
+            $.aceToaster.add({
+                placement: 'center',
+                width: 600,
+                title: '<button class="btn btn-danger btn-sm mb-1" onclick="copySelectCell();"><i class="fa fa-copy text-80 mr-1"></i>复制</button>',
+                body: content,
+                // delay: 1000,
+                close: true,
+                autohide: false,
+                closeClass: 'btn btn-light-danger border-0 btn-bgc-tp btn-xs px-2 py-0 text-150 position-tr mt-n25',
+                className: 'bgc-white-tp1 border-none border-t-4 brc-primary-tp1 rounded-sm pl-3 pr-1',
+                headerClass: 'bg-transparent border-0 text-120 text-blue-d3 font-bolder mt-3',
+                bodyClass: 'pt-0 pb-6 text-105'
+            })
+        }
     })
 
 
@@ -511,12 +539,12 @@ jQuery(function ($) {
     //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow')
 
 
-    $("#search").click(function(){
+    $("#search").click(function () {
         $(grid_selector).jqGrid().trigger("reloadGrid");
     });
 
 
-    $("#remarkSave").click(function(){
+    $("#remarkSave").click(function () {
         var clueId = $("#clueId").val()
         var remark = $("#remarkText").val()
 
@@ -526,8 +554,8 @@ jQuery(function ($) {
             datatype: "json",
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify({
-                remark : remark,
-                id : clueId
+                remark: remark,
+                id: clueId
             }),
             success: function (data) {
                 if (data.state != "Success") {

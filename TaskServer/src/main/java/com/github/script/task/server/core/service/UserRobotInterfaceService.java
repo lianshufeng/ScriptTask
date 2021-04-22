@@ -6,6 +6,7 @@ import com.github.script.task.bridge.model.userrobot.parm.UserInterfaceParm;
 import com.github.script.task.bridge.model.userrobot.user.UserInterface;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
+import com.github.script.task.server.core.dao.JobDao;
 import com.github.script.task.server.core.dao.TaskDao;
 import com.github.script.task.server.core.dao.UserRobotInterfaceDao;
 import com.github.script.task.server.core.domain.UserRobotInterface;
@@ -29,6 +30,9 @@ public class UserRobotInterfaceService {
     private TaskDao taskDao;
 
     @Autowired
+    private JobDao jobDao;
+
+    @Autowired
     private MongoTemplate mongoTemplate;
 
     /**
@@ -38,9 +42,6 @@ public class UserRobotInterfaceService {
      * @return
      */
     public ResultContent<String> put(RobotInterfacePutParm userRobotInterface) {
-        if (!taskDao.existsById(userRobotInterface.getTaskId())) {
-            return ResultContent.build(ResultState.JobNotExists);
-        }
         return ResultContent.buildContent(userRobotInterfaceDao.put(userRobotInterface));
     }
 

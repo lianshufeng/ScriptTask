@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class RobotInterfacePutParm extends RobotInterfaceParm {
 
     //工作id
-    private String taskId;
+    private String jobId;
 
 
 }

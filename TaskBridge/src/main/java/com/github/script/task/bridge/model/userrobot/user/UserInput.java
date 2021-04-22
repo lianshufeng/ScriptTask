@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class UserInput extends UserInterface {
 
     //用户输入文本字符
-    private String[] text;
+    private String text;
+
     @Override
     public RobotInterfaceType getType() {
         return RobotInterfaceType.Input;

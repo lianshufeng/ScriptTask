@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserOcr extends UserInterface {
     //base64编码
-    private String picture;
+    private String text;
+
     @Override
     public RobotInterfaceType getType() {
         return RobotInterfaceType.Ocr;

@@ -53,7 +53,8 @@ public class UserRobotInterfaceController {
      */
     @RequestMapping("put")
     public Object put(@RequestBody RobotInterfacePutParm userRobotInterface) {
-        Assert.hasText(userRobotInterface.getTaskId(), "taskId不能为空");
+        //doto 修改jobId
+        Assert.hasText(userRobotInterface.getJobId(), "jobId不能为空");
         Assert.notNull(userRobotInterface.getType(), "人机交互类型不能为空");
         return this.userRobotInterfaceService.put(userRobotInterface);
     }
