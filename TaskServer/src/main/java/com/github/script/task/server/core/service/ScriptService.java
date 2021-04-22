@@ -85,4 +85,13 @@ public class ScriptService {
         BeanUtils.copyProperties(script, model, "body");
         return model;
     }
+
+    /**
+     * 获取脚本
+     * @param scriptName
+     * @return
+     */
+    public ScriptModel get(String scriptName) {
+        return toModel(scriptDao.findByName(scriptName));
+    }
 }

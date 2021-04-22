@@ -1,6 +1,7 @@
 package com.github.script.task.bridge.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.github.script.task.bridge.script.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,4 +32,8 @@ public class TaskModel {
 
     //绑定的设备标识
     private String deviceId;
+
+    private String remark;
+
+    private Long createTime;
 }

@@ -1,6 +1,7 @@
 package com.github.script.task.server.core.service;
 
 import com.github.script.task.bridge.model.param.UpdateTaskParam;
+import com.github.script.task.bridge.script.Parameter;
 import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.server.core.conf.TTLConf;
 import com.github.script.task.server.core.dao.ScriptDao;
@@ -67,6 +68,7 @@ public class TaskService {
         task.setCron(param.getCron());
         task.setScriptName(script.getName());
         task.setParameters(param.getParameters());
+        task.setRemark(script.getRemark());
         if (param.getTimeout() == null) {
             task.setTtl(new Date(dbHelper.getTime() + ttlConf.getTaskTimeOut()));
         } else {
@@ -114,6 +116,7 @@ public class TaskService {
         return result;
     }
 
+
     /**
      * 任务列表
      *
@@ -152,5 +155,9 @@ public class TaskService {
         TaskModel model = new TaskModel();
         BeanUtils.copyProperties(task, model);
         return model;
+    }
+
+    public TaskModel findById(String id) {
+        return toModel(taskDao.findById(id).get());
     }
 }

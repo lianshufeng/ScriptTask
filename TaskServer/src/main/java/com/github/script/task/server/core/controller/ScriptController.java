@@ -84,6 +84,17 @@ public class ScriptController {
         return this.scriptService.check(scriptName, hash);
     }
 
+    /**
+     * 获取脚本
+     * @param scriptName
+     * @return
+     */
+    @RequestMapping("get")
+    public Object get(String scriptName){
+        Assert.hasText(scriptName, "脚本名不能为空");
+        return this.scriptService.get(scriptName);
+    }
+
 
     private void validate(final SuperScript script) {
         //数据校验

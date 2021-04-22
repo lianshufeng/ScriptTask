@@ -1,5 +1,6 @@
 package com.github.script.task.server.core.domain;
 
+import com.github.script.task.bridge.script.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,8 @@ public class Task extends SimpleTaskTimerTable {
 
     @Indexed(expireAfterSeconds = 0)
     private Date ttl;
+
+    private String remark;
 
 
 }
