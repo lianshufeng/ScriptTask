@@ -1,5 +1,6 @@
 package com.github.script.task.bridge.model.param;
 
+import com.github.script.task.bridge.script.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,4 +48,5 @@ public class TaskParam {
      * 过期时间
      */
     private Long timeout;
+
 }

@@ -61,4 +61,14 @@ public class TaskController {
         Assert.hasText(param.getId(),"任务ID不能为空");
         return taskService.del(param.getId());
     }
+
+    /**
+     * 获取任务
+     * @param id
+     * @return
+     */
+    @RequestMapping("get")
+    public Object get(String id){
+        return taskService.findById(id);
+    }
 }
