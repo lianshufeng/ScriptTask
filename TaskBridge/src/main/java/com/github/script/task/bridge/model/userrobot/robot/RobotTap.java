@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class RobotTap extends RobotInterface {
     //base64编码
-    private String picture;
+    private String[] picture;
 
     @Override
     public RobotInterfaceType getType() {

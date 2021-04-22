@@ -23,16 +23,14 @@
 
             <div class="card dcard">
                 <div class="card-header">
-                    <h5 class="card-title text-120 text-primary-d2">
+                    <h5 class="card-title text-400 text-primary-d1">
                         人机交互
                     </h5>
-
                     <div class="card-toolbar">
                         <div class="card-toolbar no-border">
                             <span id="timeSpan" class="text-muted" style="pointer-events:none"> - </span>
                         </div>
                     </div>
-
                 </div>
 
 
@@ -72,22 +70,136 @@
 
                         <!-- 输入页面开始-->
                         <div id="userRobotInputPage" style="display: none" class="pos-rel mt-1 mt-sm-3 ">
-                            <label>提示</label>
+
+                            <div class="px-2">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-lg-4 p-0 p-md-1 mb-2 mb-lg-0">
+                                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                                            <div class="pl-1">
+                                                <span class="d-inline-block bgc-success-tp1 p-3 radius-round text-center border-2 brc-black-tp11">
+                                                    <i class="fas fa-chart-line text-white text-170 w-3 mx-3px"></i>
+                                                </span>
+                                            </div>
+
+                                            <div class="pl-25">
+                                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                                    <span class="text-grey-d3 text-160 mr-4">
+                                                        任务id
+                                                    </span>
+                                                </div>
+                                                <div class="text-nowrap job-id">
+                                                    -
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 col-sm-6 col-lg-4 p-0 p-md-1 mb-2 mb-lg-0">
+                                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                                            <div class="pl-1">
+                                                <span class="d-inline-block bgc-blue-tp1 p-3 radius-round text-center border-2 brc-black-tp11">
+                                                    <i class="fab fa-twitter text-white text-170 w-3 mx-3px"></i>
+                                                </span>
+                                            </div>
+
+                                            <div class="pl-25">
+                                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                                    <span class="text-grey-d3 text-160 mr-4">
+                                                        任务类型
+                                                    </span>
+                                                </div>
+
+
+                                                <div class="text-nowrap job-type">
+                                                    -
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12 col-sm-6 col-lg-4 p-0 p-md-1 mb-2 mb-lg-0">
+                                        <div class="p-2 py-lg-3 d-flex pos-rel mx-1 justify-content-start justify-content-lg-center ccard">
+                                            <div class="pl-1">
+                                                <span class="d-inline-block bgc-purple-tp1 p-3 radius-round text-center border-2 brc-black-tp11">
+                                                    <i class="far fa-user text-white text-170 w-3 mx-3px"></i>
+                                                </span>
+                                            </div>
+                                            <div class="pl-25">
+                                                <div class="d-flex align-items-center justify-content-between justify-content-md-start">
+                                                    <span class="text-grey-d3 text-160 mr-4">
+                                                        等待时间
+                                                    </span>
+                                                </div>
+
+
+                                                <div class="text-nowrap job-wait-time">
+                                                    -
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <hr/>
+
+                            <div>
+                                <div>
+                                    <label class="text-100 text-grey-d1">提示：</label>
+                                    <label class="job-tips text-600 text-black-d1">-</label>
+                                </div>
+                            </div>
+
                             <hr/>
 
                             <!--统一模板-->
                             <div id="userRobotPageContent">
 
+                                <!-- 用户输入, 外部设备的验证码 -->
                                 <div id="userRobotPageContentInput" class="input-group form-group user-robot-item">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-indent"></i></span>
+                                    <div class="input-group form-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-indent"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control form-control-lg"/>
                                     </div>
-                                    <input type="text" class="form-control form-control-lg"/>
                                 </div>
 
 
-                            </div>
+                                <!-- 图像识别,OCR -->
+                                <div id="userRobotPageContentOcr" class="input-group form-group user-robot-item">
+                                    <div class="form-group">
+                                        <img class="w-100 d-zoom-2 ocr-image">
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-indent"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control form-control-lg"/>
+                                    </div>
+                                </div>
 
+                                <!-- 图像触摸 -->
+                                <div id="userRobotPageContentTap" class="input-group form-group user-robot-item">
+
+                                    <div class="form-group template-image">
+
+                                    </div>
+
+                                    <!--                                    <div class="form-group template-image">-->
+                                    <!--                                        <img class="w-100 d-zoom-2">-->
+                                    <!--                                        <br/>-->
+                                    <!--                                    </div>-->
+                                </div>
+
+                            </div>
 
                             <hr/>
                             <div id="userRobotConsole" style="text-align: right;">
