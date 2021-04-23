@@ -1,8 +1,11 @@
 package com.github.script.task.server.core.dao.impl;
 
+import com.github.script.task.bridge.script.Parameter;
+import com.github.script.task.bridge.script.ParameterType;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import lombok.SneakyThrows;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,8 @@ import com.github.script.task.bridge.script.SuperScript;
 import com.github.script.task.bridge.util.ScriptUtil;
 import com.github.script.task.server.core.dao.extend.ScriptDaoExtend;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class ScriptDaoImpl implements ScriptDaoExtend {
@@ -53,7 +58,16 @@ public class ScriptDaoImpl implements ScriptDaoExtend {
 
         //参数
         Optional.ofNullable(script.parameters()).ifPresent((it) -> {
-            entity.setParameters(it);
+            Map<String, ParameterType> ret = new HashMap<>();
+            for (Map.Entry<String, Parameter> entry : it.entrySet()) {
+                //拷贝类型
+                ParameterType parameterType = new ParameterType();
+                BeanUtils.copyProperties(entry.getValue(), parameterType);
+                parameterType.setType(entry.getValue().getValue().getClass().getName());
+
+                ret.put(entry.getKey(), parameterType);
+            }
+            entity.setParameters(ret);
         });
 
         //环境

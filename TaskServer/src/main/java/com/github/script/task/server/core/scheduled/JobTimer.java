@@ -27,7 +27,7 @@ public class JobTimer {
     @Scheduled(cron = "0 */10 * * * ?")
     private void resetDeice() {
         @Cleanup ResourceTokenService.Token token = resourceTokenService.token("JobTimer_resetDeice");
-        log.info("resetDeice");
+        log.debug("resetDeice");
         try {
             Job job = jobDao.resetDeice();
             if (job != null) {

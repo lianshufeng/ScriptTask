@@ -1,5 +1,6 @@
 package com.github.script.task.server.core.domain;
 
+import com.github.script.task.bridge.script.ParameterType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Script extends SuperEntity {
     private String remark;
 
     //脚本的参数
-    private Map<String, Parameter> parameters;
+    private Map<String, ParameterType> parameters;
 
     //脚本的环境
     private Environment environment;

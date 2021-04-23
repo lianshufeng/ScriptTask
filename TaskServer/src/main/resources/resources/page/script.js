@@ -332,14 +332,21 @@ jQuery(function ($) {
         subGridRowExpanded: function (subgridDivId, rowId) {
             //取出当前行数据
             let rowData = $(grid_selector).jqGrid('getRowData', rowId);
-            console.log(rowData);
+
 
             let parameters = JSON.parse(rowData.parameters);
             let subGridData = [];
             for (let name in parameters) {
+                let type = null;
+                if (parameters[name].type) {
+                    type = parameters[name].type.split('.');
+                    type = type[type.length - 1];
+                }
+
                 subGridData.push({
                     'name': name,
                     'value': parameters[name].value,
+                    'type': type,
                     'remark': parameters[name].remark
                 })
             }
@@ -351,10 +358,11 @@ jQuery(function ($) {
                 datatype: 'local',
                 guiStyle: "bootstrap4ace",
                 data: subGridData,
-                colNames: ['参数名','值', '参数描述'],
+                colNames: ['参数名', '值', '类型', '参数描述'],
                 colModel: [
                     {name: 'name', width: 150},
                     {name: 'value', width: 250},
+                    {name: 'type', width: 250},
                     {name: 'remark', width: 300}
                 ]
             })
