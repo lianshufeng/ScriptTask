@@ -121,7 +121,14 @@ jQuery(function($) {
     //
   })
 
+  // datepicker
+  var TinyDatePicker = DateRangePicker.TinyDatePicker;
+  // modal one
+  TinyDatePicker('#timeout', {
+    mode: 'dp-modal',
+  }).on('statechange', function(ev) {
 
+  })
 
 
   /////////////////////////////////////
@@ -133,6 +140,7 @@ jQuery(function($) {
   catch(e) {
     $("#phone").attr("placeholder", "(999) 999-9999")
   }
+
 
 
 
@@ -150,7 +158,7 @@ jQuery(function($) {
  var $validClass = 'brc-info-tp2'
 
  // add phone validation method
- jQuery.validator.addMethod("phone", function (value, element) {
+  $.validator.addMethod("phone", function (value, element) {
     return this.optional(element) || /^\(\d{3}\) \d{3}\-\d{4}( x\d{1,6})?$/.test(value)
  }, "Enter a valid phone number.")
 
@@ -298,10 +306,21 @@ jQuery(function($) {
  })
 
 
+
+  //时间格式转换
+  function shellDate(date) {
+    let y = date.getFullYear()
+    let m = (date.getMonth()+1).toString().padStart(2, '0')
+    let d = date.getDate().toString().padStart(2,'0')
+    return `${d}/${m}/${y}`
+  }
   /**
    * 初始化页面
    */
   var init = function () {
+    let nowDate = new Date;
+    nowDate.setTime(nowDate.getTime()+ 24*60*60*1000 );
+    $("#timeout").val(shellDate(nowDate))
     getScriptList()
   }
 
@@ -339,6 +358,7 @@ jQuery(function($) {
     if(JSON.stringify(script.parameters) != "{}"){
       for (let parameter in script.parameters){
         let remark = script.parameters[parameter].remark
+        let value =  script.parameters[parameter].value
         if (!remark){
           remark = ""
         }
@@ -349,7 +369,7 @@ jQuery(function($) {
             "<div class=\"col-sm-9\">" +
             "<div class=\"d-inline-flex align-items-center col-12 col-sm-7 px-0 pos-rel\">" +
             "<i class=\"fas fa-info-circle text-primary text-125 pos-abs ml-2\"></i>" +
-            "<input id=\""+parameter+"\" type=\"text\" class=\"form-control form-control-lg brc-blue-m2 pl-45\" placeholder=\"\" />" +
+            "<input id=\""+parameter+"\" type=\"text\" value='"+ value +"' class=\"form-control form-control-lg brc-blue-m2 pl-45\" placeholder=\"\" />" +
             "</div>" +
             "<span class=\"form-text d-inline-block text-blue-d1 ml-sm-2\">" + remark +
             "</span>" +
@@ -393,12 +413,13 @@ jQuery(function($) {
     var inputs = $("#parameter").find("input")
     if (inputs.length > 0){
       inputs.each(function(){
-        parameters[$(this).attr("id")] = $(this).val()
+        parameters[$(this).attr("id")] = $(this).val().trim()
       });
     }
     let scriptName = $("#script").val()
     let cron = $("#cron").val()
-    $.ajax({
+    let timeout = $("#timeout").val()
+      $.ajax({
       type: 'post',
       url: "../task/create",
       datatype: "json",
@@ -406,7 +427,8 @@ jQuery(function($) {
       data: JSON.stringify({
         scriptName : scriptName,
         cron : cron,
-        parameters : parameters
+        parameters : parameters,
+        timeout: new Date(timeout).getTime()
       }),
       success: function (data) {
         if (data.state != "Success") {

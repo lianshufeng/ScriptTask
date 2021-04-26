@@ -1,6 +1,7 @@
 package com.github.script.task.server.core.controller;
 
 import com.github.script.task.bridge.model.param.UpdateTaskParam;
+import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Update;
@@ -18,6 +19,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private DBHelper dbHelper;
+
     /**
      * 创建任务
      * @param param
@@ -26,6 +30,7 @@ public class TaskController {
     @RequestMapping("create")
     public Object create(@RequestBody TaskParam param){
         Assert.hasText(param.getScriptName(),"脚本名称不能为空");
+
         return taskService.create(param);
     }
 
@@ -37,6 +42,8 @@ public class TaskController {
     @RequestMapping("update")
     public Object update(@RequestBody UpdateTaskParam param){
         Assert.hasText(param.getId(),"任务ID不能为空");
+        Assert.notNull(param.getTimeout(),"过期时间不能为空");
+        Assert.isTrue(param.getTimeout() > dbHelper.getTime(),"过期时间不能小于当前时间");
         return taskService.update(param);
     }
 

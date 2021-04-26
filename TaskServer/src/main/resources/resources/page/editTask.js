@@ -298,6 +298,14 @@ jQuery(function($) {
  })
 
 
+  //时间格式转换
+  function shellDate(date) {
+    let y = date.getFullYear()
+    let m = (date.getMonth()+1).toString().padStart(2, '0')
+    let d = date.getDate().toString().padStart(2,'0')
+    return `${d}/${m}/${y}`
+  }
+
   /**
    * 初始化页面
    */
@@ -340,9 +348,17 @@ jQuery(function($) {
       $("#parameter").append("<div class=\"text-center tab-pane step-content\" style=\"display: block;\"><h3 class=\"text-400 text-success mt-4\"> 无参数 </h3>该脚本无需配置参数，请直接点击下一步 ！<br><br><br><br><br><br><br></div>")
     }
     $("#cron").val(task.cron)
+    $("#timeout").val(shellDate(new Date(task.timeout)))
   }
 
+  // datepicker
+  var TinyDatePicker = DateRangePicker.TinyDatePicker;
+  // modal one
+  TinyDatePicker('#timeout', {
+    mode: 'dp-modal',
+  }).on('statechange', function(ev) {
 
+  })
 
   var getScript = function(scriptName){
     var ret = ""
@@ -387,12 +403,14 @@ jQuery(function($) {
   var edit = function () {
     let parameters = {}
     var inputs = $("#parameter").find("input")
+    console.log(inputs)
     if (inputs.length > 0){
       inputs.each(function(){
-        parameters[$(this).attr("id")] = $(this).val()
+        parameters[$(this).attr("id")] = $(this).val().trim()
       });
     }
     let cron = $("#cron").val()
+    let timeout = $("#timeout").val()
     $.ajax({
       type: 'post',
       url: "../task/update",
@@ -401,7 +419,8 @@ jQuery(function($) {
       data: JSON.stringify({
         id : getQueryVariable("id"),
         cron : cron,
-        parameters : parameters
+        parameters : parameters,
+        timeout: new Date(timeout).getTime()
       }),
       success: function (data) {
         if (data.state != "Success") {

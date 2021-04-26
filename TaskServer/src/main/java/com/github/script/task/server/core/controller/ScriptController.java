@@ -1,6 +1,7 @@
 package com.github.script.task.server.core.controller;
 
 
+import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.server.core.service.ScriptService;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -92,7 +93,7 @@ public class ScriptController {
     @RequestMapping("get")
     public Object get(String scriptName){
         Assert.hasText(scriptName, "脚本名不能为空");
-        return this.scriptService.get(scriptName);
+        return ResultContent.buildContent(this.scriptService.get(scriptName));
     }
 
 

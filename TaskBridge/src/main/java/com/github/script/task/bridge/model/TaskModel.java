@@ -36,4 +36,6 @@ public class TaskModel {
     private String remark;
 
     private Long createTime;
+
+    private Long timeout;
 }

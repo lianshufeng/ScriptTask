@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.Map;
 
 @Data
@@ -49,4 +50,8 @@ public class UpdateTaskParam {
      * 绑定的设备标识
      */
     private String deviceId;
+
+    private Long timeout;
+
+    private Date ttl;
 }

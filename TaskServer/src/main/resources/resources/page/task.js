@@ -101,7 +101,7 @@ var getScript = function(scriptName){
         data: "scriptName=" + scriptName,
         success: function (data) {
             if (data.state != "Success") {
-                alert(JSON.stringify(data));
+                console.error(data);
                 return;
             }
             //刷新脚本
@@ -327,8 +327,10 @@ jQuery(function ($) {
                 hidden: true,
                 formatter: function (val, options, rowdata) {
                     var parameters = getScript(rowdata.scriptName).parameters
-                    for (let name in rowdata.parameters) {
-                        parameters[name].value = rowdata.parameters[name]
+                    if (parameters){
+                        for (let name in rowdata.parameters) {
+                            parameters[name].value = rowdata.parameters[name]
+                        }
                     }
                     return parameters ? JSON.stringify(parameters) : "{}";
                 }
@@ -370,7 +372,7 @@ jQuery(function ($) {
                 formatter: function (val, options, rowdata) {
                     return '<button type="button" class="btn btn-bgc-tp btn-lighter-blue btn-h-primary btn-a-primary" data-toggle="modal" data-target="#update" onclick="editTask(' + JSON.stringify(rowdata).replace(/"/g, '&quot;') + ')"><i class="fa fa-edit"></i></button> &nbsp;' +
                         '<button type="button" class="btn btn-bgc-tp btn-lighter-red btn-h-primary btn-a-primary"  onclick="removeTask(\'' + rowdata.id + '\')"><i class="fa fa-trash-alt"></i></button> &nbsp;' +
-                        '<button type="button" class="btn btn-bgc-tp btn-lighter-green btn-h-primary btn-a-primary"  onclick="runTask(' + JSON.stringify(rowdata).replace(/"/g, '&quot;') + ')"><i class="fa fa-cog"></i></button>'
+                        '<button type="button" class="btn btn-bgc-tp btn-lighter-green btn-h-primary btn-a-primary"  onclick="runTask(' + JSON.stringify(rowdata).replace(/"/g, '&quot;') + ')"><i class="fa fa-arrow-right"></i></button>'
                 }
             }
         ],

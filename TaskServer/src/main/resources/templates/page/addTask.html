@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="common/page::commonHeader"></head>
+<head th:replace="common/page::commonHeader">
+</head>
 
 <body class="body-container">
 <nav th:replace="common/page::commonNavbar"/>
@@ -85,7 +86,7 @@
                                 3
                             </span>
 
-                      <span class="step-title-done">
+                        <span class="step-title-done">
                                 <i class="fa fa-check text-success"></i>
                             </span>
                     </a>
@@ -93,7 +94,25 @@
                     <span class="step-description">
                             设置定时器
                         </span>
-                  </li>
+                </li>
+
+
+                    <li>
+                        <a href="#step-4">
+                            <span class="step-title">
+                                4
+                            </span>
+
+                            <span class="step-title-done">
+                                <i class="fa fa-check text-success"></i>
+                            </span>
+                        </a>
+
+                        <span class="step-description">
+                            设置过期时间
+                        </span>
+                    </li>
+
 
                 </ul>
 
@@ -132,12 +151,12 @@
 
                     <div class="row">
 
-                      <div class="col-sm-9 input-floating-label text-blue-d2 brc-blue-m1"  style="margin-left: 50%;transform: translateX(-26%)">
-                        <input type="text" placeholder="定时器" id="cron" class="form-control form-control-lg col-sm-8 col-md-6 shadow-none" >
-                        <span class="floating-label text-grey-m3">
+                        <div class="col-sm-9 input-floating-label text-blue-d2 brc-blue-m1"  style="margin-left: 50%;transform: translateX(-26%)">
+                            <input type="text" placeholder="定时器" id="cron" class="form-control form-control-lg col-sm-8 col-md-6 shadow-none" >
+                            <span class="floating-label text-grey-m3">
                         定时器
-                      </span>
-                      </div>
+                            </span>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -168,6 +187,17 @@
                   </div>
                 </div>
 
+                <div id="step-4">
+                    <div class="form-field">
+                        <div class="col-sm-9 input-floating-label text-blue-d2 brc-blue-m1"  style="margin-left: 50%;transform: translateX(-26%)">
+
+                            <input placeholder="modal mode..." type="text" class="form-control form-control-lg col-sm-8 col-md-6 shadow-none" id="timeout"/>
+
+                        </div>
+                    </div>
+                </div>
+
+
               </div><!-- /#smartwizard-1 -->
 
             </div><!-- /.card-body -->
@@ -189,14 +219,29 @@
 
 </div>
 
+
+
 <div th:replace="common/page::commonIncludeScripts"/>
 
-<script src="./node_modules/smartwizard/dist/js/jquery.smartWizard.js"></script>
+    <script src="./node_modules/jquery-validation/dist/jquery.validate.js"></script>
 
-<script src="./node_modules/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="./node_modules/smartwizard/dist/js/jquery.smartWizard.js"></script>
 
-<script src="./node_modules/inputmask/dist/jquery.inputmask.js"></script>
+    <script src="./node_modules/inputmask/dist/jquery.inputmask.js"></script>
 
+
+
+
+
+
+    <script src="./node_modules/tiny-date-picker/dist/date-range-picker.js"></script>
+    <script src="./node_modules/moment/moment.js"></script>
+    <script src="./node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+
+
+
+
+    <script src="./node_modules/jquery-knob/dist/jquery.knob.min.js"></script>
 <!--日期格式化-->
 <script src="./js/date-format.js"></script>
 
