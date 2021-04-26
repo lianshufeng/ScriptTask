@@ -386,6 +386,9 @@ jQuery(function ($) {
         },
 
         onCellSelect: function (rowid, iCol, cellcontent, e) {
+            if (iCol > 5 || $.trim(cellcontent) == '&nbsp;'){
+                return
+            }
             let content = "<span class='cellSelectContent'>" + cellcontent + "</span>"
             $.aceToaster.removeAll();
             $.aceToaster.add({
