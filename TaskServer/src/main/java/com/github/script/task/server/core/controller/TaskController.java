@@ -42,8 +42,6 @@ public class TaskController {
     @RequestMapping("update")
     public Object update(@RequestBody UpdateTaskParam param){
         Assert.hasText(param.getId(),"任务ID不能为空");
-        Assert.notNull(param.getTimeout(),"过期时间不能为空");
-        Assert.isTrue(param.getTimeout() > dbHelper.getTime(),"过期时间不能小于当前时间");
         return taskService.update(param);
     }
 
