@@ -33,6 +33,14 @@ public class ClientHeartbeatService {
 
     @Autowired
     private void init(ApplicationContext applicationContext) {
+
+        //仅需执行远程任务才发心跳
+        ScriptTaskConf.RemoteTask remoteTask = scriptTaskConf.getRemoteTask();
+        if (remoteTask == null || remoteTask.isWork() == false) {
+            return;
+        }
+
+
         this.timer = new Timer();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             timer.cancel();
