@@ -30,12 +30,20 @@ public abstract class ScriptEvent {
 
 
     /**
+     * 脚本被终止
+     */
+    public void onInterrupt() {
+
+    }
+
+    /**
      * 异常
      *
      * @param e
      */
     public void onException(Exception e) {
     }
+
 
     /**
      * 事件对应的枚举类
@@ -44,6 +52,7 @@ public abstract class ScriptEvent {
         Create(getMethod("onCreate", null)),
         Run(getMethod("onRun", null)),
         Close(getMethod("onClose", null)),
+        onInterrupt(getMethod("onInterrupt", null)),
         Exception(getMethod("onException", Exception.class)),
 
 

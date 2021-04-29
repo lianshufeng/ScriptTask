@@ -1,14 +1,18 @@
 package com.github.script.task.bridge.script;
 
 
+import com.github.script.task.bridge.helper.ScriptEventHelper;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 
+@Slf4j
 public class ScriptTimout {
 
     //脚本
@@ -24,9 +28,11 @@ public class ScriptTimout {
     private long timeout;
 
 
-    private ScheduledFuture listenScheduledFuture = null;
     private Future runThreadFuture = null;
 
+
+    @Autowired
+    private ScriptEventHelper scriptEventHelper;
 
     /**
      * 构造方法
@@ -45,9 +51,8 @@ public class ScriptTimout {
      */
     public Object execute() {
         heartbeat();
-        //关键线程池
-
-        @Cleanup("shutdownNow") ScheduledExecutorService threadPoolExecutor = Executors.newScheduledThreadPool(2);
+        //脚本的线程池
+        ScheduledExecutorService threadPoolExecutor = script.getRuntime().getThreadPool();
 
         //监视是否超时
         listenTimeOutThread(threadPoolExecutor);
@@ -63,20 +68,12 @@ public class ScriptTimout {
 
     //释放
     private void release() {
-        //释放监视调度器
-        Optional.ofNullable(listenScheduledFuture).ifPresent((it) -> {
-            if (!it.isCancelled()) {
-                it.cancel(true);
-            }
-        });
-
         //关闭线程
         Optional.ofNullable(runThreadFuture).ifPresent((it) -> {
             if (!it.isCancelled()) {
                 it.cancel(true);
             }
         });
-
 
     }
 
@@ -104,17 +101,17 @@ public class ScriptTimout {
     }
 
 
-    private void listenTimeOutThread(ScheduledExecutorService threadPoolExecutor) {
-        listenScheduledFuture = threadPoolExecutor.scheduleAtFixedRate(() -> {
+    private void listenTimeOutThread(final ScheduledExecutorService threadPoolExecutor) {
+        threadPoolExecutor.schedule(() -> {
             long time = System.currentTimeMillis() - aliveTime;
-            if (time > 0) {
-                Optional.ofNullable(countDownLatch).ifPresent((it) -> {
-                    listenScheduledFuture.cancel(true);
-                    script.log.error("执行超时 : {}", (time + timeout) + " ms");
-                    it.countDown();
-                });
+            if (time > 0 && countDownLatch != null) {
+                script.log.error("执行超时 : {}", (time + timeout) + " ms");
+                scriptEventHelper.publish(script, ScriptEvent.EventType.onInterrupt);
+                countDownLatch.countDown();
+            } else {
+                listenTimeOutThread(threadPoolExecutor);
             }
-        }, 1, 1, TimeUnit.SECONDS);
+        }, 1, TimeUnit.SECONDS);
     }
 
 
@@ -123,6 +120,7 @@ public class ScriptTimout {
      */
     public void heartbeat() {
         this.aliveTime = System.currentTimeMillis() + this.timeout;
+        log.debug("heartbeat : {} ", this.aliveTime);
     }
 
     @SneakyThrows

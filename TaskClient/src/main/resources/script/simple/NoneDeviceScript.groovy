@@ -7,6 +7,8 @@ import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
 import com.github.script.task.bridge.script.action.net.HttpAction
 
+import java.util.concurrent.TimeUnit
+
 class NoneDeviceScript extends SuperScript {
 
 
@@ -26,8 +28,7 @@ class NoneDeviceScript extends SuperScript {
     @Override
     Environment environment() {
         return [
-                'device' : new NoDevice(),
-                'timeout': 1000
+                'device' : new NoDevice()
         ] as Environment
     }
 
@@ -44,11 +45,14 @@ class NoneDeviceScript extends SuperScript {
     @Override
     ScriptEvent event() {
         return [
-                'onRun': {
+                'onRun'      : {
                     log.info('event : {}', 'run')
                     def parameters = getRuntime().getParameters();
                     httpAction = action(HttpAction.class);
                     httpAction.setProxy(parameters.get('proxy'));
+                },
+                'onInterrupt': {
+                    println "当前脚本将被终止"
                 }
         ] as ScriptEvent
     }
@@ -56,8 +60,6 @@ class NoneDeviceScript extends SuperScript {
 
     @Override
     Object run() {
-
-
 //        UserRobotAction.UserInput userInput1 = action(UserRobotAction.class).waitUserInput([
 //                'tips'   : '请输入您收到的短信验证码,当前手机号码:151232*****',
 //                'value'  : [] as RobotInput,
@@ -96,7 +98,7 @@ class NoneDeviceScript extends SuperScript {
 
 
         //查询当前的ip
-//        println httpAction.get("https://2021.ip138.com").parse().html().getElementsByTag("title").text()
+        println httpAction.get("https://2021.ip138.com").parse().html().getElementsByTag("title").text()
 
         def list = []
         def ret = httpAction.get('https://top.baidu.com', [:], "GBK").parse("GBK").html()
