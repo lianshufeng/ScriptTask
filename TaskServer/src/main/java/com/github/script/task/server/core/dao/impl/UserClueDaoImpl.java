@@ -39,8 +39,8 @@ public class UserClueDaoImpl implements UserClueDaoExtend {
             criteria.and("remark").regex(pattern);
         }
         Query query = Query.query(criteria);
-        Sort.Order[] orders = new Sort.Order[]{Sort.Order.desc("weightValue"), Sort.Order.asc("createTime")};
-        query.with(Sort.by(orders));
+        /*Sort.Order[] orders = new Sort.Order[]{Sort.Order.desc("weightValue"), Sort.Order.asc("createTime")};
+        query.with(Sort.by(orders));*/
         return this.dbHelper.pages(query, pageable, UserClue.class);
     }
 
