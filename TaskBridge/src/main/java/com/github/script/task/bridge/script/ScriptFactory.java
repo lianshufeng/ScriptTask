@@ -5,6 +5,7 @@ import com.github.script.task.bridge.model.ScriptRunTimeModel;
 import com.github.script.task.bridge.runtime.DeviceRunTimeManager;
 import com.github.script.task.bridge.util.BeanUtil;
 import com.github.script.task.bridge.util.ScriptUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,20 @@ public class ScriptFactory {
      */
     public <T> T run(SuperScript script) {
         this.deviceRunTimeManager.create(script);
-        Object ret = script.execute();
+        Object ret = executeScript(script);
         this.deviceRunTimeManager.close(script);
         return (T) ret;
+    }
+
+
+    /**
+     * 执行脚本
+     */
+    @SneakyThrows
+    private Object executeScript(SuperScript script) {
+        final ScriptTimout scriptTimout = new ScriptTimout(script);
+        this.springBeanHelper.injection(scriptTimout);
+        return scriptTimout.execute();
     }
 
 
@@ -72,16 +84,17 @@ public class ScriptFactory {
      * 关闭线程池
      */
     private void shutdownThreadPool(SuperScript script) {
-        try {
-            Optional.ofNullable(script.getRuntime()).ifPresent((it) -> {
+        //关闭所有线程池
+        Optional.ofNullable(script.getRuntime()).ifPresent((it) -> {
+            try {
                 //关闭线程池
                 if (it.getThreadPool() != null) {
                     it.getThreadPool().shutdownNow();
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

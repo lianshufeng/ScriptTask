@@ -2,10 +2,10 @@ package com.github.script.task.bridge.script;
 
 import com.github.script.task.bridge.helper.ScriptEventHelper;
 import com.github.script.task.bridge.helper.SpringBeanHelper;
-import com.github.script.task.bridge.script.action.async.AsyncAction;
 import groovy.lang.Script;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.experimental.Delegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -20,9 +20,9 @@ public abstract class SuperScript extends Script {
 
     protected ScriptLog log;
 
-
     @Getter
     protected ScriptRuntime runtime;
+
 
     @Autowired
     private SpringBeanHelper springBeanHelper;
@@ -36,6 +36,15 @@ public abstract class SuperScript extends Script {
     @Getter
     private long createTime = System.currentTimeMillis();
 
+
+    private interface ScriptTimoutProxy {
+        //心跳
+        public void heartbeat();
+    }
+
+    //脚本超时
+    @Delegate(types = {ScriptTimoutProxy.class})
+    protected ScriptTimout scriptTimout;
 
     /**
      * 脚本名称
