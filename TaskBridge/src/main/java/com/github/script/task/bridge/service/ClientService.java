@@ -22,8 +22,7 @@ public class ClientService extends SuperService {
                 log.info("客户端心跳失败 ,状态 : {} , 原因 :{}", resultContent.getState(), resultContent.getContent());
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("e : {}", e);
+            log.error("e : {}", e.getMessage());
         }
     }
 
