@@ -370,9 +370,10 @@ jQuery(function ($) {
             postData.platform = platform
             postData.remark = remark
             //排序
+            console.log(JSON.stringify(postData))
             if (postData['sort']) {
-                //postData['sort'] = postData['sort'] + "," + postData['sord']
-                delete postData['sort']
+                postData['sort'] = postData['sort'] + "," + postData['sord']
+                /*delete postData['sort']*/
             }
 
             return postData;
