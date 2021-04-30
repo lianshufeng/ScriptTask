@@ -12,6 +12,7 @@ import com.github.script.task.bridge.script.ScriptRuntime;
 import com.github.script.task.bridge.script.SuperScript;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -47,8 +48,10 @@ public class DeviceRunTimeManager {
      * @return
      */
     public void create(SuperScript script) {
+        Optional.ofNullable(script.getRuntime().getEnvironment().getDevice()).ifPresent((it) -> {
+            currentStateHelper.removePower(it.getType());
+        });
         //删除此能力
-        currentStateHelper.removePower(script.environment().getDevice().getType());
         executeEvent(script, ScriptEvent.EventType.Create);
     }
 

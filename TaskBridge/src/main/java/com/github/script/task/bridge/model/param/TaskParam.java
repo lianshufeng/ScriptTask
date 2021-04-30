@@ -1,10 +1,8 @@
 package com.github.script.task.bridge.model.param;
 
-import com.github.script.task.bridge.script.Parameter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import com.github.script.task.bridge.script.Environment;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;

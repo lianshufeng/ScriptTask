@@ -43,11 +43,27 @@ public class TaskService extends SuperService {
     }
 
 
-    public Object del(String id){
+    public Object del(String id) {
         try {
             TaskParam param = new TaskParam();
             param.setId(id);
             return postJson("task/del", param, Object.class);
+        } catch (Exception e) {
+            log.error("exception : {}", e.getMessage());
+        }
+        return null;
+    }
+
+
+    /**
+     * 更新任务参数
+     *
+     * @param param
+     * @return
+     */
+    public ResultContent updateParamByScript(TaskParam param) {
+        try {
+            return postJson("task/updateParamByScript", param, ResultContent.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }
