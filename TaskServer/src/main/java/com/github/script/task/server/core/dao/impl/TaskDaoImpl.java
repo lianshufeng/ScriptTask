@@ -78,4 +78,17 @@ public class TaskDaoImpl implements TaskDaoExtend {
         dbHelper.updateTime(update);
         return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Task.class);
     }
+
+    @Override
+    public Boolean updateParamByScript(TaskParam param) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("scriptName").is(param.getScriptName()));
+        Update update = new Update();
+        param.getParameters().forEach((key,value)->{
+            if (value != null){
+                update.set("parameters." + key,value);
+            }
+        });
+        return mongoTemplate.updateMulti(query, update, Task.class).getModifiedCount() > 0;
+    }
 }

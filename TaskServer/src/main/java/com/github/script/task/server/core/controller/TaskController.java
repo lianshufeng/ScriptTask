@@ -76,4 +76,15 @@ public class TaskController {
     public Object get(String id){
         return taskService.findById(id);
     }
+
+    /**
+     * 通过脚本名称修改参数
+     * @param param
+     * @return
+     */
+    @RequestMapping("updateParamByScript")
+    public Object updateParamByScript(@RequestBody TaskParam param){
+        Assert.hasText(param.getScriptName(),"脚本名称能为空");
+        return taskService.updateParamByScript(param);
+    }
 }

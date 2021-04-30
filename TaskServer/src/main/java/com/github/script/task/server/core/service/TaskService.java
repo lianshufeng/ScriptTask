@@ -195,4 +195,8 @@ public class TaskService {
     public TaskModel findById(String id) {
         return toModel(taskDao.findById(id).get());
     }
+
+    public ResultContent<ResultState> updateParamByScript(TaskParam param) {
+        return ResultContent.build(taskDao.updateParamByScript(param));
+    }
 }
