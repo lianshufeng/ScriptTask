@@ -31,7 +31,7 @@ class WeiBoSMSLogin extends SuperScript {
 
     @Override
     String name() {
-        return "二维码登录微博并取登录信息"
+        return "WeiBoSMSLogin"
     }
 
     @Override
