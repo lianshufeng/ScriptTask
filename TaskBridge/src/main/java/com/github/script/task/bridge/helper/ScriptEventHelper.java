@@ -19,9 +19,7 @@ public class ScriptEventHelper {
             try {
                 eventType.getMethod().invoke(it, args);
             } catch (Exception e) {
-                Optional.ofNullable(e.getMessage()).ifPresent((msg) -> {
-                    log.error(msg);
-                });
+                log.error("{} : {}", e, e.getMessage());
                 try {
                     ScriptEvent.EventType.Exception.getMethod().invoke(it, e);
                 } catch (Exception e1) {
