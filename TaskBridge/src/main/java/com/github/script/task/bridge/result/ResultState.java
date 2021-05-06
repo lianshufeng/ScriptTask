@@ -20,11 +20,14 @@ public enum ResultState {
     JobNotExists("工作不存在"),
     JobExists("工作已存在"),
     MatchWordExists("匹配的关键词已存在"),
+
     UserRobotNotExists("人机交互不存在"),
     UserRobotNotExistsUserInput("人机交互不存在用户输入"),
 
+    DataSetNotExists("数据集不存在"),
 
-	;
+
+    ;
     @Getter
     private String remark;
 
