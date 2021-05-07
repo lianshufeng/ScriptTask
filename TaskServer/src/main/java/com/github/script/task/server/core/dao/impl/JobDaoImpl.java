@@ -123,6 +123,18 @@ public class JobDaoImpl implements JobDaoExtend {
         return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Job.class);
     }
 
+    @Override
+    public Job updateJobCreatTime(String jobId, Long createTime) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(jobId));
+        Update update = new Update();
+        update.set("createTime",createTime);
+        FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions();
+        findAndModifyOptions.returnNew(true);
+        dbHelper.updateTime(update);
+        return this.mongoTemplate.findAndModify(query, update, findAndModifyOptions, Job.class);
+    }
+
        /*@Override
     public Job get(String deviceId) {
         Sort sort = Sort.by(Sort.Direction.ASC,"createTime");

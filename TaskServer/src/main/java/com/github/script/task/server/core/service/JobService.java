@@ -152,4 +152,7 @@ public class JobService {
     }
 
 
+    public String updateJobCreatTime(String jobId, Long createTime) {
+        return jobDao.updateJobCreatTime(jobId,createTime).getId();
+    }
 }

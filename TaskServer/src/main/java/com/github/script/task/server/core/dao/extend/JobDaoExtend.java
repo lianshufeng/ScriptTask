@@ -12,4 +12,6 @@ public interface JobDaoExtend {
 //    List<Job> get(JobParam param);
 
     Job resetDeice();
+
+    Job updateJobCreatTime(String jobId, Long createTime);
 }

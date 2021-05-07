@@ -9,6 +9,7 @@ import com.github.script.task.bridge.script.ScriptEvent
 import com.github.script.task.bridge.script.SuperScript
 import com.github.script.task.bridge.script.action.async.AsyncAction
 import com.github.script.task.bridge.script.action.robot.UserRobotAction
+import com.github.script.task.bridge.script.action.task.TaskAction
 import com.github.script.task.bridge.service.TaskService
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
@@ -216,7 +217,18 @@ class WeiBoSMSLogin extends SuperScript {
                     ]
             ] as TaskParam)
 
+            taskService.updateParamByScript([
+                    'scriptName': 'AnalysisUserScript',
+                    'parameters': [
+                            'cookie': cookies
+                    ]
+            ] as TaskParam)
+
             asyncAction.proceed();
+
+            TaskAction taskAction = action(TaskAction.class)
+            log.info("删除任务：" + getRuntime().getTaskId())
+            taskAction.delTask(getRuntime().getTaskId())
         })
     }
 

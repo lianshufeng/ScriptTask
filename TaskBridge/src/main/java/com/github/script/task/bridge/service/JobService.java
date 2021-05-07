@@ -12,9 +12,9 @@ import java.util.Map;
 @Service
 public class JobService extends SuperService {
 
-    public Object createJobByTaskId(String taskId) {
+    public ResultContent createJobByTaskId(String taskId) {
         try {
-            return postForm("job/createByTaskId", Map.of("taskId", taskId), Object.class);
+            return postForm("job/createByTaskId", Map.of("taskId", taskId), ResultContent.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }
@@ -30,6 +30,15 @@ public class JobService extends SuperService {
     public ResultContent getJob(JobParam param) {
         try {
             return postJson("job/get", param, ResultContent.class);
+        } catch (Exception e) {
+            log.error("exception : {}", e.getMessage());
+        }
+        return null;
+    }
+
+    public ResultContent updateJobCreatTime(String jobId,Long createTime){
+        try {
+            return postForm("job/updateJobCreatTime", Map.of("jobId", jobId,"createTime",createTime), ResultContent.class);
         } catch (Exception e) {
             log.error("exception : {}", e.getMessage());
         }

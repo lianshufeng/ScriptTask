@@ -34,15 +34,24 @@ public class TaskAction extends SuperScriptAction {
     @Autowired
     private JobService jobService;
 
-    public void createTask(TaskParam param,boolean isCreateJob){
-        ResultContent resultContent = taskService.creatTask(param);
-        if (resultContent.getState() == ResultState.Success && isCreateJob){
-            Map task = (Map) resultContent.getContent();
-            jobService.createJobByTaskId((String) task.get("id"));
+    public String createTask(TaskParam param,boolean isCreateJob){
+        ResultContent taskContent = taskService.creatTask(param);
+        if (taskContent.getState() == ResultState.Success && isCreateJob){
+            Map task = (Map) taskContent.getContent();
+            ResultContent jobContent = jobService.createJobByTaskId((String) task.get("id"));
+            if (jobContent.getState() == ResultState.Success){
+                Map job = (Map) jobContent.getContent();
+                return (String) job.get("id");
+            }
         }
+        return null;
     }
 
     public void  delTask(String id){
         taskService.del(id);
+    }
+
+    public void updateJobCreatTime(String jobId,Long createTime){
+        jobService.updateJobCreatTime(jobId,createTime);
     }
 }

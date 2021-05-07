@@ -39,4 +39,9 @@ public class JobController {
         Assert.hasText(taskId, "任务id不能为空");
         return jobService.createByTaskId(taskId);
     }
+
+    @RequestMapping("updateJobCreatTime")
+    public Object updateJobCreatTime(String jobId,Long createTime){
+       return jobService.updateJobCreatTime(jobId,createTime);
+    }
 }
