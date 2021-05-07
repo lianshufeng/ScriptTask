@@ -69,7 +69,7 @@ class WeiBoSMSLogin extends SuperScript {
     Environment environment() {
         return [
                 'device': [
-                        'headless': false, //无头模式
+                        'headless': true, //无头模式
 //                        'width'   : 1920,
 //                        'height'  : 1080
                 ] as WebDevice
