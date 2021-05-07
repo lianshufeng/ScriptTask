@@ -4,3 +4,9 @@ spring:
       uri: mongodb://ScriptTask:ScriptTask@192.168.8.52:27017,192.168.8.52:27018,192.168.8.52:27019,192.168.8.52:27020/ScriptTask?replicaSet=MongoSets
       auto-index-creation: true
 
+
+nlp:
+  summaryLength: 200
+  app:
+    - {"appId": "24114180", "apiKey": "TyaPHik4QzWOAfO5bE3uYFnK", "secretKey": "cnz6e86OxCUnDX4GDSHKQwS7OCKIwExl"}
+    - {"appId": "24120952", "apiKey": "YVB5G22nEms1l3sC7X4eawb9", "secretKey": "VrYg07fCPVnul9A08uNbqEPyoZUbpuDo"}

@@ -2,6 +2,8 @@ package com.github.script.task.bridge.util;
 
 import org.springframework.util.DigestUtils;
 
+import java.nio.charset.StandardCharsets;
+
 public class HashUtil {
 
     /**
@@ -15,7 +17,10 @@ public class HashUtil {
         for (String text : texts) {
             sb.append(text + "_");
         }
-        return DigestUtils.md5DigestAsHex(sb.toString().getBytes());
+        if (sb.length() > 0) {
+            sb = sb.delete(sb.length() - 1, sb.length());
+        }
+        return DigestUtils.md5DigestAsHex(sb.toString().getBytes(StandardCharsets.UTF_8));
     }
 
 

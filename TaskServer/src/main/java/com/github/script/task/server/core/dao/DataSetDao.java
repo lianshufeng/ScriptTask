@@ -15,5 +15,13 @@ public interface DataSetDao extends MongoDao<DataSet> {
     DataSet findByHash(String hash);
 
 
+    /**
+     * 通过hash查询是否存在
+     *
+     * @param hash
+     * @return
+     */
+    boolean existsByHash(String hash);
+
 
 }

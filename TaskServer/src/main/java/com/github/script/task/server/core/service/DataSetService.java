@@ -3,7 +3,7 @@ package com.github.script.task.server.core.service;
 
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.bridge.util.TextHashUtil;
+import com.github.script.task.bridge.util.HashUtil;
 import com.github.script.task.server.core.dao.DataSetDao;
 import com.github.script.task.server.core.domain.DataSet;
 import com.github.script.task.server.core.model.DataSetModel;
@@ -34,7 +34,7 @@ public class DataSetService {
      * @return
      */
     public ResultContent<DataSetModel> push(String text) {
-        String hash = TextHashUtil.hash(text);
+        String hash = HashUtil.hash(text);
         DataSet dataSet = dataSetDao.findByHash(hash);
         if (dataSet != null) {
             return ResultContent.buildContent(toModel(dataSet));
