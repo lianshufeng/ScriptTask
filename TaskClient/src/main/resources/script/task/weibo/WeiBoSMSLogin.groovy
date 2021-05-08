@@ -201,7 +201,12 @@ class WeiBoSMSLogin extends SuperScript {
      * 是否已登录
      */
     private void isLogin() {
-        asyncAction.where().execute(300, () -> {
+        def where = asyncAction.where();
+        def count = 0
+        where.execute(1000, () -> {
+            if (count++ > 20){
+                end()
+            }
             return driver.findElement(By.className("user_info_inner"));
         }, (WebElement it) -> {
             String nickName = it.findElement(By.className("user_name")).getText();
@@ -224,12 +229,16 @@ class WeiBoSMSLogin extends SuperScript {
                     ]
             ] as TaskParam)
 
-            asyncAction.proceed();
-
-            TaskAction taskAction = action(TaskAction.class)
-            log.info("删除任务：" + getRuntime().getTaskId())
-            taskAction.delTask(getRuntime().getTaskId())
+            end()
         })
+
+    }
+
+    def end(){
+        TaskAction taskAction = action(TaskAction.class)
+        log.info("删除任务：" + getRuntime().getTaskId())
+        taskAction.delTask(getRuntime().getTaskId())
+        asyncAction.proceed();
     }
 
 
