@@ -3,7 +3,6 @@ package com.github.script.task.server.core.dao.mongo.impl;
 import com.github.script.task.server.core.dao.mongo.extend.SearchTagsDaoExtend;
 import com.github.script.task.server.core.domain.SearchTags;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
-import com.github.script.task.server.other.mongo.util.EntityObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
