@@ -26,6 +26,8 @@ public enum ResultState {
 
     DataSetNotExists("数据集不存在"),
 
+    UserDataSetExists("用户数据已存在"),
+
 
     ;
     @Getter

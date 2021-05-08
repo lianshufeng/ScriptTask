@@ -6,7 +6,7 @@ import com.github.script.task.bridge.model.param.UserClueParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.server.core.conf.TTLConf;
-import com.github.script.task.server.core.dao.UserClueDao;
+import com.github.script.task.server.core.dao.mongo.UserClueDao;
 import com.github.script.task.server.core.domain.MatchWord;
 import com.github.script.task.server.core.domain.UserClue;
 import com.github.script.task.server.other.mongo.helper.DBHelper;

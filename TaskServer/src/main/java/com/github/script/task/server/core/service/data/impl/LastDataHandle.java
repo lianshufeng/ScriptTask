@@ -1,6 +1,6 @@
 package com.github.script.task.server.core.service.data.impl;
 
-import com.github.script.task.server.core.dao.DataSetDao;
+import com.github.script.task.server.core.dao.mongo.DataSetDao;
 import com.github.script.task.server.core.domain.DataSet;
 import com.github.script.task.server.core.service.data.DataHandle;
 import com.github.script.task.server.other.mongo.helper.DBHelper;

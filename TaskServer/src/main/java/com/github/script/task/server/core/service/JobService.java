@@ -1,15 +1,14 @@
 package com.github.script.task.server.core.service;
 
-import com.github.script.task.server.core.dao.JobDao;
-import com.github.script.task.server.core.dao.JobRunLogDao;
-import com.github.script.task.server.core.dao.TaskDao;
+import com.github.script.task.server.core.dao.mongo.JobDao;
+import com.github.script.task.server.core.dao.mongo.JobRunLogDao;
+import com.github.script.task.server.core.dao.mongo.TaskDao;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.core.domain.JobRunLog;
 import com.github.script.task.server.core.domain.Task;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 import com.github.script.task.bridge.model.JobModel;
 import com.github.script.task.bridge.model.param.JobLogParam;
@@ -18,9 +17,7 @@ import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class JobService {
@@ -151,8 +148,8 @@ public class JobService {
         return model;
     }
 
-
     public String updateJobCreatTime(String jobId, Long createTime) {
         return jobDao.updateJobCreatTime(jobId,createTime).getId();
     }
+
 }

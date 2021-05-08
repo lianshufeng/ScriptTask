@@ -19,9 +19,14 @@ import java.util.Date;
 @NoArgsConstructor
 @CompoundIndexes({
         //name：索引名称 def：字段(1正序 -1倒序) unique：是否唯一索引
-        @CompoundIndex(name = "user_content_unique", def = "{user:-1, contentHash:-1}", unique = true)
+        @CompoundIndex(name = "platform_user_content_unique", def = "{platform:-1 , user:-1, contentHash:-1}", unique = true)
 })
 public class UserData extends SuperEntity {
+
+    //平台名
+    @Indexed
+    private String platform;
+
 
     //用户标识
     @Indexed

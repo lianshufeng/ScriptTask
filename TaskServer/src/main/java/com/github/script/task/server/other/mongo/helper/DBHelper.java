@@ -1,5 +1,6 @@
 package com.github.script.task.server.other.mongo.helper;
 
+import com.github.script.task.server.other.mongo.domain.SuperEntity;
 import lombok.experimental.Delegate;
 import org.bson.Document;
 import org.bson.codecs.DocumentCodec;
@@ -14,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
-import com.github.script.task.server.other.mongo.domain.SuperEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

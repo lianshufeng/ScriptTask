@@ -74,7 +74,8 @@ public class JsonUtil {
      * @return
      * @throws Exception
      */
-    public static <T> T toObject(String json, Class<T> cls) throws Exception {
+    @SneakyThrows
+    public static <T> T toObject(String json, Class<T> cls) {
         return objectMapper.readValue(json, cls);
     }
 

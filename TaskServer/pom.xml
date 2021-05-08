@@ -22,6 +22,13 @@
         <mongo-java-driver.version>3.12.7</mongo-java-driver.version>
         <mongodb-driver-sync.version>4.1.0</mongodb-driver-sync.version>
         <spring-data-mongodb.version>3.0.3.RELEASE</spring-data-mongodb.version>
+
+        <!-- es -->
+        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <spring-data-elasticsearch.version>4.2.0</spring-data-elasticsearch.version>
+        <spring-boot-starter-data-elasticsearch.version>2.4.5</spring-boot-starter-data-elasticsearch.version>
+
+
     </properties>
 
 
@@ -71,6 +78,35 @@
             <groupId>com.baidu.aip</groupId>
             <artifactId>java-sdk</artifactId>
             <version>4.15.7</version>
+        </dependency>
+
+
+        <!-- es -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <version>${spring-boot-starter-data-elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>${spring-data-elasticsearch.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                    <groupId>org.elasticsearch.client</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
         </dependency>
 
     </dependencies>

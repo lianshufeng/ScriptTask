@@ -5,8 +5,7 @@ import com.github.script.task.bridge.model.param.MatchWordParam;
 import com.github.script.task.bridge.model.param.SearchMatchWordParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.bridge.util.BeanUtil;
-import com.github.script.task.server.core.dao.MatchWordDao;
+import com.github.script.task.server.core.dao.mongo.MatchWordDao;
 import com.github.script.task.server.core.domain.MatchWord;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

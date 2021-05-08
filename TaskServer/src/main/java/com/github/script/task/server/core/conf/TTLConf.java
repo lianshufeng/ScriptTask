@@ -22,5 +22,5 @@ public class TTLConf {
     private Long UserClueTimeout = 86400000L * 30 * 12;
 
     //人机交互超时时间
-    private Long userRobotTimeout = 60*60*1000L;
+    private Long userRobotTimeout = 60 * 60 * 1000L;
 }

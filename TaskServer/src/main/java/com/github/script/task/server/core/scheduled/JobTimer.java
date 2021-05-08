@@ -1,7 +1,7 @@
 package com.github.script.task.server.core.scheduled;
 
-import com.github.script.task.server.core.dao.JobDao;
-import com.github.script.task.server.core.dao.TaskDao;
+import com.github.script.task.server.core.dao.mongo.JobDao;
+import com.github.script.task.server.core.dao.mongo.TaskDao;
 import com.github.script.task.server.core.domain.Job;
 import com.github.script.task.server.other.token.service.ResourceTokenService;
 import lombok.Cleanup;

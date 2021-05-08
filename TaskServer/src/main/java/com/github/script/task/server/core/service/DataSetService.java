@@ -4,7 +4,7 @@ package com.github.script.task.server.core.service;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.bridge.util.HashUtil;
-import com.github.script.task.server.core.dao.DataSetDao;
+import com.github.script.task.server.core.dao.mongo.DataSetDao;
 import com.github.script.task.server.core.domain.DataSet;
 import com.github.script.task.server.core.model.DataSetModel;
 import com.github.script.task.server.core.service.data.DataHandle;

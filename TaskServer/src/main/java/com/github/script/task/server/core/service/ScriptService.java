@@ -3,7 +3,7 @@ package com.github.script.task.server.core.service;
 import com.github.script.task.bridge.model.ScriptModel;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.dao.ScriptDao;
+import com.github.script.task.server.core.dao.mongo.ScriptDao;
 import com.github.script.task.server.core.domain.Script;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.springframework.beans.BeanUtils;

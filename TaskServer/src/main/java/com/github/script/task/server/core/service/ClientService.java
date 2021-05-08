@@ -1,7 +1,7 @@
 package com.github.script.task.server.core.service;
 
 import com.github.script.task.bridge.model.ClientModel;
-import com.github.script.task.server.core.dao.ClientDao;
+import com.github.script.task.server.core.dao.mongo.ClientDao;
 import com.github.script.task.server.core.domain.Client;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.springframework.beans.BeanUtils;

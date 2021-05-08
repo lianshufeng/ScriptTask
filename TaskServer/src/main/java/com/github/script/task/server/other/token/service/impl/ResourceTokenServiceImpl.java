@@ -61,7 +61,7 @@ public class ResourceTokenServiceImpl extends ResourceTokenService {
     }
 
     @Autowired
-    private void init() {
+    private void init(ApplicationContext applicationContext) {
         //初始化数据库监听
         initListen();
 

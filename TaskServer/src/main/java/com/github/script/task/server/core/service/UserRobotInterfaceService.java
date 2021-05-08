@@ -6,7 +6,7 @@ import com.github.script.task.bridge.model.userrobot.parm.UserInterfaceParm;
 import com.github.script.task.bridge.model.userrobot.user.UserInterface;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
-import com.github.script.task.server.core.dao.UserRobotInterfaceDao;
+import com.github.script.task.server.core.dao.mongo.UserRobotInterfaceDao;
 import com.github.script.task.server.core.domain.UserRobotInterface;
 import com.github.script.task.server.other.mongo.util.PageEntityUtil;
 import org.springframework.beans.BeanUtils;

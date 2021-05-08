@@ -5,7 +5,7 @@ import com.github.script.task.bridge.model.param.DataDuplicateParam;
 import com.github.script.task.bridge.result.ResultContent;
 import com.github.script.task.bridge.result.ResultState;
 import com.github.script.task.server.core.conf.TTLConf;
-import com.github.script.task.server.core.dao.DataDuplicateDao;
+import com.github.script.task.server.core.dao.mongo.DataDuplicateDao;
 import com.github.script.task.server.core.domain.DataDuplicate;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.springframework.beans.factory.annotation.Autowired;
