@@ -51,7 +51,7 @@ public class SearchTagsService {
 
         //取出自定义库的标签
         this.matchWordDao.collectionNames().forEach((it) -> {
-            tags.put(it, 1L);
+            tags.put(it, 99999L);
         });
 
         //取出数据集的标签

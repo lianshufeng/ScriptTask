@@ -2,12 +2,16 @@ package com.github.script.task.server.core.dao.mongo.impl;
 
 import com.github.script.task.server.core.dao.mongo.extend.DataSetDaoExtend;
 import com.github.script.task.server.core.domain.DataSet;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.Field;
+import org.springframework.data.mongodb.core.aggregation.Fields;
+import org.springframework.data.mongodb.core.query.Criteria;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataSetDaoImpl implements DataSetDaoExtend {
 
@@ -21,20 +25,32 @@ public class DataSetDaoImpl implements DataSetDaoExtend {
      */
     @Override
     public Map<String, Long> tags() {
-        String map = "function(){var tags={};this.nlp.keyword.forEach(function(it){tags[it]=tags[it]?tags[it]+1:1});this.nlp.topic.lv1_tag_list.forEach(function(it){tags[it]=tags[it]?tags[it]+1:1});this.nlp.topic.lv2_tag_list.forEach(function(it){tags[it]=tags[it]?tags[it]+1:1});emit('tags',tags)}";
-        String reduce = "function(key,values){var tags={};values.forEach(function(kw){for(name in kw){tags[name]=NumberLong(tags[name]?tags[name]+1:1)}});return tags}";
-        List<Map> ret = this.mongoTemplate.mapReduce(Map.class)
-                .map(map)
-                .reduce(reduce)
-                .inCollection(mongoTemplate.getCollectionName(DataSet.class))
-                .all();
-        if (ret.size() == 0) {
-            return null;
-        }
+
+        //构建分页查询条件
+        List<AggregationOperation> aggregations = new ArrayList<AggregationOperation>() {{
+
+            //连表查询仅存在的
+            add(Aggregation.lookup("userData", "hash", "contentHash", "user"));
+            add(Aggregation.match(Criteria.where("$expr").is(new Document("$gt", new Object[]{
+                    new Document("$size", "$user"), 0
+            }))));
+
+            //将字段内所有的关键词提取到行并增加新属性tags
+            add(Aggregation.addFields().addField("tags").withValue(new Document("$setUnion", new String[]{"$nlp.keyword", "$nlp.topic.lv1_tag_list", "$nlp.topic.lv2_tag_list"})).build());
+
+            //每行的tags文本数组拆分多条记录
+            add(Aggregation.unwind("$tags"));
+
+            //统计每行的tags
+            add(Aggregation.group(Fields.from(Fields.field("_id", "$tags"))).count().as("count"));
+
+        }};
+        List<Document> ret = this.mongoTemplate.aggregate(Aggregation.newAggregation(aggregations), this.mongoTemplate.getCollectionName(DataSet.class), Document.class).getMappedResults();
         Map<String, Long> result = new HashMap<>();
-        for (Map.Entry<String, Object> entry : ((Map<String, Object>) ret.get(0).get("value")).entrySet()) {
-            result.put(entry.getKey(), Long.valueOf(String.valueOf(entry.getValue())));
+        for (Document item : ret) {
+            result.put(item.getString("_id"), Long.parseLong(String.valueOf(item.get("count"))));
         }
         return result;
+
     }
 }
