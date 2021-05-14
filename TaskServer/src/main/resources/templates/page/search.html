@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="common/page::commonHeader"></head>
+
+
+<body class="body-container">
+<nav th:replace="common/page::commonNavbar"/>
+
+<div class="main-container bgc-white">
+
+    <!--侧边栏-->
+    <div th:replace="common/page::commonSidebar"></div>
+
+    <div role="main" class="main-content">
+
+
+        <div class="page-content">
+
+            <div class="page-header" style="text-align: left !important ; display: block !important; ">
+
+                <button class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
+                    <i class="fas fa-cloud-upload-alt mr-1"></i>
+                    新增
+                </button>
+
+                <button  class="btn btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="button">
+                    <i class="fas fa-cloud-upload-alt mr-1"></i>
+                    新增
+                </button>
+
+
+                <div class="col-sm-4  tag-input-style" style="padding-left: 0px;" id="select2-parent">
+
+                    <select multiple id="select-platform" name="state" class="select2 form-control " data-placeholder="过滤平台">
+                        <option th:each="item : ${platforms}" th:value="${item.platform}" th:text="${item.platform}"
+                                value='x1'>x1
+                        </option>
+                    </select>
+
+                    <select multiple id="select-tags" name="state" class="select2 form-control" data-placeholder="过滤标签">
+                        <option th:each="item : ${tags}" th:value="${item.tag}" th:text="${item.tag}" value='x1'>x1
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <!--                <div class="col-sm-4 col-12 tag-input-style" style="padding-left: 0px;" id="select2-parent-platform">-->
+                <!--                    <select  multiple id="select-platform" name="state" class="select2 form-control" data-placeholder="过滤平台">-->
+                <!--                        <option th:each="item : ${platforms}"   th:value="${item.platform}" th:text="${item.platform}" value='x1'>x1</option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+
+
+                <!--                <div class="col-sm-4 col-12 tag-input-style" style="padding-left: 0px;" id="select2-parent-tags">-->
+                <!--                    <select  multiple id="select-tags" name="state" class="select2 form-control" data-placeholder="过滤标签">-->
+                <!--                        <option th:each="item : ${tags}"   th:value="${item.tag}" th:text="${item.tag}" value='x1'>x1</option>-->
+                <!--                    </select>-->
+                <!--                </div>-->
+
+
+            </div>
+
+
+            <!--            <div class="page-header" style="text-align: left !important ; display: block !important; ">-->
+            <!--                <div class="col-sm-4 col-12 tag-input-style" id="select2-parent">-->
+            <!--                    <select multiple id="state" name="state" class="select2 form-control " data-placeholder="请选择过滤的平台">-->
+            <!--                        <option value='x1'>x1</option>-->
+            <!--                        <option value='x2'>x2</option>-->
+            <!--                        <option value='x3'>x3</option>-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card bcard radius-2px overflow-hidden">
+                        <div class="card-body p-1px bgc-dark-l4 border-b-1 brc-primary-m4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="bgc-white">
+                                        <table id="grid-table"
+                                               class="table border-0 table-bordered brc-black-tp11 bgc-white">
+                                            <!-- grid -->
+                                        </table>
+                                        <div id="grid-pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer th:replace="common/page::commonFooter1"/>
+    </div>
+
+</div>
+
+<div th:replace="common/page::commonIncludeScripts"/>
+
+<!-- 选择列表框2-->
+<script src="./node_modules/select2/dist/js/select2.js"></script>
+
+<!--日期格式化-->
+<script src="./js/date-format.js"></script>
+
+<!--页面功能-->
+<script src="./page/search.js"></script>
+
+</body>
+</html>
+
+

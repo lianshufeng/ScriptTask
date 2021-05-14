@@ -19,6 +19,13 @@
                           </span>
                     </a>
                 </li>
+                <li class="nav-item active" th:class="${viewName} =='search' ? 'nav-item active' : 'nav-item'">
+                    <a href="../page/index.html" th:href="@{/page/search.html}" class="nav-link">
+                          <span class="nav-text">
+               				  <span>平台搜索</span>
+                          </span>
+                    </a>
+                </li>
                 <li class="nav-item" th:class="${viewName} =='script' ? 'nav-item active' : 'nav-item'">
                     <a href="../page/script.html" th:href="@{/page/script.html}" class="nav-link">
                           <span class="nav-text">

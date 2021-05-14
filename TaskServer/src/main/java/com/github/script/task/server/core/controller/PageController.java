@@ -1,6 +1,8 @@
 package com.github.script.task.server.core.controller;
 
+import com.github.script.task.server.core.service.SearchService;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +15,8 @@ import java.util.List;
 @RequestMapping()
 public class PageController {
 
-    /**
-     *
-     */
-    private List<String> pages = null;
-
+    @Autowired
+    private SearchService searchService;
 
     @RequestMapping({"", "/", "index.html"})
     @SneakyThrows
@@ -37,4 +36,19 @@ public class PageController {
         modelAndView.addObject("viewName", viewName);
         return modelAndView;
     }
+
+    /**
+     * 搜索引擎页面
+     *
+     * @return
+     */
+    @RequestMapping("page/search.html")
+    public Object search() {
+        ModelAndView modelAndView = new ModelAndView("page/search");
+        modelAndView.addObject("viewName", "search");
+        modelAndView.addObject("platforms", searchService.searchPlatforms());
+        modelAndView.addObject("tags", searchService.searchTags());
+        return modelAndView;
+    }
+
 }

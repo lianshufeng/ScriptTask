@@ -1,0 +1,45 @@
+package com.github.script.task.server.core.dao.mongo.impl;
+
+import com.github.script.task.server.core.dao.mongo.extend.SearchPlatformDaoExtend;
+import com.github.script.task.server.core.domain.SearchPlatform;
+import com.github.script.task.server.other.mongo.helper.DBHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.BulkOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.Date;
+import java.util.Map;
+
+public class SearchPlatformDaoImpl implements SearchPlatformDaoExtend {
+
+    @Autowired
+    private DBHelper dbHelper;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    //超时时间
+    private final static long timeOut = 1000 * 60 * 60 * 2;
+
+    @Override
+    public void update(Map<String, Long> platform) {
+        if (platform == null || platform.size() == 0) {
+            return;
+        }
+        BulkOperations bulkOperations = this.mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, SearchPlatform.class);
+        for (Map.Entry<String, Long> entry : platform.entrySet()) {
+            Query query = Query.query(Criteria.where("platform").is(entry.getKey()));
+            Update update = new Update();
+            update.setOnInsert("platform", entry.getKey());
+            update.set("count", entry.getValue());
+            update.set("TTL", new Date(this.dbHelper.getTime() + timeOut));
+            this.dbHelper.updateTime(update);
+            bulkOperations.upsert(query, update);
+        }
+        bulkOperations.execute();
+    }
+
+}

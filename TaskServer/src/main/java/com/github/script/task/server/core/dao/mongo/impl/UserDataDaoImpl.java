@@ -1,13 +1,22 @@
 package com.github.script.task.server.core.dao.mongo.impl;
 
-import com.github.script.task.bridge.util.JsonUtil;
 import com.github.script.task.server.core.dao.mongo.DataSetDao;
 import com.github.script.task.server.core.dao.mongo.extend.UserDataDaoExtend;
+import com.github.script.task.server.core.domain.DataSet;
 import com.github.script.task.server.core.domain.UserData;
 import com.github.script.task.server.other.mongo.helper.DBHelper;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.Fields;
+import org.springframework.data.mongodb.core.query.Criteria;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserDataDaoImpl implements UserDataDaoExtend {
 
@@ -33,6 +42,21 @@ public class UserDataDaoImpl implements UserDataDaoExtend {
         this.mongoTemplate.save(userData);
 
         return userData;
+    }
+
+    @Override
+    public Map<String, Long> platforms() {
+        //构建分页查询条件
+        List<AggregationOperation> aggregations = new ArrayList<AggregationOperation>() {{
+            //统计每行的tags
+            add(Aggregation.group(Fields.from(Fields.field("_id", "$platform"))).count().as("count"));
+        }};
+        List<Document> ret = this.mongoTemplate.aggregate(Aggregation.newAggregation(aggregations), this.mongoTemplate.getCollectionName(UserData.class), Document.class).getMappedResults();
+        Map<String, Long> result = new HashMap<>();
+        for (Document item : ret) {
+            result.put(item.getString("_id"), Long.parseLong(String.valueOf(item.get("count"))));
+        }
+        return result;
     }
 
 
