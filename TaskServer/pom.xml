@@ -19,14 +19,14 @@
         <java.version>11</java.version>
 
 
-        <mongo-java-driver.version>3.12.7</mongo-java-driver.version>
-        <mongodb-driver-sync.version>4.1.0</mongodb-driver-sync.version>
-        <spring-data-mongodb.version>3.0.3.RELEASE</spring-data-mongodb.version>
+        <mongo-java-driver.version>3.12.11</mongo-java-driver.version>
+        <mongodb-driver-sync.version>4.6.1</mongodb-driver-sync.version>
+        <spring-data-mongodb.version>3.4.0</spring-data-mongodb.version>
 
         <!-- es -->
-        <elasticsearch.version>7.12.1</elasticsearch.version>
-        <spring-data-elasticsearch.version>4.2.0</spring-data-elasticsearch.version>
-        <spring-boot-starter-data-elasticsearch.version>2.4.5</spring-boot-starter-data-elasticsearch.version>
+        <elasticsearch.version>7.17.4</elasticsearch.version>
+        <spring-data-elasticsearch.version>4.4.0</spring-data-elasticsearch.version>
+        <spring-boot-starter-data-elasticsearch.version>2.7.0</spring-boot-starter-data-elasticsearch.version>
 
 
     </properties>

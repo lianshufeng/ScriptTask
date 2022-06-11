@@ -10,7 +10,16 @@ spring:
     encoding: UTF-8
   profiles:
     active: dev
+  main: #允许循环引用
+    allow-circular-references: true
 
+  elasticsearch:
+    rest:
+      uris: http://10.0.0.7:9200
+  data:
+    mongodb:
+      uri: mongodb+srv://root:*@cluster0.gcbnr.mongodb.net/tasks?replicaSet=atlas-13vjft-shard-0&readPreference=primary&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1&
+      auto-index-creation: true
 
 
 logging:

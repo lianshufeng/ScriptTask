@@ -28,6 +28,12 @@ import java.util.List;
 @ComponentScan("com.github.script.task.server.other.mongo.helper")
 public class MongoConfiguration {
 
+
+    static {
+        //jdk 11 以上，强制使用 TLSv1.3 ,  mongo 驱动目前兼容 TLSv1.2
+        System.setProperty("jdk.tls.client.protocols", "TLSv1.2");
+    }
+
     /**
      * 自定义转换器
      *

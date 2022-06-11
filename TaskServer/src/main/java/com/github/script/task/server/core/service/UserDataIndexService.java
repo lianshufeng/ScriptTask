@@ -59,8 +59,6 @@ public class UserDataIndexService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;

@@ -1,13 +1,7 @@
 package com.github.script.task.server.other.es.config;
 
-import com.github.script.task.server.other.es.conf.ElasticsearchConfig;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.ElasticsearchConfigurationSupport;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
@@ -16,8 +10,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories("com.github.script.task.server.other.es.dao")
 public class ElasticsearchConfiguration extends ElasticsearchConfigurationSupport {
 
-    @Value("${elasticsearch.hostAndPort}")
-    private String[] hostAndPort;
+//    @Value("${elasticsearch.hostAndPort}")
+//    private String[] hostAndPort;
 //
 //
 //    @Bean
@@ -25,14 +19,36 @@ public class ElasticsearchConfiguration extends ElasticsearchConfigurationSuppor
 //        return new ElasticsearchConfig();
 //    }
 
-    @Bean
-    public RestHighLevelClient restHighLevelClient() {
-        final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(hostAndPort)
-                .build();
 
-        return RestClients.create(clientConfiguration).rest();
-    }
+//    @Bean
+//    public RestClient restClient() {
+//        String host = hostAndPort[0];
+//        int port = Integer.parseInt(hostAndPort[1]);
+//        return RestClient.builder(new HttpHost(host, port)).build();
+//    }
+//
+//    @Bean
+//    public ElasticsearchTransport elasticsearchTransport(JacksonJsonpMapper jacksonJsonpMapper) {
+//        return new RestClientTransport(restClient(), jacksonJsonpMapper);
+//    }
+//
+//    @Bean
+//    public ElasticsearchClient elasticsearchClient(JacksonJsonpMapper jacksonJsonpMapper) {
+//        return new ElasticsearchClient(elasticsearchTransport(jacksonJsonpMapper));
+//    }
+
+
+
+
+
+//    @Bean
+//    public RestHighLevelClient restHighLevelClient() {
+//        final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+//                .connectedTo(hostAndPort)
+//                .build();
+//
+//        return RestClients.create(clientConfiguration).rest();
+//    }
 
 
 }
