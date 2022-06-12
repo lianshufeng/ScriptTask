@@ -98,18 +98,19 @@ class NoneDeviceScript extends SuperScript {
 
 
         //查询当前的ip
-        println httpAction.get("https://2021.ip138.com").parse().html().getElementsByTag("title").text()
+        println httpAction.get("https://2022.ip138.com").parse().html().getElementsByTag("title").text()
 
         def list = []
-        def ret = httpAction.get('https://top.baidu.com', [:], "GBK").parse("GBK").html()
-        ret.getElementById('hot-list').getElementsByTag('li').forEach((it) -> {
-            def title = it.getElementsByTag('a').get(0).attr('title')
-            list.push(title);
-        })
-        log.info("list : {}", list)
+        def ret = httpAction.get('https://top.baidu.com', [:], "UTF-8").parse("UTF-8").html()
+
+//        ret.getElementById('hot-list').getElementsByTag('li').forEach((it) -> {
+//            def title = it.getElementsByTag('a').get(0).attr('title')
+//            list.push(title);
+//        })
+//        log.info("list : {}", list)
         return [
                 'time' : System.currentTimeMillis(),
-                'title': list
+                'title': ret.title()
         ]
     }
 }

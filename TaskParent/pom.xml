@@ -27,15 +27,15 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 
         <!-- 工具 -->
-        <groovy.version>3.0.7</groovy.version>
+        <groovy.version>3.0.11</groovy.version>
 
         <!-- 客户端 -->
-        <webdrivermanager.version>4.3.1</webdrivermanager.version>
-        <selenium.version>3.141.59</selenium.version>
-        <appium.version>7.4.1</appium.version>
-        <jsoup.version>1.13.1</jsoup.version>
+        <webdrivermanager.version>5.2.0</webdrivermanager.version>
+        <selenium.version>4.2.2</selenium.version>
+        <appium.version>8.1.1</appium.version>
+        <jsoup.version>1.15.1</jsoup.version>
 
-        <httpclient.version>4.5.9</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
     </properties>
 
     <groupId>com.github.script.task</groupId>

@@ -51,9 +51,9 @@ public class WebDeviceRunTime extends SuperDeviceRunTime {
      */
     @SneakyThrows
     private void installChromeDriver() {
-        WebDriverManager webDriverManager = WebDriverManager
-                .chromedriver()
-                .browserPath(scriptTaskConf.getRunTime().getChromeHome().getAbsolutePath());
+//        WebDriverManager webDriverManager = WebDriverManager
+//                .browserPath(scriptTaskConf.getRunTime().getChromeHome().getAbsolutePath());
+        WebDriverManager webDriverManager = WebDriverManager.getInstance();
         Config config = webDriverManager.config();
         //使用淘宝镜像安装
         config.setUseMirror(true);

@@ -4,6 +4,7 @@ server:
 
 script:
   task:
+    host: https://task.jpy.wang/
     runTime:
       home: ./runtime
 #    host: http://dh.aiyilearning.com/

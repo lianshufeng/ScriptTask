@@ -137,7 +137,7 @@ public class AndroidSimulatorDeviceRunTime extends AndroidMachineDeviceRunTime {
 
         //构建客户端,并连接
         log.info("[连接] - {} -> {}", simulatorName, appiumDriverLocalService.getUrl().toString());
-        AndroidDriver driver = this.appiumHelper.buildAndroidDriver(appiumDriverLocalService, adbConnectionName);
+        AndroidDriver driver = this.appiumHelper.buildAndroidDriver(appiumDriverLocalService.getUrl(), adbConnectionName);
         runningSimulator.setDriver(driver);
 
 
